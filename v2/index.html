@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Location St-Flo — Quads & Bateaux · Saint-Florent, Corse</title>
+  <meta name="description" content="Édition nocturne. Location de quads et de bateaux à Saint-Florent. Désert des Agriates, Cap Corse, plages secrètes de Haute-Corse." />
+  <meta name="theme-color" content="#0a0c10" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>" />
+</head>
+<body>
+
+  <!-- Progress bar -->
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- Nav -->
+  <header class="nav" id="nav">
+    <a href="#top" class="logo">Location&nbsp;St-Flo<span>°</span></a>
+    <nav class="nav__links" id="navLinks" aria-label="Navigation">
+      <a href="#activites"><i>01</i> Activités</a>
+      <a href="#lieux"><i>02</i> Lieux</a>
+      <a href="#tarifs"><i>03</i> Tarifs</a>
+      <a href="#contact"><i>04</i> Contact</a>
+    </nav>
+    <a href="#contact" class="nav__cta">Réserver →</a>
+    <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+
+    <div class="hero__inner">
+      <p class="hero__loc">Saint-Florent — 42.68°N · Haute-Corse</p>
+      <h1 class="hero__h1">
+        <span class="line"><span>EXPLOREZ</span></span>
+        <span class="line line--accent"><span>LA CORSE</span></span>
+        <span class="line"><span>SAUVAGE</span></span>
+      </h1>
+      <div class="hero__row">
+        <p class="hero__desc">
+          Quads & bateaux, avec ou sans permis. Le désert des Agriates,
+          le Cap Corse et les criques que seule la mer dévoile.
+        </p>
+        <a href="#activites" class="cta-round">
+          <span>Voir<br>plus</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Désert des Agriates ✦ Cap Corse ✦ Plage de Saleccia ✦ Lotu ✦ Centuri ✦ </span>
+        <span>Désert des Agriates ✦ Cap Corse ✦ Plage de Saleccia ✦ Lotu ✦ Centuri ✦ </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activités -->
+  <section class="block" id="activites">
+    <div class="block__head">
+      <span class="idx">01 — Nos activités</span>
+      <h2 class="block__title">Choisissez votre<br><em>terrain de jeu</em></h2>
+    </div>
+
+    <div class="acts">
+      <article class="act reveal">
+        <span class="act__no">01</span>
+        <div class="act__media"><img src="../assets/img/quad.jpg" alt="Quad à Saint-Florent" loading="lazy" /></div>
+        <div class="act__info">
+          <h3>Quad</h3>
+          <p>Le désert des Agriates et ses pistes. Sensations brutes, panoramas immenses, plages au bout de la route.</p>
+          <span class="act__meta">550 MXU · ½ jour ou jour</span>
+        </div>
+        <a href="#tarifs" class="act__link" aria-label="Tarifs quad">↗</a>
+      </article>
+
+      <article class="act reveal">
+        <span class="act__no">02</span>
+        <div class="act__media"><img src="../assets/img/bateau-saleccia.jpg" alt="Bateau avec permis" loading="lazy" /></div>
+        <div class="act__info">
+          <h3>Bateau <span class="tag">permis</span></h3>
+          <p>Cap Corse et plus belles plages de Haute-Corse. Des criques turquoise accessibles uniquement par la mer.</p>
+          <span class="act__meta">Cap Camarat · Sacs S780 · Capelli 900</span>
+        </div>
+        <a href="#tarifs" class="act__link" aria-label="Tarifs bateau">↗</a>
+      </article>
+
+      <article class="act reveal">
+        <span class="act__no">03</span>
+        <div class="act__media"><img src="../assets/img/bateau-sans-permis.jpg" alt="Bateau sans permis" loading="lazy" /></div>
+        <div class="act__info">
+          <h3>Bateau <span class="tag tag--alt">sans permis</span></h3>
+          <p>La mer sans contrainte. Aucun permis, prise en main immédiate, idéal en famille.</p>
+          <span class="act__meta">Sans permis · ½ jour ou jour</span>
+        </div>
+        <a href="#tarifs" class="act__link" aria-label="Tarifs bateau sans permis">↗</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- Lieux -->
+  <section class="block block--dark" id="lieux">
+    <div class="block__head">
+      <span class="idx">02 — À découvrir</span>
+      <h2 class="block__title">Là où<br><em>l'aventure mène</em></h2>
+    </div>
+
+    <div class="gallery">
+      <figure class="g g--tall reveal">
+        <img src="../assets/img/saleccia.jpg" alt="Plage de Saleccia" loading="lazy" />
+        <figcaption><span>Plage de Saleccia</span><em>Sable blanc · Agriates</em></figcaption>
+      </figure>
+      <figure class="g reveal">
+        <img src="../assets/img/lotu.jpg" alt="Plage du Lotu" loading="lazy" />
+        <figcaption><span>Plage du Lotu</span><em>Lagune turquoise</em></figcaption>
+      </figure>
+      <figure class="g reveal">
+        <img src="../assets/img/bateau-9-places.jpg" alt="Cap Corse" loading="lazy" />
+        <figcaption><span>Cap Corse & Centuri</span><em>Au fil de l'eau</em></figcaption>
+      </figure>
+      <figure class="g g--wide reveal">
+        <img src="../assets/img/golfe-saint-florent.jpg" alt="Golfe de Saint-Florent" loading="lazy" />
+        <figcaption><span>Golfe de Saint-Florent</span><em>Le départ de tout</em></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Tarifs -->
+  <section class="block" id="tarifs">
+    <div class="block__head">
+      <span class="idx">03 — Tarifs</span>
+      <h2 class="block__title">Clair,<br><em>sans surprise</em></h2>
+    </div>
+
+    <div class="season" role="tablist" aria-label="Saison">
+      <button class="is-active" data-season="low" role="tab" aria-selected="true">Basse saison</button>
+      <button data-season="high" role="tab" aria-selected="false">Haute saison</button>
+    </div>
+
+    <div class="rates">
+      <div class="rate-line rate-line--head">
+        <span>Prestation</span><span>Détail</span><span>½ journée</span><span>Journée</span>
+      </div>
+
+      <!-- Quad -->
+      <div class="rate-line reveal">
+        <span class="rate-name">Quad</span>
+        <span class="rate-detail">550 MXU · caution 2 500 €</span>
+        <span data-label="½ journée"><b data-season="low">140 €</b><b data-season="high" hidden>170 €</b></span>
+        <span data-label="Journée"><b data-season="low">170 €</b><b data-season="high" hidden>190 €</b></span>
+      </div>
+
+      <!-- Sans permis -->
+      <div class="rate-line reveal">
+        <span class="rate-name">Bateau sans permis</span>
+        <span class="rate-detail">Toute l'année</span>
+        <span data-label="½ journée"><b>150 €</b></span>
+        <span data-label="Journée"><b>190 €</b></span>
+      </div>
+
+      <!-- Cap Camarat -->
+      <div class="rate-line reveal">
+        <span class="rate-name">Cap Camarat 625 WA</span>
+        <span class="rate-detail">Permis · caution 4 000 €</span>
+        <span data-label="½ journée"><b data-season="low">250 €</b><b data-season="high" hidden>250 €</b></span>
+        <span data-label="Journée"><b data-season="low">250 €</b><b data-season="high" hidden>350 €</b></span>
+      </div>
+
+      <!-- Sacs S780 -->
+      <div class="rate-line reveal">
+        <span class="rate-name">Sacs S780 · 300 CV</span>
+        <span class="rate-detail">Permis · caution 4 000 €</span>
+        <span data-label="½ journée"><b data-season="low">250 €</b><b data-season="high" hidden>400 €</b></span>
+        <span data-label="Journée"><b data-season="low">350 €</b><b data-season="high" hidden>500 €</b></span>
+      </div>
+
+      <!-- Capelli -->
+      <div class="rate-line reveal">
+        <span class="rate-name">Capelli Tempest 900</span>
+        <span class="rate-detail">Semi-rigide · caution 4 000 €</span>
+        <span data-label="½ journée"><b>—</b></span>
+        <span data-label="Journée"><b data-season="low">450 €</b><b data-season="high" hidden>650 €</b></span>
+      </div>
+    </div>
+    <p class="rates__note">Carburant (SP95) à la charge du client au retour · Caution par empreinte de carte ou chèque · Basse saison : sept.–juin · Haute saison : juillet–août.</p>
+  </section>
+
+  <!-- Contact -->
+  <section class="block block--contact" id="contact">
+    <div class="contact">
+      <div class="contact__left">
+        <span class="idx">04 — Contact</span>
+        <h2 class="contact__big">Prêt à<br>larguer les<br><em>amarres ?</em></h2>
+        <a href="tel:+33686934543" class="contact__phone">06 86 93 45 43</a>
+      </div>
+
+      <div class="contact__right">
+        <a class="cline reveal" href="mailto:Contact@location-stflo.com">
+          <span>Email</span><strong>Contact@location-stflo.com</strong>
+        </a>
+        <a class="cline reveal" href="https://maps.google.com/?q=Saint-Florent+Spar+20217" target="_blank" rel="noopener">
+          <span>Adresse</span><strong>Face au Spar, Saint-Florent · 20217</strong>
+        </a>
+        <a class="cline reveal" href="https://facebook.com/stflo.jet" target="_blank" rel="noopener">
+          <span>Facebook</span><strong>stflo.jet</strong>
+        </a>
+        <a class="cline reveal" href="tel:+33686934543">
+          <span>Téléphone</span><strong>06 86 93 45 43</strong>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>© <span id="year"></span> Location St-Flo</span>
+    <span>Saint-Florent · Haute-Corse</span>
+    <a href="../index.html">Voir la version claire →</a>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
