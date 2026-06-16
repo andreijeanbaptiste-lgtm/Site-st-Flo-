@@ -21,6 +21,7 @@ Refonte au goût du jour reprenant les informations du site existant
 index.html        Page unique
 css/styles.css    Styles
 js/script.js      Interactions (nav, reveal, tarifs, formulaire)
+assets/img/       Photos (reprises du site location-stflo.com)
 ```
 
 ## 🚀 Lancer en local
@@ -39,5 +40,5 @@ python3 -m http.server 8000
 - **Email** : Contact@location-stflo.com
 - **Facebook** : [stflo.jet](https://facebook.com/stflo.jet)
 
-> Les images de démonstration proviennent d'Unsplash et peuvent être
-> remplacées par les photos réelles de l'établissement.
+> Les photos (`assets/img/`) et les tarifs sont repris directement du
+> site officiel location-stflo.com.
