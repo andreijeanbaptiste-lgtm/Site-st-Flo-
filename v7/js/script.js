@@ -10,9 +10,14 @@
     const isOpen = open ?? !menu.classList.contains("is-open");
     menu.classList.toggle("is-open", isOpen);
     burger.setAttribute("aria-expanded", String(isOpen));
+    document.body.style.overflow = isOpen ? "hidden" : "";
   };
-  burger.addEventListener("click", () => toggle());
+  burger.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
   menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => toggle(false)));
+  document.addEventListener("click", (e) => {
+    if (menu.classList.contains("is-open") && !menu.contains(e.target) && e.target !== burger) toggle(false);
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggle(false); });
 
   const seasons = document.querySelector(".seasons");
   if (seasons) {

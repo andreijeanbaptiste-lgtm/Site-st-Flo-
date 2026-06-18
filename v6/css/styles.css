@@ -45,7 +45,9 @@ h1, h2, h3 { line-height: 1.2; letter-spacing: -0.015em; color: var(--navy); }
 .topbar a:hover { color: #fff; }
 
 /* Header */
-.header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--line); }
+/* les ancres dégagent l'en-tête fixe */
+section { scroll-margin-top: 76px; }
 .header__inner { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 0; }
 .logo { font-weight: 800; font-size: 1.3rem; color: var(--navy); letter-spacing: -0.02em; }
 .logo span { color: var(--accent); }
