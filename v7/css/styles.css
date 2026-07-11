@@ -135,6 +135,28 @@ section { scroll-margin-top: 76px; }
 .pcard .btn { margin-top: auto; }
 .note { color: var(--body); font-size: 0.88rem; margin-top: 1.4rem; text-align: center; }
 
+/* Tarifs — liste épurée (alternative) */
+.pricelist { max-width: 780px; margin: 0 auto; }
+.pl-head { display: grid; grid-template-columns: 1fr 88px 88px; gap: 1rem; padding: 0 0.6rem 0.7rem; border-bottom: 2px solid var(--navy); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--body); }
+.pl-head span:nth-child(n+2) { text-align: right; }
+.pl-cat { font-size: 1.05rem; color: var(--accent); margin: 1.7rem 0 0.3rem; padding: 0 0.6rem; }
+.pl-cat:first-of-type { margin-top: 1.1rem; }
+.pl-cat small { color: var(--body); font-weight: 500; font-size: 0.82rem; letter-spacing: 0; }
+.pl-row { display: grid; grid-template-columns: 1fr 88px 88px; gap: 1rem; align-items: center; padding: 0.85rem 0.6rem; border-top: 1px solid var(--line); border-radius: 8px; transition: background 0.2s; }
+.pl-row:hover { background: var(--accent-50); }
+.pl-name { display: flex; flex-direction: column; font-weight: 700; color: var(--navy); }
+.pl-name em { font-style: normal; font-weight: 400; color: var(--body); font-size: 0.82rem; margin-top: 0.15rem; }
+.pl-p { text-align: right; font-weight: 800; font-size: 1.1rem; color: var(--navy); font-variant-numeric: tabular-nums; }
+.pl-p--day { color: var(--accent); }
+.pl-foot { max-width: 780px; margin: 1.8rem auto 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.pl-foot span { color: var(--body); font-size: 0.9rem; }
+@media (max-width: 520px) {
+  .pl-head, .pl-row { grid-template-columns: 1fr 64px 64px; gap: 0.6rem; }
+  .pl-p { font-size: 1rem; }
+  .pl-foot { flex-direction: column; align-items: stretch; text-align: center; }
+  .pl-foot .btn { width: 100%; }
+}
+
 /* Contact */
 .contact { display: grid; grid-template-columns: 1fr 1.1fr; gap: 3rem; align-items: start; }
 .contact__info h2 { font-size: clamp(1.6rem, 3.4vw, 2.2rem); }
