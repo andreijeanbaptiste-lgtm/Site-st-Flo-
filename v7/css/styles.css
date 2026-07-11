@@ -173,6 +173,11 @@ section { scroll-margin-top: 76px; }
 .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(31,111,178,0.14); }
 .field textarea { resize: vertical; }
 .form-hint { font-size: 0.88rem; color: var(--accent); text-align: center; font-weight: 600; }
+.callcard { text-align: center; align-items: stretch; justify-content: center; gap: 0.8rem; }
+.callcard__ico { font-size: 2.4rem; line-height: 1; }
+.callcard h3 { font-size: 1.5rem; color: var(--navy); }
+.callcard > p { color: var(--body); font-size: 0.96rem; margin: 0 auto 0.6rem; max-width: 340px; }
+.callcard .btn { width: 100%; font-size: 1.1rem; }
 
 /* Footer */
 .footer { background: var(--navy); color: #b6c6d4; padding: 3rem 0 1.5rem; }

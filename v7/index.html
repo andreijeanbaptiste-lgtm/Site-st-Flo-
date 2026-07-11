@@ -208,19 +208,14 @@
           <li><strong>Facebook</strong><a href="https://facebook.com/stflo.jet" target="_blank" rel="noopener">stflo.jet</a></li>
         </ul>
       </div>
-      <form class="contact__form" id="contactForm" novalidate>
-        <div class="field"><label for="name">Nom</label><input id="name" name="name" type="text" required placeholder="Votre nom" /></div>
-        <div class="field-row">
-          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="vous@email.com" /></div>
-          <div class="field"><label for="phone">Téléphone</label><input id="phone" name="phone" type="tel" placeholder="06 …" /></div>
-        </div>
-        <div class="field"><label for="activity">Activité</label>
-          <select id="activity" name="activity"><option>Quad</option><option>Bateau avec permis</option><option>Bateau sans permis</option><option>Je ne sais pas encore</option></select>
-        </div>
-        <div class="field"><label for="message">Message</label><textarea id="message" name="message" rows="4" placeholder="Dates, nombre de personnes, questions…"></textarea></div>
-        <button type="submit" class="btn btn--primary btn--block">Envoyer la demande</button>
-        <p class="form-hint" id="formHint" hidden>Merci ! Votre messagerie va s'ouvrir avec la demande pré-remplie.</p>
-      </form>
+      <div class="contact__form callcard">
+        <span class="callcard__ico" aria-hidden="true">📞</span>
+        <h3>Appeler pour réserver</h3>
+        <p>La réservation se fait par téléphone — appelez-nous, on s'occupe de tout !</p>
+        <a href="tel:+33686934543" class="btn btn--primary btn--lg btn--block">06 86 93 45 43</a>
+        <a href="tel:+33671205435" class="btn btn--primary btn--lg btn--block">06 71 20 54 35</a>
+        <a href="mailto:Contact@location-stflo.com" class="btn btn--outline btn--lg btn--block">✉️ Écrire un email</a>
+      </div>
     </div>
   </section>
 
