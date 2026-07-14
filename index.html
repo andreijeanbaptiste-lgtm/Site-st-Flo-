@@ -3,413 +3,289 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Location St-Flo · Quads & Bateaux à Saint-Florent, Corse</title>
-  <meta name="description" content="Location de quads et de bateaux (avec ou sans permis) à Saint-Florent, Haute-Corse. Explorez le désert des Agriates, le Cap Corse et les plus belles plages de Corse." />
-  <meta name="theme-color" content="#0b7a8c" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Location St-Flo · Quads & Bateaux en Corse" />
-  <meta property="og:description" content="Quads et bateaux à louer à Saint-Florent. Le désert des Agriates, le Cap Corse et les plages secrètes vous attendent." />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="fr_FR" />
+  <title>Location St-Flo — Location de quads et bateaux à Saint-Florent, Corse</title>
+  <meta name="description" content="Location de quads et de bateaux, avec ou sans permis, à Saint-Florent (Haute-Corse). Désert des Agriates, Cap Corse et plus belles plages de Corse. Réservation au 06 86 93 45 43." />
+  <meta name="theme-color" content="#ffffff" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚓</text></svg>" />
 </head>
 <body>
 
-  <!-- ===== Navigation ===== -->
-  <header class="nav" id="nav">
-    <div class="nav__inner container">
-      <a href="#accueil" class="brand" aria-label="Location St-Flo, accueil">
-        <span class="brand__mark">SF</span>
-        <span class="brand__text">Location <em>St-Flo</em></span>
-      </a>
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <span>📍 Face au Spar, centre de Saint-Florent · 20217</span>
+      <span class="topbar__contact">
+        <a href="tel:+33686934543">📞 06 86 93 45 43</a>
+        <a href="mailto:Contact@location-stflo.com">✉️ Contact@location-stflo.com</a>
+      </span>
+    </div>
+  </div>
 
-      <nav class="nav__links" id="navLinks" aria-label="Navigation principale">
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#top" class="logo"><span>Location</span> St-Flo</a>
+      <nav class="menu" id="menu" aria-label="Navigation principale">
         <a href="#services">Activités</a>
-        <a href="#explorer">Explorer</a>
+        <a href="#lieux">Lieux</a>
         <a href="#tarifs">Tarifs</a>
         <a href="#contact">Contact</a>
-        <a href="#contact" class="btn btn--sm btn--solid nav__cta">Réserver</a>
+        <a href="#contact" class="btn btn--primary menu__cta">Réserver</a>
       </nav>
-
-      <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </header>
 
-  <!-- ===== Hero ===== -->
-  <section class="hero" id="accueil">
-    <div class="hero__media" aria-hidden="true"></div>
+  <!-- Hero (bandeau photo) -->
+  <section class="hero" id="top">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <video class="hero__video" autoplay muted loop playsinline preload="auto"
+           poster="assets/img/hero-poster2.jpg" aria-hidden="true">
+      <source src="assets/video/hero3.webm" type="video/webm" />
+      <source src="assets/video/hero3.mp4" type="video/mp4" />
+    </video>
     <div class="hero__overlay" aria-hidden="true"></div>
-
-    <div class="hero__content container">
-      <p class="hero__eyebrow reveal">Saint-Florent · Haute-Corse</p>
-      <h1 class="hero__title reveal">
-        La Corse sauvage,<br /><span>à votre rythme.</span>
-      </h1>
-      <p class="hero__lead reveal">
-        Location de quads et de bateaux, avec ou sans permis. Partez à la découverte
-        du désert des Agriates, du Cap Corse et des plages les plus secrètes de l'île.
-      </p>
-      <div class="hero__actions reveal">
-        <a href="#services" class="btn btn--solid">Découvrir les activités</a>
-        <a href="#contact" class="btn btn--ghost">Nous contacter</a>
-      </div>
-
-      <ul class="hero__stats reveal" aria-label="Points forts">
-        <li><strong>2</strong><span>quads &amp; bateaux</span></li>
-        <li><strong>0</strong><span>permis requis (option)</span></li>
-        <li><strong>100%</strong><span>esprit Corse</span></li>
-      </ul>
-    </div>
-
-    <a href="#services" class="hero__scroll" aria-label="Défiler vers le bas">
-      <span></span>
-    </a>
-  </section>
-
-  <!-- ===== Intro / valeur ===== -->
-  <section class="intro container">
-    <div class="intro__col reveal">
-      <span class="kicker">Bienvenue</span>
-      <h2 class="intro__title">L'aventure commence au cœur de Saint-Florent</h2>
-    </div>
-    <div class="intro__col intro__text reveal">
+    <div class="container hero__inner">
+      <span class="eyebrow eyebrow--light">Saint-Florent · Haute-Corse</span>
+      <h1>Location de quads &amp; bateaux en Corse</h1>
       <p>
-        Face au Spar, au centre de Saint-Florent, Location St-Flo vous ouvre les portes
-        de la Haute-Corse. Sur terre comme sur mer, choisissez votre liberté : la fougue
-        d'un quad dans les pistes des Agriates, ou la douceur d'une journée bateau le long
-        de criques turquoise inaccessibles par la route.
+        Avec ou sans permis, explorez le désert des Agriates, le Cap Corse
+        et les plus belles plages de Haute-Corse. Une équipe locale au cœur de Saint-Florent.
       </p>
-      <a href="#explorer" class="link-arrow">Voir les lieux à explorer <span aria-hidden="true">→</span></a>
+      <div class="hero__actions">
+        <a href="#tarifs" class="btn btn--primary btn--lg">Voir les tarifs</a>
+        <a href="tel:+33686934543" class="btn btn--white btn--lg">📞 06 86 93 45 43</a>
+      </div>
     </div>
   </section>
 
-  <!-- ===== Services ===== -->
-  <section class="services" id="services">
+  <!-- Trust band -->
+  <section class="trust">
+    <div class="container trust__inner">
+      <div class="trust__item"><span class="trust__ico">🛥️</span><div><strong>Terre &amp; mer</strong><small>Quads et bateaux</small></div></div>
+      <div class="trust__item"><span class="trust__ico">🪪</span><div><strong>Avec ou sans permis</strong><small>Accessible à tous</small></div></div>
+      <div class="trust__item"><span class="trust__ico">🕑</span><div><strong>½ journée ou journée</strong><small>À votre rythme</small></div></div>
+      <div class="trust__item"><span class="trust__ico">📍</span><div><strong>Centre de Saint-Florent</strong><small>Face au Spar</small></div></div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="services">
     <div class="container">
-      <header class="section-head reveal">
-        <span class="kicker">Nos activités</span>
-        <h2>Choisissez votre évasion</h2>
-        <p>Trois façons de vivre la Corse, pensées pour tous les envies et tous les niveaux.</p>
+      <header class="section__head section__head--center">
+        <h2>Nos activités</h2>
+        <p>Trois prestations pour explorer la Corse à votre rythme.</p>
       </header>
 
-      <div class="cards">
-        <article class="card reveal">
-          <div class="card__media card__media--quad"></div>
-          <div class="card__body">
-            <span class="card__tag">Terre</span>
+      <div class="grid-3">
+        <article class="service">
+          <div class="service__img"><img src="assets/img/quad.jpg" alt="Quad" loading="lazy" /><span class="service__num">01</span></div>
+          <div class="service__body">
             <h3>Quad</h3>
-            <p>
-              Cap sur le désert des Agriates et la Corse sauvage. Sensations garanties
-              sur les pistes, panoramas à couper le souffle et plages au bout du chemin.
-            </p>
-            <ul class="card__list">
-              <li>Modèle 550 MXU</li>
-              <li>Demi-journée ou journée</li>
-              <li>Itinéraires conseillés</li>
-            </ul>
-            <a href="#tarifs" class="link-arrow">Voir les tarifs <span aria-hidden="true">→</span></a>
+            <p>Découvrez le désert des Agriates et la Corse sauvage. Idéal pour les amateurs de sensations et de grands espaces.</p>
+            <ul class="ticks"><li>Modèle 550 MXU</li><li>Demi-journée ou journée</li></ul>
+            <a href="#tarifs" class="link">Voir les tarifs →</a>
           </div>
         </article>
 
-        <article class="card card--featured reveal">
-          <div class="card__media card__media--boat"></div>
-          <div class="card__body">
-            <span class="card__tag">Mer · Permis</span>
-            <h3>Bateau</h3>
-            <p>
-              Explorez le Cap Corse et les plus belles plages de Haute-Corse à bord de nos
-              bateaux. Des criques de rêve, accessibles uniquement par la mer.
-            </p>
-            <ul class="card__list">
-              <li>Cap Camarat 625 · Sacs S780</li>
-              <li>Semi-rigide Capelli Tempest 900</li>
-              <li>Demi-journée ou journée</li>
-            </ul>
-            <a href="#tarifs" class="link-arrow">Voir les tarifs <span aria-hidden="true">→</span></a>
+        <article class="service">
+          <div class="service__img"><img src="assets/img/cap-camarat-1.jpg" alt="Bateau avec permis — Cap Camarat 5m30" loading="lazy" /><span class="service__num">02</span></div>
+          <div class="service__body">
+            <h3>Bateau (avec permis)</h3>
+            <p>Explorez le Cap Corse et les plus belles plages de Haute-Corse. Des criques accessibles uniquement par la mer.</p>
+            <ul class="ticks"><li>Cap Camarat 5m30 · Lomac 750 · Tempest 900</li><li>BSC semi-rigide</li></ul>
+            <a href="#tarifs" class="link">Voir les tarifs →</a>
           </div>
         </article>
 
-        <article class="card reveal">
-          <div class="card__media card__media--noboat"></div>
-          <div class="card__body">
-            <span class="card__tag">Mer · Sans permis</span>
+        <article class="service">
+          <div class="service__img"><img src="assets/img/bateau-sans-permis.jpg" alt="Bateau sans permis" loading="lazy" /><span class="service__num">03</span></div>
+          <div class="service__body">
             <h3>Bateau sans permis</h3>
-            <p>
-              Envie de mer sans contrainte ? Naviguez en toute liberté, sans permis bateau,
-              et composez votre propre journée le long du littoral.
-            </p>
-            <ul class="card__list">
-              <li>Aucun permis nécessaire</li>
-              <li>Prise en main simple</li>
-              <li>Idéal en famille</li>
-            </ul>
-            <a href="#tarifs" class="link-arrow">Voir les tarifs <span aria-hidden="true">→</span></a>
+            <p>Naviguez en toute liberté, sans permis, et composez votre journée le long du littoral. Parfait en famille.</p>
+            <ul class="ticks"><li>Aucun permis nécessaire</li><li>Prise en main simple</li></ul>
+            <a href="#tarifs" class="link">Voir les tarifs →</a>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ===== Explorer ===== -->
-  <section class="explore" id="explorer">
+  <!-- Notre Cap Camarat -->
+  <section class="section section--alt" id="flotte">
     <div class="container">
-      <header class="section-head section-head--light reveal">
-        <span class="kicker">À découvrir</span>
-        <h2>Des lieux qui ne se racontent pas, ils se vivent</h2>
-        <p>Quelques pépites de Haute-Corse à atteindre depuis Saint-Florent.</p>
+      <header class="section__head section__head--center">
+        <h2>Notre Cap Camarat 5m30</h2>
+        <p>Un bateau confortable et facile à prendre en main, jusqu'à 6 personnes — parfait pour explorer les criques de Haute-Corse.</p>
+      </header>
+      <div class="grid-3">
+        <figure class="place place--photo"><img src="assets/img/cap-camarat-1.jpg" alt="Cap Camarat 5m30 dans une crique corse" loading="lazy" /></figure>
+        <figure class="place place--photo"><img src="assets/img/cap-camarat-2.jpg" alt="Cap Camarat 5m30 sur l'eau turquoise" loading="lazy" /></figure>
+        <figure class="place place--photo"><img src="assets/img/cap-camarat-3.jpg" alt="Cap Camarat 5m30 vue de face" loading="lazy" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Notre Tempest 900 -->
+  <section class="section" id="tempest">
+    <div class="container">
+      <header class="section__head section__head--center">
+        <h2>Notre Tempest 900</h2>
+        <p>Le semi-rigide haut de gamme : 500 cv, jusqu'à 14 personnes, pour les grandes journées en mer et les plus belles balades du Cap Corse.</p>
+      </header>
+      <div class="grid-3">
+        <figure class="place place--photo"><img src="assets/img/tempest-1.jpg" alt="Tempest 900 dans une crique corse" loading="lazy" /></figure>
+        <figure class="place place--photo"><img src="assets/img/tempest-2.jpg" alt="Tempest 900 sur l'eau turquoise" loading="lazy" /></figure>
+        <figure class="place place--photo"><img src="assets/img/tempest-3.jpg" alt="Tempest 900 vu du ciel" loading="lazy" /></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lieux -->
+  <section class="section section--alt" id="lieux">
+    <div class="container">
+      <header class="section__head section__head--center">
+        <h2>À découvrir autour de Saint-Florent</h2>
+        <p>Quelques lieux incontournables à rejoindre en quad ou en bateau.</p>
       </header>
 
-      <div class="explore__grid">
-        <article class="place place--lg reveal" style="--img:url('assets/img/saleccia.jpg')">
-          <div class="place__body">
-            <h3>Plage de Saleccia</h3>
-            <p>Le sable blanc et l'eau translucide du désert des Agriates, en plein cœur du Saint-Tropez corse.</p>
+      <div class="grid-4">
+        <figure class="place place--clic" tabindex="0" role="button" aria-haspopup="dialog" data-title="Plage de Saleccia">
+          <img src="assets/img/saleccia.jpg" alt="Plage de Saleccia" loading="lazy" />
+          <figcaption>Plage de Saleccia <span class="place__more">En savoir plus</span></figcaption>
+          <template class="place__story">
+            <p>La plage de Saleccia, située dans le désert des Agriates en Haute-Corse, est aujourd'hui l'une des plages les plus célèbres de l'île. Son histoire est étroitement liée à celle des Agriates, un territoire qui n'a pourtant jamais été un véritable désert. Pendant des siècles, cette région était un important grenier agricole, où l'on cultivait principalement le blé, les oliviers et où les bergers pratiquaient la transhumance. Après la Première Guerre mondiale et l'exode rural, ces terres ont été progressivement abandonnées et le maquis a repris ses droits.</p>
+            <p>La plage a également joué un rôle durant la Seconde Guerre mondiale. En juillet et août 1943, le célèbre sous-marin français <em>Casabianca</em> y a débarqué clandestinement des armes et des munitions destinées à la Résistance corse, contribuant à la libération de l'île.</p>
+            <p>Quelques années plus tard, Saleccia est devenue un décor de cinéma. En 1961, plusieurs scènes du film <em>Le Jour le plus long</em>, consacré au Débarquement de Normandie, y ont été tournées. Les producteurs américains avaient choisi cette plage en raison de son aspect très sauvage, les plages normandes étant déjà trop urbanisées pour les besoins du tournage. Pour recréer l'ambiance du 6 juin 1944, la plage fut temporairement aménagée avec de faux obstacles, des véhicules factices et des effets spéciaux.</p>
+            <p>Aujourd'hui, Saleccia est protégée par le Conservatoire du littoral. Son accès difficile (par bateau, à pied ou en piste 4×4) a permis de préserver son sable blanc, ses dunes, ses pins d'Alep et ses eaux turquoise. Elle est souvent considérée comme l'une des plus belles plages de Corse.</p>
+          </template>
+        </figure>
+
+        <figure class="place place--clic" tabindex="0" role="button" aria-haspopup="dialog" data-title="Plage du Lotu">
+          <img src="assets/img/lotu-pontoon.png" alt="Plage du Lotu" loading="lazy" />
+          <figcaption>Plage du Lotu <span class="place__more">En savoir plus</span></figcaption>
+          <template class="place__story">
+            <p>La plage du Lotu (ou Loto) se trouve elle aussi dans le désert des Agriates, à quelques encablures de Saleccia. Sauvage et préservée, elle n'est accessible que par la mer — en navette maritime depuis Saint-Florent — ou à pied par le sentier du littoral, ainsi que par les pistes 4×4.</p>
+            <p>Son sable clair et ses eaux peu profondes d'un bleu translucide en font un lieu de baignade idéal, notamment en famille. Toute proche de Saleccia — quelques minutes seulement en bateau — elle en est aussi reliée par un sentier côtier d'environ une heure de marche, l'une des plus belles balades du littoral corse.</p>
+            <p>Comme l'ensemble des Agriates, le site est protégé par le Conservatoire du littoral, ce qui garantit la préservation de ses dunes et de son cadre naturel exceptionnel.</p>
+          </template>
+        </figure>
+
+        <figure class="place place--clic" tabindex="0" role="button" aria-haspopup="dialog" data-title="Désert des Agriates">
+          <img src="assets/img/agriates.jpg" alt="Désert des Agriates" loading="lazy" />
+          <figcaption>Désert des Agriates <span class="place__more">En savoir plus</span></figcaption>
+          <template class="place__story">
+            <p>Le désert des Agriates s'étend sur près de 15 000 hectares entre l'embouchure de l'Ostriconi et le golfe de Saint-Florent. Malgré son nom, il n'a jamais été un vrai désert : son appellation viendrait du latin <em>ager</em>, « le champ ».</p>
+            <p>Pendant des siècles, ce fut au contraire une terre nourricière où l'on cultivait le blé et l'olivier, et où les bergers du Niolu menaient leurs troupeaux en transhumance, s'abritant dans de petites cabanes de pierre, les <em>pagliaghji</em>. L'exode rural du XXe siècle a laissé le maquis recouvrir ces terres.</p>
+            <p>Aujourd'hui protégé par le Conservatoire du littoral, ce territoire sauvage abrite certaines des plus belles plages de Corse — Saleccia, Lotu, Ghignu — et se découvre à pied, en quad, en 4×4 ou par la mer.</p>
+          </template>
+        </figure>
+
+        <figure class="place place--clic" tabindex="0" role="button" aria-haspopup="dialog" data-title="Cap Corse &amp; Centuri">
+          <img src="assets/img/bateau-9-places.jpg" alt="Cap Corse et Centuri" loading="lazy" />
+          <figcaption>Cap Corse &amp; Centuri <span class="place__more">En savoir plus</span></figcaption>
+          <template class="place__story">
+            <p>Surnommé « l'île dans l'île », le Cap Corse est la longue péninsule qui prolonge la Corse vers le nord. Ses versants plongeant dans la mer, ses villages perchés, ses tours génoises et ses marines de pêcheurs en font une région à part, restée authentique.</p>
+            <p>À sa pointe se niche Centuri, petit port de pêche aux maisons colorées et aux toits de schiste vert, réputé pour être l'un des hauts lieux de la pêche à la langouste en France. On y savoure un poisson d'une fraîcheur incomparable, face aux barques multicolores et aux couchers de soleil sur la Méditerranée.</p>
+          </template>
+        </figure>
+      </div>
+
+      <!-- Fenêtre lieu -->
+      <div class="lieu-modal" id="lieuModal" hidden>
+        <div class="lieu-modal__backdrop" data-close></div>
+        <div class="lieu-modal__panel" role="dialog" aria-modal="true" aria-labelledby="lieuModalTitle">
+          <button class="lieu-modal__close" data-close aria-label="Fermer">✕</button>
+          <div class="lieu-modal__media"><img id="lieuModalImg" src="" alt="" /></div>
+          <div class="lieu-modal__body">
+            <h3 id="lieuModalTitle"></h3>
+            <div id="lieuModalText"></div>
           </div>
-        </article>
-        <article class="place reveal" style="--img:url('assets/img/lotu.jpg')">
-          <div class="place__body">
-            <h3>Plage du Lotu</h3>
-            <p>Une crique paradisiaque, accessible par la mer ou la piste.</p>
-          </div>
-        </article>
-        <article class="place reveal" style="--img:url('assets/img/bateau-permis.jpg')">
-          <div class="place__body">
-            <h3>Désert des Agriates</h3>
-            <p>Étendues sauvages, criques turquoise et maquis à perte de vue.</p>
-          </div>
-        </article>
-        <article class="place place--lg reveal" style="--img:url('assets/img/bateau-9-places.jpg')">
-          <div class="place__body">
-            <h3>Cap Corse &amp; Centuri</h3>
-            <p>Le port de pêche de Centuri et les falaises du Cap, à explorer au fil de l'eau.</p>
-          </div>
-        </article>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Tarifs ===== -->
-  <section class="pricing" id="tarifs">
+  <!-- Tarifs (cartes) -->
+  <section class="section" id="tarifs">
     <div class="container">
-      <header class="section-head reveal">
-        <span class="kicker">Tarifs</span>
-        <h2>Des prix clairs, sans surprise</h2>
-        <p>Carburant (SP95) à la charge du client au retour. Caution par empreinte de carte bancaire ou chèque.</p>
+      <header class="section__head section__head--center">
+        <h2>Tarifs</h2>
+        <p>Horaires : journée 9h00–18h00 · demi-journée 9h00–13h30 ou 13h30–18h00. Bateaux avec permis fournis avec le plein, à rendre avec le plein (carburant SP95 non compris).</p>
       </header>
 
-      <div class="pricing__toggle reveal" role="tablist" aria-label="Saison">
-        <button class="is-active" data-season="low" role="tab" aria-selected="true">Basse saison</button>
-        <button data-season="high" role="tab" aria-selected="false">Haute saison</button>
+      <div class="pricelist">
+        <div class="pl-head"><span>Prestation</span><span>½ jour</span><span>Journée</span></div>
+
+        <h3 class="pl-cat">Quads <small>Kymco 550 MXU / GOES 550 S · caution 2 500 €</small></h3>
+        <div class="pl-row"><div class="pl-name">Jusqu'au 31 juillet<em>par quad</em></div><span class="pl-p">140 €</span><span class="pl-p pl-p--day">170 €</span></div>
+        <div class="pl-row"><div class="pl-name">Au mois d'août<em>par quad</em></div><span class="pl-p">160 €</span><span class="pl-p pl-p--day">190 €</span></div>
+
+        <h3 class="pl-cat">Bateau sans permis</h3>
+        <div class="pl-row"><div class="pl-name">FUNYAK<em>6 cv · 4 pers. · essence comprise · caution 2 500 €</em></div><span class="pl-p">150 €</span><span class="pl-p pl-p--day">190 €</span></div>
+
+        <h3 class="pl-cat">Bateaux avec permis <small>fournis pleins · carburant non compris</small></h3>
+        <div class="pl-row"><div class="pl-name">Cap Camarat 5m30<em>100 cv · 6 pers. · caution 4 000 €</em></div><span class="pl-p">160 €</span><span class="pl-p pl-p--day">300 €</span></div>
+        <div class="pl-row"><div class="pl-name">BSC semi-rigide<em>100 cv · 6 pers. · caution 4 000 €</em></div><span class="pl-p">160 €</span><span class="pl-p pl-p--day">300 €</span></div>
+        <div class="pl-row"><div class="pl-name">Lomac 7m50<em>300 cv · 8 pers. · caution 6 000 €</em></div><span class="pl-p">300 €</span><span class="pl-p pl-p--day">500 €</span></div>
+        <div class="pl-row"><div class="pl-name">Tempest 900<em>500 cv · 14 pers. · caution 2 × 7 000 €</em></div><span class="pl-p">400 €</span><span class="pl-p pl-p--day">650 €</span></div>
       </div>
 
-      <div class="pricing__grid">
-        <!-- Quad -->
-        <article class="price-card reveal">
-          <header class="price-card__head">
-            <h3>Quad</h3>
-            <span class="price-card__sub">Modèle 550 MXU</span>
-          </header>
-          <div class="price-card__rows" data-season-rows="quad">
-            <div class="rate" data-season="low">
-              <div class="rate__row"><span>Demi-journée</span><strong>140&nbsp;€</strong></div>
-              <div class="rate__row"><span>Journée</span><strong>170&nbsp;€</strong></div>
-            </div>
-            <div class="rate" data-season="high" hidden>
-              <div class="rate__row"><span>Demi-journée</span><strong>170&nbsp;€</strong></div>
-              <div class="rate__row"><span>Journée</span><strong>190&nbsp;€</strong></div>
-            </div>
-          </div>
-          <p class="price-card__note">Caution : 2&nbsp;500&nbsp;€</p>
-        </article>
-
-        <!-- Bateau sans permis -->
-        <article class="price-card reveal">
-          <header class="price-card__head">
-            <h3>Bateau sans permis</h3>
-            <span class="price-card__sub">Liberté totale, zéro contrainte</span>
-          </header>
-          <div class="price-card__rows">
-            <div class="rate">
-              <div class="rate__row"><span>Demi-journée</span><strong>150&nbsp;€</strong></div>
-              <div class="rate__row"><span>Journée</span><strong>190&nbsp;€</strong></div>
-            </div>
-          </div>
-          <p class="price-card__note">Tarif identique toute l'année</p>
-        </article>
-
-        <!-- Bateaux avec permis -->
-        <article class="price-card price-card--wide reveal">
-          <header class="price-card__head">
-            <h3>Bateaux avec permis</h3>
-            <span class="price-card__sub">Caution : 4&nbsp;000&nbsp;€ · carburant en sus</span>
-          </header>
-
-          <div class="boat-table">
-            <div class="boat-table__head">
-              <span>Modèle</span><span>Demi-journée</span><span>Journée</span>
-            </div>
-            <!-- Low season -->
-            <div data-season="low">
-              <div class="boat-table__row">
-                <span data-label="Modèle">Cap Camarat 625 WA</span>
-                <span data-label="Demi-journée">250&nbsp;€</span>
-                <span data-label="Journée">250&nbsp;€</span>
-              </div>
-              <div class="boat-table__row">
-                <span data-label="Modèle">Sacs S780 · 7,80 m · 300&nbsp;CV</span>
-                <span data-label="Demi-journée">250&nbsp;€</span>
-                <span data-label="Journée">350&nbsp;€</span>
-              </div>
-              <div class="boat-table__row">
-                <span data-label="Modèle">Semi-rigide Capelli Tempest 900</span>
-                <span data-label="Demi-journée">—</span>
-                <span data-label="Journée">450&nbsp;€</span>
-              </div>
-            </div>
-            <!-- High season -->
-            <div data-season="high" hidden>
-              <div class="boat-table__row">
-                <span data-label="Modèle">Cap Camarat 625 WA</span>
-                <span data-label="Demi-journée">250&nbsp;€</span>
-                <span data-label="Journée">350&nbsp;€</span>
-              </div>
-              <div class="boat-table__row">
-                <span data-label="Modèle">Sacs S780 · 7,80 m · 300&nbsp;CV</span>
-                <span data-label="Demi-journée">400&nbsp;€</span>
-                <span data-label="Journée">500&nbsp;€</span>
-              </div>
-              <div class="boat-table__row">
-                <span data-label="Modèle">Semi-rigide Capelli Tempest 900</span>
-                <span data-label="Demi-journée">—</span>
-                <span data-label="Journée">650&nbsp;€</span>
-              </div>
-            </div>
-          </div>
-        </article>
+      <div class="pl-foot">
+        <a href="#contact" class="btn btn--primary btn--lg">Réserver</a>
+        <span>Paiement : espèces, chèques ou carte bancaire</span>
       </div>
-
-      <p class="pricing__legend reveal">
-        Basse saison : 1<sup>er</sup> sept. – 30 juin · Haute saison : juillet – août.
-        Le quad passe en haute saison sur août uniquement.
-      </p>
     </div>
   </section>
 
-  <!-- ===== CTA bande ===== -->
-  <section class="cta-band">
-    <div class="container cta-band__inner reveal">
-      <div>
-        <h2>Prêt à larguer les amarres&nbsp;?</h2>
-        <p>Réservez votre quad ou votre bateau et vivez la Corse comme jamais.</p>
-      </div>
-      <a href="#contact" class="btn btn--solid btn--lg">Réserver maintenant</a>
-    </div>
-  </section>
-
-  <!-- ===== Contact ===== -->
-  <section class="contact" id="contact">
-    <div class="container contact__grid">
-      <div class="contact__info reveal">
-        <span class="kicker">Contact</span>
-        <h2>Parlons de votre journée</h2>
-        <p class="contact__lead">Une question, une réservation ? Nous vous répondons avec le sourire.</p>
-
+  <!-- Contact -->
+  <section class="section section--alt" id="contact">
+    <div class="container contact">
+      <div class="contact__info">
+        <h2>Contact &amp; réservation</h2>
+        <p>Une question ou une réservation ? Contactez-nous, nous vous répondrons rapidement.</p>
         <ul class="contact__list">
-          <li>
-            <span class="contact__ico" aria-hidden="true">📍</span>
-            <div>
-              <strong>Adresse</strong>
-              Face au Spar, centre de Saint-Florent<br />20217 Saint-Florent, Haute-Corse
-            </div>
-          </li>
-          <li>
-            <span class="contact__ico" aria-hidden="true">📞</span>
-            <div>
-              <strong>Téléphone</strong>
-              <a href="tel:+33686934543">06 86 93 45 43</a>
-            </div>
-          </li>
-          <li>
-            <span class="contact__ico" aria-hidden="true">✉️</span>
-            <div>
-              <strong>Email</strong>
-              <a href="mailto:Contact@location-stflo.com">Contact@location-stflo.com</a>
-            </div>
-          </li>
-          <li>
-            <span class="contact__ico" aria-hidden="true">📘</span>
-            <div>
-              <strong>Facebook</strong>
-              <a href="https://facebook.com/stflo.jet" target="_blank" rel="noopener">stflo.jet</a>
-            </div>
-          </li>
+          <li><strong>Téléphone</strong><a href="tel:+33686934543">06 86 93 45 43</a><a href="tel:+33671205435">06 71 20 54 35</a></li>
+          <li><strong>Email</strong><a href="mailto:Contact@location-stflo.com">Contact@location-stflo.com</a></li>
+          <li><strong>Adresse</strong>Face au Spar, centre de Saint-Florent · 20217 Saint-Florent</li>
+          <li><strong>Facebook</strong><a href="https://facebook.com/stflo.jet" target="_blank" rel="noopener">stflo.jet</a></li>
         </ul>
       </div>
-
-      <form class="contact__form reveal" id="contactForm" novalidate>
-        <div class="field">
-          <label for="name">Nom</label>
-          <input type="text" id="name" name="name" placeholder="Votre nom" required />
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="vous@email.com" required />
-          </div>
-          <div class="field">
-            <label for="phone">Téléphone</label>
-            <input type="tel" id="phone" name="phone" placeholder="06 …" />
-          </div>
-        </div>
-        <div class="field">
-          <label for="activity">Activité souhaitée</label>
-          <select id="activity" name="activity">
-            <option>Quad</option>
-            <option>Bateau avec permis</option>
-            <option>Bateau sans permis</option>
-            <option>Je ne sais pas encore</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="4" placeholder="Dates, nombre de personnes, questions…"></textarea>
-        </div>
-        <button type="submit" class="btn btn--solid btn--block">Envoyer la demande</button>
-        <p class="contact__hint" id="formHint" hidden>Merci&nbsp;! Votre demande est prête — elle ouvre votre messagerie.</p>
-      </form>
+      <div class="contact__form callcard">
+        <span class="callcard__ico" aria-hidden="true">📞</span>
+        <h3>Appeler pour réserver</h3>
+        <p>La réservation se fait par téléphone — appelez-nous, on s'occupe de tout !</p>
+        <a href="tel:+33686934543" class="btn btn--primary btn--lg btn--block">06 86 93 45 43</a>
+        <a href="tel:+33671205435" class="btn btn--primary btn--lg btn--block">06 71 20 54 35</a>
+        <a href="mailto:Contact@location-stflo.com" class="btn btn--outline btn--lg btn--block">✉️ Écrire un email</a>
+      </div>
     </div>
   </section>
 
-  <!-- ===== Footer ===== -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="container footer__inner">
-      <div class="footer__brand">
-        <span class="brand__mark">SF</span>
-        <span class="brand__text">Location <em>St-Flo</em></span>
-        <p>Quads &amp; bateaux à Saint-Florent, Haute-Corse.</p>
+      <div>
+        <a href="#top" class="logo logo--light"><span>Location</span> St-Flo</a>
+        <p>Location de quads et de bateaux à Saint-Florent, Haute-Corse.</p>
       </div>
-      <nav class="footer__links" aria-label="Pied de page">
-        <a href="#services">Activités</a>
-        <a href="#explorer">Explorer</a>
-        <a href="#tarifs">Tarifs</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <div class="footer__meta">
+      <div class="footer__col">
+        <a href="#services">Activités</a><a href="#lieux">Lieux</a><a href="#tarifs">Tarifs</a><a href="#contact">Contact</a>
+      </div>
+      <div class="footer__col">
         <a href="tel:+33686934543">06 86 93 45 43</a>
+        <a href="tel:+33671205435">06 71 20 54 35</a>
         <a href="mailto:Contact@location-stflo.com">Contact@location-stflo.com</a>
+        <a href="https://facebook.com/stflo.jet" target="_blank" rel="noopener">Facebook</a>
       </div>
     </div>
-    <div class="footer__bottom container">
+    <div class="container footer__bottom">
       <span>© <span id="year"></span> Location St-Flo · Tous droits réservés.</span>
-      <span>Fait avec ❤️ en Corse</span>
     </div>
   </footer>
 

@@ -1,94 +1,88 @@
 /* ============================================================
-   Location St-Flo — Interactions
+   Location St-Flo — v7 (professionnel · variante)
    ============================================================ */
 (function () {
   "use strict";
 
-  /* ---- Sticky nav state ---- */
-  const nav = document.getElementById("nav");
-  const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 30);
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  /* ---- Mobile menu ---- */
   const burger = document.getElementById("burger");
-  const navLinks = document.getElementById("navLinks");
-  const toggleMenu = (open) => {
-    const isOpen = open ?? !navLinks.classList.contains("is-open");
-    navLinks.classList.toggle("is-open", isOpen);
+  const menu = document.getElementById("menu");
+  const toggle = (open) => {
+    const isOpen = open ?? !menu.classList.contains("is-open");
+    menu.classList.toggle("is-open", isOpen);
     burger.setAttribute("aria-expanded", String(isOpen));
+    document.body.style.overflow = isOpen ? "hidden" : "";
   };
-  burger.addEventListener("click", () => toggleMenu());
-  navLinks.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => toggleMenu(false))
-  );
+  burger.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+  menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => toggle(false)));
+  document.addEventListener("click", (e) => {
+    if (menu.classList.contains("is-open") && !menu.contains(e.target) && e.target !== burger) toggle(false);
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggle(false); });
 
-  /* ---- Scroll reveal ---- */
-  const reveals = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-    );
-    reveals.forEach((el) => io.observe(el));
-  } else {
-    reveals.forEach((el) => el.classList.add("is-visible"));
-  }
-
-  /* ---- Pricing season toggle ---- */
-  const toggle = document.querySelector(".pricing__toggle");
-  if (toggle) {
-    const buttons = toggle.querySelectorAll("button");
-    const setSeason = (season) => {
+  const seasons = document.querySelector(".seasons");
+  if (seasons) {
+    const buttons = seasons.querySelectorAll("button");
+    const set = (s) => {
       buttons.forEach((b) => {
-        const active = b.dataset.season === season;
+        const active = b.dataset.season === s;
         b.classList.toggle("is-active", active);
         b.setAttribute("aria-selected", String(active));
       });
-      document.querySelectorAll("[data-season]").forEach((el) => {
-        if (el.tagName === "BUTTON") return;
-        el.hidden = el.dataset.season !== season;
+      document.querySelectorAll(".price-cards b[data-season]").forEach((el) => {
+        el.hidden = el.dataset.season !== s;
       });
     };
-    buttons.forEach((b) =>
-      b.addEventListener("click", () => setSeason(b.dataset.season))
-    );
-    setSeason("low");
+    buttons.forEach((b) => b.addEventListener("click", () => set(b.dataset.season)));
+    set("low");
   }
 
-  /* ---- Contact form -> mailto ---- */
   const form = document.getElementById("contactForm");
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
-      }
-      const data = new FormData(form);
-      const subject = `Demande de réservation — ${data.get("activity")}`;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      const d = new FormData(form);
+      const subject = `Demande de réservation — ${d.get("activity")}`;
       const body =
-        `Nom : ${data.get("name")}\n` +
-        `Email : ${data.get("email")}\n` +
-        `Téléphone : ${data.get("phone") || "—"}\n` +
-        `Activité : ${data.get("activity")}\n\n` +
-        `${data.get("message") || ""}`;
+        `Nom : ${d.get("name")}\n` +
+        `Email : ${d.get("email")}\n` +
+        `Téléphone : ${d.get("phone") || "—"}\n` +
+        `Activité : ${d.get("activity")}\n\n` +
+        `${d.get("message") || ""}`;
       const hint = document.getElementById("formHint");
       if (hint) hint.hidden = false;
       window.location.href =
-        `mailto:Contact@location-stflo.com?subject=${encodeURIComponent(subject)}` +
-        `&body=${encodeURIComponent(body)}`;
+        `mailto:Contact@location-stflo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
   }
 
-  /* ---- Footer year ---- */
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  /* Fenêtre "En savoir plus" sur les lieux */
+  const modal = document.getElementById("lieuModal");
+  if (modal) {
+    const mImg = document.getElementById("lieuModalImg");
+    const mTitle = document.getElementById("lieuModalTitle");
+    const mText = document.getElementById("lieuModalText");
+    const openLieu = (fig) => {
+      const img = fig.querySelector("img");
+      const story = fig.querySelector(".place__story");
+      mImg.src = img ? img.src : "";
+      mImg.alt = fig.dataset.title || "";
+      mTitle.textContent = fig.dataset.title || "";
+      mText.innerHTML = story ? story.innerHTML : "";
+      modal.hidden = false;
+      document.body.style.overflow = "hidden";
+    };
+    const closeLieu = () => { modal.hidden = true; document.body.style.overflow = ""; };
+    document.querySelectorAll(".place--clic").forEach((fig) => {
+      fig.addEventListener("click", () => openLieu(fig));
+      fig.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLieu(fig); }
+      });
+    });
+    modal.querySelectorAll("[data-close]").forEach((el) => el.addEventListener("click", closeLieu));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.hidden) closeLieu(); });
+  }
+
+  const y = document.getElementById("year");
+  if (y) y.textContent = new Date().getFullYear();
 })();
