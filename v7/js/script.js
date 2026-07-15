@@ -52,7 +52,7 @@
       const hint = document.getElementById("formHint");
       if (hint) hint.hidden = false;
       window.location.href =
-        `mailto:Contact@location-stflo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        `mailto:contact@sf-rent.fr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
   }
 
