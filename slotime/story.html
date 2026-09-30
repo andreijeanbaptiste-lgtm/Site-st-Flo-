@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slotime Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<style>
+/* Layout: a 720×1280 (9:16) story stage scaled to fit the viewport height. Slate-white world = Slotime (clients), navy world = Slotime Pro (salons). Brand taken from slotime.fr. */
+:root {
+  --night: #0F172A;      /* page ground */
+  --navy: #324E80;       /* Slotime brand */
+  --navy-d: #1E2B44;
+  --navy-l: #9DB4DD;     /* highlight on navy */
+  --navy-t: #E8EEF8;     /* navy tint */
+  --slate: #1E293B;      /* text */
+  --bg: #F8FAFC;
+  --white: #FFFFFF;
+  --muted: #64748B;
+  --muted-2: #94A3B8;
+  --soft: #C3D0E6;       /* secondary text on navy */
+  --line: #E2E8F0;
+  --ok: #16A34A;
+  --ok-t: #DCFCE7;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+html, body { background: var(--night); color: var(--bg); }
+body { font-family: var(--font); padding-inline: 16px; padding-block: 20px 32px; }
+main { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.head, .controls, .note { width: min(100%, calc((100svh - 170px) * 0.5625)); min-width: 260px; max-width: 100%; }
+
+.head { display: flex; align-items: center; gap: 10px; }
+.head h1 { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -0.03em; margin: 0; }
+.head h1 .tile { width: 30px; height: 30px; border-radius: 8px; font-size: 17px; }
+.head h1 span.pro { color: var(--navy-l); }
+.head p { margin: 0 0 0 auto; font-size: 12px; font-weight: 600; color: var(--muted-2); white-space: nowrap; }
+
+.frame { position: relative; width: min(100%, calc((100svh - 170px) * 0.5625)); min-width: 260px; max-width: 100%; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 22px; background: var(--bg); box-shadow: 0 30px 80px -30px rgba(0,0,0,.7); }
+.stage { position: absolute; left: 0; top: 0; width: 720px; height: 1280px; transform-origin: 0 0; overflow: hidden; background: var(--bg); color: var(--slate); font-family: var(--font); }
+.layer { position: absolute; inset: 0; }
+
+.controls { display: flex; align-items: center; gap: 10px; }
+.controls button { font: 600 14px var(--font); color: var(--bg); background: var(--navy-d); border: 1px solid #334A70; border-radius: 999px; height: 38px; padding: 0 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.controls button:hover { border-color: var(--navy-l); }
+.controls button:focus-visible, .controls input:focus-visible { outline: 2px solid var(--navy-l); outline-offset: 2px; }
+.controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--navy-l); }
+.controls .time { font-size: 12px; color: var(--muted-2); font-variant-numeric: tabular-nums; flex: none; }
+.note { margin: 0; color: var(--muted-2); font-size: 13px; line-height: 1.55; }
+.note a { color: var(--navy-l); }
+
+/* ---------- brand ---------- */
+.tile { display: inline-grid; place-items: center; background: linear-gradient(135deg, var(--navy), var(--navy-d)); color: var(--white); font-weight: 700; font-style: normal; border-radius: 16px; flex: none; }
+.navy-bg { background: linear-gradient(160deg, var(--navy) 0%, var(--navy-d) 100%); }
+#bgInk { clip-path: circle(0px at 360px 800px); }
+#bgSplit { clip-path: inset(0px 0px 0px 0px); visibility: hidden; }
+
+.brand { display: flex; align-items: center; gap: 22px; }
+.brand .tile { width: 118px; height: 118px; border-radius: 30px; font-size: 92px; box-shadow: 0 30px 60px -20px rgba(30,43,68,.45); }
+.brand .wm { font-size: 108px; font-weight: 800; letter-spacing: -0.055em; line-height: 1; }
+.brand .wm span { display: inline-block; }
+#s1 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; }
+#s1 .tag { font-size: 32px; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; text-align: center; line-height: 1.25; }
+
+/* ---------- scene text ---------- */
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; padding: 9px 18px; border-radius: 999px; }
+.h2 { font-weight: 800; font-size: 58px; line-height: 1.03; letter-spacing: -0.045em; margin: 20px 0 24px; text-wrap: balance; }
+
+#s2t { position: absolute; left: 56px; right: 56px; top: 76px; }
+#s2t .eyebrow { background: var(--navy-t); color: var(--navy); }
+.spills { display: flex; gap: 10px; }
+.sp { display: inline-flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; padding: 10px 16px; border-radius: 999px; background: var(--navy-t); color: var(--navy); opacity: .35; }
+.sp svg { width: 20px; height: 20px; }
+.sdesc { position: relative; height: 30px; margin-top: 14px; }
+.sdesc span { position: absolute; left: 0; top: 0; font-size: 21px; color: var(--muted); white-space: nowrap; visibility: hidden; }
+
+#s4t { position: absolute; left: 56px; right: 56px; top: 70px; color: var(--white); }
+#s4t .eyebrow { background: rgba(255,255,255,.12); color: var(--white); }
+#s4t .h2 em { font-style: normal; color: var(--navy-l); }
+#feats { position: absolute; left: 56px; right: 56px; top: 390px; display: flex; flex-direction: column; gap: 14px; color: var(--white); }
+.feat { display: flex; gap: 16px; align-items: center; padding: 18px 20px; border-radius: 20px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); }
+.feat i { width: 52px; height: 52px; border-radius: 14px; background: rgba(255,255,255,.12); color: var(--white); display: grid; place-items: center; flex: none; }
+.feat svg { width: 26px; height: 26px; }
+.feat b { display: block; font-size: 25px; font-weight: 700; letter-spacing: -0.02em; }
+.feat span { display: block; font-size: 18px; line-height: 1.35; color: var(--soft); margin-top: 3px; }
+
+/* tarifs */
+#s5 { color: var(--white); }
+#s5 .title { position: absolute; left: 56px; right: 56px; top: 100px; text-align: center; }
+#s5 .title .h2 { margin: 0 0 16px; font-size: 60px; }
+#s5 .title p { margin: 0; font-size: 22px; line-height: 1.4; color: var(--soft); }
+.plans { position: absolute; left: 70px; right: 70px; top: 390px; display: flex; flex-direction: column; gap: 18px; }
+.plan { border-radius: 22px; background: var(--white); color: var(--slate); padding: 20px 26px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 16px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+.plan .nm { font-size: 21px; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.plan .nm em { font-style: normal; font-size: 12px; letter-spacing: .06em; padding: 4px 9px; border-radius: 999px; background: var(--navy-t); color: var(--navy); }
+.plan .pr { grid-row: span 2; text-align: right; font-size: 54px; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; }
+.plan .pr small { display: block; font-size: 16px; font-weight: 500; color: var(--muted); letter-spacing: 0; margin-top: 4px; }
+.plan .ds { font-size: 18px; color: var(--muted); }
+.plan.top { background: linear-gradient(160deg, var(--navy), var(--navy-d)); color: var(--white); outline: 2px solid var(--navy-l); padding-block: 28px; }
+.plan.top .nm, .plan.top .pr small, .plan.top .ds { color: var(--soft); }
+.plan.top .nm em { background: rgba(255,255,255,.15); color: var(--white); }
+.metiers-l { position: absolute; left: 0; right: 0; top: 920px; text-align: center; font-size: 21px; font-weight: 600; color: var(--soft); }
+.metiers { position: absolute; left: 50px; right: 50px; top: 972px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.metiers span { font-size: 22px; font-weight: 600; padding: 11px 20px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.14); }
+
+/* duo */
+#s6 .hl { position: absolute; left: 0; right: 0; top: 120px; margin: 0; text-align: center; font-weight: 800; font-size: 66px; line-height: 1.05; letter-spacing: -0.045em; }
+#s6 .hl.dark { color: var(--slate); clip-path: inset(0 360px 0 0); }
+#s6 .hl.light { color: var(--white); clip-path: inset(0 0 0 360px); }
+#s6 .lbl { position: absolute; top: 880px; width: 360px; text-align: center; font-size: 24px; font-weight: 600; line-height: 1.35; }
+#s6 .lbl b { display: block; font-size: 32px; font-weight: 800; letter-spacing: -0.03em; }
+#s6 .l1 { left: 0; color: var(--muted); } #s6 .l1 b { color: var(--navy); }
+#s6 .l2 { left: 360px; color: var(--soft); } #s6 .l2 b { color: var(--white); }
+#fly { position: absolute; left: 110px; top: 600px; z-index: 20; height: 54px; padding: 0 20px; border-radius: 16px; background: var(--navy); color: var(--white); font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 10px; box-shadow: 0 14px 30px -8px rgba(30,43,68,.6), 0 0 0 3px rgba(255,255,255,.95); visibility: hidden; font-variant-numeric: tabular-nums; }
+#fly svg { width: 22px; height: 22px; }
+
+/* outro */
+#s7 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; color: var(--white); text-align: center; }
+#s7 .brand .tile { background: var(--white); color: var(--navy-d); box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); }
+#s7 .q { font-size: 54px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.08; }
+#s7 .duo { display: flex; flex-direction: column; gap: 14px; width: 520px; }
+#s7 .pill { display: flex; flex-direction: column; gap: 4px; padding: 18px 26px; border-radius: 20px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); }
+#s7 .pill b { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
+#s7 .pill span { font-size: 20px; color: var(--soft); }
+#s7 .btn { display: inline-flex; align-items: center; gap: 12px; height: 70px; padding: 0 36px; border-radius: 18px; background: var(--white); color: var(--navy-d); font-size: 24px; font-weight: 700; }
+#s7 .btn svg { width: 22px; height: 22px; }
+
+/* ---------- phones ---------- */
+.phone { position: absolute; left: 210px; width: 300px; height: 620px; border-radius: 48px; background: #05080D; padding: 10px; box-shadow: 0 50px 90px -40px rgba(30,43,68,.55), inset 0 0 0 2px #2B3445; }
+#phoneA { top: 452px; }
+#phoneB { top: 400px; box-shadow: 0 50px 90px -30px rgba(0,0,0,.7), inset 0 0 0 2px #2B3445; }
+.screen { position: relative; width: 280px; height: 600px; border-radius: 38px; overflow: hidden; background: var(--white); }
+.island { position: absolute; top: 11px; left: 50%; width: 86px; height: 25px; margin-left: -43px; border-radius: 20px; background: #05080D; z-index: 5; }
+.clockbar { position: absolute; top: 15px; left: 30px; font-size: 13px; font-weight: 700; z-index: 5; }
+.scr { position: absolute; inset: 0; padding: 50px 16px 16px; display: flex; flex-direction: column; gap: 11px; }
+.a2, .a3 { visibility: hidden; }
+.muted { color: var(--muted); }
+.h4 { font-weight: 800; font-size: 21px; letter-spacing: -0.035em; line-height: 1.08; margin: 0; }
+.small { font-size: 12px; }
+.lab { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
+
+.app-top { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 800; letter-spacing: -0.02em; }
+.app-top .tile { width: 22px; height: 22px; border-radius: 6px; font-size: 13px; }
+.search { height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--white); display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 13px; color: var(--muted-2); box-shadow: 0 6px 14px -10px rgba(30,41,59,.3); }
+.search svg { width: 15px; height: 15px; flex: none; }
+.chips { display: flex; gap: 6px; }
+.chip { font-size: 11.5px; font-weight: 600; padding: 7px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--slate); }
+.chip.on { background: var(--slate); border-color: var(--slate); color: var(--white); }
+.cnt { position: relative; width: 60px; height: 14px; overflow: hidden; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.cnt span { position: absolute; right: 0; top: 0; }
+#n1 { visibility: hidden; }
+.sal { border-radius: 16px; border: 1px solid var(--line); overflow: hidden; background: var(--white); box-shadow: 0 10px 20px -16px rgba(30,41,59,.4); }
+.sal .cover { height: 62px; position: relative; }
+.sal .cover em { position: absolute; left: 10px; top: 10px; font-style: normal; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: rgba(15,23,42,.55); color: var(--white); }
+.sal .row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; }
+.sal .nm { font-size: 14.5px; font-weight: 800; letter-spacing: -0.02em; }
+.sal .ct { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.sal .go { font-size: 11.5px; font-weight: 700; padding: 7px 11px; border-radius: 999px; background: var(--navy-t); color: var(--navy-d); }
+
+.back { display: flex; align-items: center; gap: 8px; }
+.back svg { width: 18px; height: 18px; }
+.sub { font-size: 12px; color: var(--muted); margin-top: -6px; }
+.opt { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--line); font-size: 13px; font-weight: 600; }
+.opt.on { border-color: var(--navy); background: var(--navy-t); }
+.opt small { color: var(--muted); font-weight: 500; }
+.days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.day { border-radius: 12px; border: 1px solid var(--line); padding: 6px 0; text-align: center; }
+.day small { display: block; font-size: 10px; color: var(--muted); font-weight: 600; }
+.day b { font-size: 15px; font-weight: 800; }
+.day.on { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.day.on small { color: var(--soft); }
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.slot { height: 36px; border-radius: 11px; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: 13px; font-weight: 700; background: var(--white); color: var(--slate); font-variant-numeric: tabular-nums; }
+.slot.taken { background: var(--bg); color: #B8C2D0; text-decoration: line-through; border-color: transparent; }
+.cta { margin-top: auto; position: relative; height: 48px; border-radius: 14px; background: #CBD5E1; color: var(--white); overflow: hidden; font-weight: 700; font-size: 15px; }
+.cta span { position: absolute; inset: 0; display: grid; place-items: center; }
+#ctaB { visibility: hidden; }
+
+.a3 { align-items: center; text-align: center; padding-top: 78px; gap: 13px; }
+.ok { width: 92px; height: 92px; border-radius: 50%; background: var(--ok-t); display: grid; place-items: center; }
+.ok svg { width: 46px; height: 46px; }
+#check { fill: none; stroke: var(--ok); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; }
+.a3 p { margin: -4px 0 4px; font-size: 13px; color: var(--muted); line-height: 1.4; }
+.ticket { width: 100%; text-align: left; border-radius: 16px; background: var(--bg); border: 1px solid var(--line); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.ticket .big { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: 14px; }
+.ticket .big b { font-size: 26px; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; }
+.ticket hr { border: 0; border-top: 1.5px dashed #CBD5E1; width: 100%; margin: 4px 0; }
+.ghost { width: 100%; height: 44px; border-radius: 13px; border: 1.5px solid var(--line); display: grid; place-items: center; font-weight: 700; font-size: 13.5px; }
+
+#tap { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(50,78,128,.22); border: 2px solid rgba(50,78,128,.6); z-index: 9; visibility: hidden; pointer-events: none; }
+
+/* pro screen */
+.b { background: var(--bg); }
+.bhead { display: flex; justify-content: space-between; align-items: center; }
+.bhead b { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+.dots { display: flex; }
+.dots i { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--bg); margin-left: -6px; }
+.appt { display: flex; align-items: center; gap: 10px; padding: 10px 11px; border-radius: 13px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 8px 16px -14px rgba(30,41,59,.4); }
+.appt .t { font-size: 11.5px; font-weight: 700; color: var(--muted); width: 36px; font-variant-numeric: tabular-nums; }
+.appt .bar { width: 3px; align-self: stretch; border-radius: 2px; background: var(--navy); }
+.appt .who { flex: 1; min-width: 0; }
+.appt .who b { display: block; font-size: 13px; font-weight: 700; }
+.appt .who span { display: block; font-size: 11px; color: var(--muted-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appt .bd { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 999px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.appt.new { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(50,78,128,.15); visibility: hidden; }
+.appt.new .bd { padding: 4px 7px; background: var(--navy); color: var(--white); border-color: var(--navy); }
+.gap { font-size: 11px; color: var(--muted-2); text-align: center; border: 1.5px dashed var(--line); border-radius: 12px; height: 40px; display: grid; place-items: center; }
+.ca { margin-top: auto; border-radius: 14px; padding: 13px 14px; display: flex; justify-content: space-between; align-items: center; color: var(--white); }
+.ca span { font-size: 13px; font-weight: 600; color: var(--soft); }
+.ca .v { position: relative; width: 100px; height: 24px; overflow: hidden; }
+.ca .v b { position: absolute; right: 0; top: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+#ca2 { visibility: hidden; }
+#toast { position: absolute; top: 44px; left: 10px; right: 10px; z-index: 6; border-radius: 16px; background: var(--slate); color: var(--white); padding: 10px 12px; display: flex; gap: 10px; align-items: center; box-shadow: 0 16px 30px -10px rgba(0,0,0,.5); visibility: hidden; }
+#toast i { width: 34px; height: 34px; border-radius: 10px; font-size: 18px; }
+#toast b { font-size: 13px; display: block; }
+#toast span { font-size: 11.5px; color: var(--muted-2); }
+#gap1430 { position: relative; }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="head">
+    <h1><span class="tile">S</span>Slotime <span class="pro">Pro</span></h1>
+    <p>Story 9:16 · 35 s</p>
+  </div>
+
+  <div class="frame" id="frame">
+    <div class="stage" id="stage" role="img" aria-label="Animation verticale : une cliente réserve le salon Névara dans Slotime, le rendez-vous arrive dans l'agenda Slotime Pro, puis les fonctionnalités, les trois formules et le rappel slotime.fr.">
+      <div class="layer navy-bg" id="bgInk"></div>
+      <div class="layer navy-bg" id="bgSplit"></div>
+
+      <!-- 1 · Logo -->
+      <div class="layer" id="s1">
+        <div class="brand">
+          <span class="tile" id="tile1">S</span>
+          <span class="wm" id="wm1"><span>S</span><span>l</span><span>o</span><span>t</span><span>i</span><span>m</span><span>e</span></span>
+        </div>
+        <div class="tag">Caisse &amp; réservation<br>pour salons</div>
+      </div>
+
+      <!-- 2 · Slotime clients -->
+      <div id="s2t">
+        <span class="eyebrow">Slotime · pour les clients</span>
+        <div class="h2">Réservez votre salon de beauté en ligne, 24h/24.</div>
+        <div class="spills">
+          <span class="sp" id="st1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Trouvez</span>
+          <span class="sp" id="st2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Choisissez</span>
+          <span class="sp" id="st3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M9 15l2 2 4-4"/></svg>Réservez</span>
+        </div>
+        <div class="sdesc"><span id="d1">Cherchez un salon, filtrez par ville.</span><span id="d2">La prestation, le pro et le créneau.</span><span id="d3">Confirmé en ligne, sans appel.</span></div>
+      </div>
+
+      <!-- 4 · Slotime Pro -->
+      <div id="s4t">
+        <span class="eyebrow">Slotime Pro · pour les salons</span>
+        <div class="h2">La caisse et l'agenda qui <em>remplissent vos créneaux.</em></div>
+      </div>
+      <div id="feats">
+        <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></i><div><b>Agenda intelligent</b><span>Multi-praticiens, glisser-déposer, rappels auto.</span></div></div>
+        <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></i><div><b>Réservation en ligne</b><span>Votre page 24h/24, à votre marque.</span></div></div>
+        <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg></i><div><b>Caisse &amp; stock</b><span>Tickets, clôture NF525, scanette code-barres.</span></div></div>
+        <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9Z"/></svg></i><div><b>Fidélité &amp; avis</b><span>Points et collecte d'avis clients.</span></div></div>
+        <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></i><div><b>Statistiques</b><span>CA, panier moyen, perf. par praticien.</span></div></div>
+        <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1ZM17 9a4 4 0 0 1 0 6"/></svg></i><div><b>Marketing</b><span>SMS/email, codes promo, relances.</span></div></div>
+      </div>
+
+      <!-- 5 · Tarifs & métiers -->
+      <div class="layer" id="s5">
+        <div class="title"><div class="h2">Trois formules, à votre rythme</div><p>De l'agenda seul à la caisse complète.<br>Engagement 1 an, installation en 10 min.</p></div>
+        <div class="plans">
+          <div class="plan"><div class="nm">Réservation</div><div class="pr">65 €<small>HT / mois</small></div><div class="ds">Agenda &amp; réservation en ligne</div></div>
+          <div class="plan"><div class="nm">Standard <em>POPULAIRE</em></div><div class="pr">75 €<small>HT / mois</small></div><div class="ds">Agenda, caisse &amp; encaissements</div></div>
+          <div class="plan top"><div class="nm">Caisse <em>COMPLET</em></div><div class="pr">90 €<small>HT / mois</small></div><div class="ds">Tout Standard · 0 % de commission</div></div>
+        </div>
+        <div class="metiers-l">Pensé pour tous les métiers de la beauté</div>
+        <div class="metiers"><span>Coiffeur</span><span>Barbier</span><span>Institut</span><span>Esthétique</span><span>Massage</span><span>Onglerie</span><span>Spa</span><span>Maquillage</span></div>
+      </div>
+
+      <!-- 6 · Duo -->
+      <div class="layer" id="s6">
+        <h2 class="hl dark">Deux apps.<br>Un même créneau.</h2>
+        <h2 class="hl light" aria-hidden="true">Deux apps.<br>Un même créneau.</h2>
+        <div class="lbl l1"><b>Slotime</b>pour vos clients</div>
+        <div class="lbl l2"><b>Slotime Pro</b>pour votre salon</div>
+      </div>
+
+      <!-- Phone A : Slotime -->
+      <div class="phone" id="phoneA">
+        <div class="screen" id="scrA">
+          <div class="island"></div><div class="clockbar">9:41</div>
+          <div id="tap"></div>
+
+          <div class="scr a1">
+            <div class="app-top"><span class="tile">S</span>Slotime</div>
+            <div class="h4">Réservez votre salon de beauté en ligne</div>
+            <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Rechercher un salon</div>
+            <div class="chips"><span class="chip on" id="chAll">Toutes les villes</span><span class="chip">Biguglia</span><span class="chip" id="chParis">Paris</span></div>
+            <div class="lab">Salons disponibles <span class="cnt"><span id="n2">2 salons</span><span id="n1">1 salon</span></span></div>
+            <div class="sal" id="salCoal">
+              <div class="cover" style="background:linear-gradient(120deg,#6D5DF5,#4F46E5)"><em>Coiffeur</em></div>
+              <div class="row"><div><div class="nm">Co’al coiffure</div><div class="ct">Biguglia</div></div><span class="go">Réserver ›</span></div>
+            </div>
+            <div class="sal" id="salNev">
+              <div class="cover" style="background:linear-gradient(120deg,#C9B49B,#7E6A55)"><em>Coiffeur</em></div>
+              <div class="row"><div><div class="nm">Névara</div><div class="ct">Paris</div></div><span class="go" id="goNev">Réserver ›</span></div>
+            </div>
+          </div>
+
+          <div class="scr a2">
+            <div class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m15 5-7 7 7 7"/></svg><div class="h4">Névara</div></div>
+            <div class="sub">Coiffeur · Paris</div>
+            <div class="lab">Prestation</div>
+            <div class="opt on">Coupe + brushing <small>45 min</small></div>
+            <div class="opt">Balayage <small>2 h</small></div>
+            <div class="lab">Mardi 14 octobre</div>
+            <div class="days">
+              <div class="day"><small>LUN</small><b>13</b></div>
+              <div class="day on"><small>MAR</small><b>14</b></div>
+              <div class="day"><small>MER</small><b>15</b></div>
+              <div class="day"><small>JEU</small><b>16</b></div>
+              <div class="day"><small>VEN</small><b>17</b></div>
+            </div>
+            <div class="slots">
+              <div class="slot taken">09:30</div><div class="slot taken">10:00</div><div class="slot taken">11:00</div>
+              <div class="slot">11:45</div><div class="slot" id="slot1430">14:30</div><div class="slot">16:00</div>
+            </div>
+            <div class="cta" id="cta"><span id="ctaA">Choisissez un créneau</span><span id="ctaB">Réserver · 14:30</span></div>
+          </div>
+
+          <div class="scr a3">
+            <div class="ok"><svg viewBox="0 0 48 48"><path id="check" d="M12 25l8 8 16-17"/></svg></div>
+            <div class="h4">Réservation confirmée</div>
+            <p>Confirmée en ligne, sans appel.<br>C'est instantané.</p>
+            <div class="ticket">
+              <div class="big"><span>Mardi 14 octobre</span><b>14:30</b></div>
+              <div class="small muted">Névara · Coupe + brushing</div>
+              <hr>
+              <div class="small">Rappel automatique avant le rendez-vous</div>
+            </div>
+            <div class="ghost">Ajouter à mon agenda</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone B : Slotime Pro -->
+      <div class="phone" id="phoneB">
+        <div class="screen b">
+          <div class="island"></div><div class="clockbar">9:41</div>
+          <div id="toast">
+            <i class="tile">S</i>
+            <div><b>Nouvelle réservation en ligne</b><span>Léa M. · Coupe + brushing · 14:30</span></div>
+          </div>
+          <div class="scr">
+            <div class="bhead"><b>Agenda · Aujourd'hui</b><span class="dots"><i style="background:#324E80"></i><i style="background:#1E2B44"></i><i style="background:#64748B"></i></span></div>
+            <div class="appt"><span class="t">09:30</span><span class="bar"></span><span class="who"><b>Camille D.</b><span>Balayage</span></span><span class="bd">En ligne</span></div>
+            <div class="appt"><span class="t">10:00</span><span class="bar"></span><span class="who"><b>Emma B.</b><span>Coupe + brushing</span></span><span class="bd">En ligne</span></div>
+            <div class="appt"><span class="t">11:00</span><span class="bar"></span><span class="who"><b>Lucas M.</b><span>Coupe homme</span></span><span class="bd">En ligne</span></div>
+            <div id="gap1430">
+              <div class="gap" id="gapTxt">14:30 · créneau libre</div>
+              <div class="appt new" id="newAppt" style="position:absolute;inset:0"><span class="t">14:30</span><span class="bar"></span><span class="who"><b>Léa M.</b><span>Coupe + brushing</span></span><span class="bd">Nouveau</span></div>
+            </div>
+            <div class="appt"><span class="t">16:00</span><span class="bar"></span><span class="who"><b>Inès T.</b><span>Couleur</span></span><span class="bd">En ligne</span></div>
+            <div class="ca navy-bg"><span>CA du jour</span><span class="v"><b id="ca1">576,00 €</b><b id="ca2">614,00 €</b></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="fly"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>14:30</div>
+
+      <!-- 7 · Outro -->
+      <div class="layer" id="s7">
+        <div class="brand">
+          <span class="tile" id="tile2">S</span>
+          <span class="wm" id="wm2"><span>S</span><span>l</span><span>o</span><span>t</span><span>i</span><span>m</span><span>e</span></span>
+        </div>
+        <div class="q">Prêt à remplir<br>vos créneaux&nbsp;?</div>
+        <div class="duo">
+          <div class="pill"><b>slotime.fr</b><span>Réservez votre salon en ligne</span></div>
+          <div class="pill"><b>slotime.fr/pro</b><span>Le logiciel tout-en-un du salon</span></div>
+        </div>
+        <span class="btn">Démarrer maintenant <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="play" type="button" aria-label="Pause">❚❚</button>
+    <button id="restart" type="button" aria-label="Rejouer">↺</button>
+    <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position dans l'animation">
+    <span class="time" id="time">0:00 / 0:35</span>
+  </div>
+  <p class="note">Format vertical pour Stories, Reels et TikTok. Textes, salons, fonctionnalités et tarifs repris de <a href="https://www.slotime.fr" target="_blank" rel="noopener">slotime.fr</a>. La cliente, l'horaire et le montant du jour sont des exemples.</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function () {
+  const stage = document.getElementById('stage');
+  const frame = document.getElementById('frame');
+  const fit = () => { stage.style.transform = 'scale(' + frame.clientWidth / 720 + ')'; };
+  fit();
+  new ResizeObserver(fit).observe(frame);
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+
+  ready.then(function () {
+    fit();
+    const scr = document.getElementById('scrA');
+    const box = function (el) {
+      const r = el.getBoundingClientRect(), c = scr.getBoundingClientRect(), k = c.width / scr.offsetWidth;
+      return { x: (r.left + r.width / 2 - c.left) / k - 22, y: (r.top + r.height / 2 - c.top) / k - 22, top: (r.top - c.top) / k };
+    };
+    const $ = id => document.getElementById(id);
+    const coal = $('salCoal'), nev = $('salNev'), goNev = $('goNev'), chParis = $('chParis'), slot = $('slot1430'), cta = $('cta');
+    const pParis = box(chParis), pSlot = box(slot), pCta = box(cta);
+    const pGo = box(goNev); pGo.y -= box(nev).top - box(coal).top; // Névara slides up once Co'al is filtered out
+
+    // Phones play at 112 % in the story format
+    gsap.set('#phoneA, #phoneB', { scale: 1.12, transformOrigin: '50% 0%' });
+
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.8, paused: true, defaults: { ease: 'power3.out', duration: 0.7 } });
+    const tap = function (el, p, t) {
+      tl.set('#tap', { left: p.x, top: p.y }, t)
+        .fromTo('#tap', { scale: 0.3, autoAlpha: 0.95 }, { scale: 1.5, autoAlpha: 0, duration: 0.55, ease: 'power2.out', immediateRender: false }, t)
+        .to(el, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
+    };
+    const step = function (on, off, t) {
+      tl.to('#st' + on, { opacity: 1, backgroundColor: '#324E80', color: '#FFFFFF', duration: 0.35 }, t)
+        .fromTo('#d' + on, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.4 }, t + 0.1);
+      if (off) tl.to('#st' + off, { opacity: 0.35, backgroundColor: '#E8EEF8', color: '#324E80', duration: 0.35 }, t)
+        .to('#d' + off, { y: -12, autoAlpha: 0, duration: 0.3 }, t);
+    };
+
+    // 1 · Logo
+    tl.from('#tile1', { scale: 0, rotation: -25, duration: 0.9, ease: 'back.out(1.8)' }, 0.1)
+      .from('#wm1 span', { x: -30, autoAlpha: 0, stagger: 0.05, duration: 0.55 }, 0.6)
+      .from('#s1 .tag', { y: 20, autoAlpha: 0 }, 1.3)
+      .to('#s1', { y: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 3.0);
+
+    // 2 · Slotime (clients)
+    tl.from('#s2t .eyebrow, #s2t .h2, #s2t .spills', { y: 30, autoAlpha: 0, stagger: 0.1 }, 3.4)
+      .from('#phoneA', { y: 900, duration: 1.1, ease: 'expo.out' }, 3.5)
+      .from('.a1 .sal', { y: 24, autoAlpha: 0, stagger: 0.12, duration: 0.5 }, 4.6);
+    step(1, 0, 4.3);
+    tap(chParis, pParis, 5.4);
+    tl.to('#chAll', { backgroundColor: '#FFFFFF', color: '#1E293B', borderColor: '#E2E8F0', duration: 0.25 }, 5.5)
+      .to(chParis, { backgroundColor: '#1E293B', color: '#FFFFFF', borderColor: '#1E293B', duration: 0.25 }, 5.5)
+      .to('#n2', { yPercent: -100, autoAlpha: 0, duration: 0.3 }, 5.6)
+      .fromTo('#n1', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.3 }, 5.6)
+      .to(coal, { autoAlpha: 0, scale: 0.9, duration: 0.3, ease: 'power2.in' }, 5.6)
+      .to(coal, { height: 0, marginBottom: -11, duration: 0.45, ease: 'power3.inOut' }, 5.85);
+    tap(goNev, pGo, 6.6);
+    tl.to('.a1', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 6.85)
+      .fromTo('.a2', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 6.85)
+      .from('.a2 .slot', { scale: 0.8, autoAlpha: 0, stagger: 0.05, duration: 0.35 }, 7.2);
+    step(2, 1, 6.9);
+    tap(slot, pSlot, 8.1);
+    tl.to(slot, { backgroundColor: '#324E80', borderColor: '#324E80', color: '#FFFFFF', duration: 0.25 }, 8.2)
+      .to('#ctaA', { yPercent: -100, autoAlpha: 0, duration: 0.3 }, 8.35)
+      .fromTo('#ctaB', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.3 }, 8.35)
+      .to(cta, { backgroundColor: '#324E80', duration: 0.3 }, 8.35);
+    tap(cta, pCta, 9.0);
+    tl.to('.a2', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 9.25)
+      .fromTo('.a3', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 9.25)
+      .from('.a3 .ok', { scale: 0.4, duration: 0.6, ease: 'back.out(2)' }, 9.5)
+      .fromTo('#check', { strokeDashoffset: 60 }, { strokeDashoffset: 0, duration: 0.5 }, 9.7)
+      .from('.a3 p, .a3 .ticket, .a3 .ghost', { y: 20, autoAlpha: 0, stagger: 0.1 }, 9.8);
+    step(3, 2, 9.3);
+
+    // 3 · Wipe into the navy Pro world
+    tl.to('#s2t', { y: -40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 11.2)
+      .to('#phoneA', { x: 520, autoAlpha: 0, duration: 0.8, ease: 'power2.in' }, 11.3)
+      .fromTo('#bgInk', { clipPath: 'circle(0px at 360px 800px)' }, { clipPath: 'circle(1600px at 360px 800px)', duration: 1.1, ease: 'power2.inOut' }, 11.3);
+
+    // 4 · Slotime Pro : agenda
+    tl.from('#phoneB', { y: 900, duration: 1.1, ease: 'expo.out' }, 12.2)
+      .from('#s4t .eyebrow, #s4t .h2', { y: 30, autoAlpha: 0, stagger: 0.1 }, 12.5)
+      .from('.b .appt:not(.new), .b .gap, .b .ca', { x: 24, autoAlpha: 0, stagger: 0.07, duration: 0.45 }, 12.7)
+      .fromTo('#toast', { y: -90, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'back.out(1.6)' }, 13.8)
+      .to('#gapTxt', { autoAlpha: 0, duration: 0.2 }, 14.3)
+      .fromTo('#newAppt', { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.55, ease: 'back.out(1.8)' }, 14.3)
+      .to('#ca1', { yPercent: -100, autoAlpha: 0, duration: 0.35 }, 14.7)
+      .fromTo('#ca2', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.35 }, 14.7)
+      .to('#toast', { y: -90, autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, 15.8);
+
+    // 4b · Slotime Pro : fonctionnalités
+    tl.to('#phoneB', { y: '+=1000', duration: 0.7, ease: 'power3.in' }, 16.3)
+      .from('#feats .feat', { y: 40, autoAlpha: 0, stagger: 0.1, duration: 0.55 }, 16.7)
+      .to('#s4t, #feats', { y: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 19.4);
+
+    // 5 · Tarifs & métiers
+    tl.from('#s5 .title > *', { y: 30, autoAlpha: 0, stagger: 0.1 }, 19.9)
+      .from('#s5 .plan', { y: 70, autoAlpha: 0, stagger: 0.12, duration: 0.8, ease: 'expo.out' }, 20.2)
+      .from('#s5 .metiers-l', { autoAlpha: 0 }, 21.0)
+      .from('#s5 .metiers span', { y: 16, autoAlpha: 0, stagger: 0.05, duration: 0.4 }, 21.1)
+      .to('#s5', { autoAlpha: 0, y: -20, duration: 0.5, ease: 'power2.in' }, 23.8);
+
+    // 6 · Both apps, one slot
+    tl.set('#bgSplit', { visibility: 'visible' }, 24.2)
+      .set('#bgInk', { visibility: 'hidden' }, 24.2)
+      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 360px)', duration: 0.9, ease: 'power3.inOut' }, 24.2)
+      .fromTo('#phoneA', { x: -900, y: -52, scale: 0.68, autoAlpha: 1 }, { x: -180, duration: 1, immediateRender: false }, 24.5)
+      .fromTo('#phoneB', { x: 180, y: 1000, scale: 0.68 }, { y: 0, duration: 1, ease: 'expo.out', immediateRender: false }, 24.6)
+      .from('#s6 .hl', { y: -30, autoAlpha: 0 }, 25.0)
+      .from('#s6 .lbl', { y: 20, autoAlpha: 0, stagger: 0.12 }, 25.3)
+      .fromTo('#fly', { x: 0, scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, 26.0)
+      .to('#fly', { x: 360, y: -40, duration: 1.2, ease: 'power2.inOut' }, 26.3)
+      .to('#fly', { scale: 0.5, autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 27.45)
+      .fromTo('#newAppt', { scale: 1 }, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, 27.55);
+
+    // 7 · Outro
+    tl.to('#s6', { autoAlpha: 0, duration: 0.4 }, 28.8)
+      .to('#phoneA, #phoneB', { y: '+=1000', duration: 0.8, ease: 'power3.in', stagger: 0.06 }, 28.8)
+      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.8, ease: 'power3.inOut' }, 29.1)
+      .from('#tile2', { scale: 0, rotation: -25, duration: 0.9, ease: 'back.out(1.8)' }, 29.6)
+      .from('#wm2 span', { x: -30, autoAlpha: 0, stagger: 0.05, duration: 0.55 }, 29.9)
+      .from('#s7 .q', { y: 20, autoAlpha: 0 }, 30.4)
+      .from('#s7 .pill', { y: 20, autoAlpha: 0, stagger: 0.12 }, 30.7)
+      .from('#s7 .btn', { scale: 0.8, autoAlpha: 0, duration: 0.6, ease: 'back.out(2)' }, 31.1)
+      .to({}, { duration: 0.01 }, 35);
+
+    // Transport
+    const play = $('play'), scrub = $('scrub'), time = $('time');
+    const total = tl.duration();
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    const setBtn = paused => { play.textContent = paused ? '▶' : '❚❚'; play.setAttribute('aria-label', paused ? 'Lecture' : 'Pause'); };
+    const sync = () => { scrub.value = Math.round(tl.progress() * 1000); time.textContent = fmt(tl.time()) + ' / ' + fmt(total); };
+    tl.eventCallback('onUpdate', sync);
+    play.addEventListener('click', () => { tl.paused(!tl.paused()); setBtn(tl.paused()); });
+    $('restart').addEventListener('click', () => { tl.restart(); setBtn(false); });
+    scrub.addEventListener('input', () => { tl.progress(scrub.value / 1000); sync(); });
+
+    if (reduce) { tl.pause(27.4); setBtn(true); sync(); }
+    else { tl.play(0); }
+  });
+})();
+</script>
+</body>
+</html>
