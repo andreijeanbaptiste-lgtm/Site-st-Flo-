@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slotime &amp; Slotime Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a 1280×720 "film" stage scaled to fit, paper world (client app) wiped by an ink world (pro app); transport controls below. */
+:root {
+  --night: #09111C;      /* page ground */
+  --ink: #101B2C;        /* Slotime Pro world */
+  --ink-2: #1A2940;
+  --paper: #EEF2F7;      /* Slotime client world */
+  --white: #FFFFFF;
+  --tang: #FF5B35;       /* Slotime accent */
+  --tang-tint: #FFE6DE;
+  --lagoon: #27C2B0;     /* Slotime Pro accent */
+  --muted: #6A778B;
+  --muted-2: #8C9AB0;
+  --line: #DCE2EA;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--night); color: var(--paper); }
+body { font-family: var(--body); padding-inline: 16px; padding-block: 28px 40px; }
+main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; }
+.head h1 { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.head h1 em { font-style: normal; color: var(--tang); }
+.head h1 b { font-weight: 700; color: var(--lagoon); }
+.head p { margin: 0; font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); }
+
+.frame { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; background: var(--paper); box-shadow: 0 30px 80px -30px rgba(0,0,0,.7); }
+.stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--body); }
+.layer { position: absolute; inset: 0; }
+
+.controls { display: flex; align-items: center; gap: 12px; }
+.controls button { font: 600 14px var(--body); color: var(--paper); background: var(--ink-2); border: 1px solid #2A3B55; border-radius: 999px; height: 38px; padding: 0 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.controls button:hover { border-color: var(--muted); }
+.controls button:focus-visible, .controls input:focus-visible { outline: 2px solid var(--tang); outline-offset: 2px; }
+.controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--tang); }
+.controls .time { font: 500 13px var(--mono); color: var(--muted-2); font-variant-numeric: tabular-nums; }
+.note { margin: 0; color: var(--muted-2); font-size: 14px; line-height: 1.6; max-width: 70ch; }
+
+/* ---------- backgrounds ---------- */
+#bgInk { background: var(--ink); clip-path: circle(0px at 970px 360px); }
+#bgSplit { background: var(--ink); clip-path: inset(0px 0px 0px 0px); visibility: hidden; }
+
+/* ---------- wordmark ---------- */
+.wordmark { font-family: var(--display); font-weight: 800; font-size: 132px; letter-spacing: -0.05em; line-height: 1; display: flex; align-items: flex-end; }
+.wordmark .ch { display: inline-block; }
+.wordmark svg { width: .6em; height: .6em; margin: 0 .04em .17em; flex: none; }
+.clock-ring { fill: none; stroke: var(--tang); stroke-width: 14; stroke-dasharray: 264; stroke-linecap: round; }
+.clock-hand { stroke: currentColor; stroke-width: 9; stroke-linecap: round; }
+.clock-dot { fill: currentColor; }
+
+#s1 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
+#s1 .tag { font-size: 30px; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; }
+
+/* ---------- scene text ---------- */
+.eyebrow { font: 700 14px var(--mono); letter-spacing: .16em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+.eyebrow::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
+.h2 { font-family: var(--display); font-weight: 700; font-size: 60px; line-height: 1.02; letter-spacing: -0.035em; margin: 18px 0 30px; text-wrap: balance; }
+
+#s2t { position: absolute; left: 110px; top: 150px; width: 600px; }
+#s2t .eyebrow { color: var(--tang); }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.steps li { display: flex; align-items: center; gap: 16px; font-size: 24px; font-weight: 600; opacity: .3; }
+.steps li span { width: 40px; height: 40px; border-radius: 50%; border: 2px solid currentColor; display: grid; place-items: center; font: 700 16px var(--mono); flex: none; }
+
+#s4t { position: absolute; left: 560px; top: 140px; width: 620px; color: var(--paper); }
+#s4t .eyebrow { color: var(--lagoon); }
+.feats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+.feats li { display: flex; align-items: center; gap: 16px; font-size: 22px; font-weight: 500; color: #C9D3E2; }
+.feats li i { width: 36px; height: 36px; border-radius: 10px; background: rgba(39,194,176,.14); color: var(--lagoon); display: grid; place-items: center; flex: none; }
+.feats svg { width: 20px; height: 20px; }
+
+#s5 h2 { position: absolute; left: 0; right: 0; top: 34px; margin: 0; text-align: center; font-family: var(--display); font-weight: 800; font-size: 56px; letter-spacing: -0.04em; color: var(--white); mix-blend-mode: difference; }
+#s5 .lbl { position: absolute; top: 650px; width: 640px; text-align: center; font-size: 20px; font-weight: 600; }
+#s5 .lbl b { font-family: var(--display); font-weight: 800; }
+#s5 .l1 { left: 0; color: var(--ink); } #s5 .l1 b { color: var(--tang); }
+#s5 .l2 { left: 640px; color: var(--paper); } #s5 .l2 b { color: var(--lagoon); }
+#fly { position: absolute; left: 470px; top: 356px; height: 44px; padding: 0 16px; border-radius: 14px; background: var(--tang); color: var(--white); font: 700 18px var(--mono); display: flex; align-items: center; gap: 8px; box-shadow: 0 12px 30px -8px rgba(255,91,53,.6); visibility: hidden; }
+
+#s6 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; color: var(--paper); }
+#s6 .duo { display: flex; gap: 18px; }
+#s6 .pill { display: flex; flex-direction: column; gap: 4px; padding: 16px 26px; border-radius: 18px; border: 1px solid #2A3B55; min-width: 250px; }
+#s6 .pill b { font-family: var(--display); font-size: 28px; letter-spacing: -0.03em; }
+#s6 .pill span { font-size: 17px; color: var(--muted-2); }
+#s6 .p1 b { color: var(--tang); } #s6 .p2 b { color: var(--lagoon); }
+#s6 .tag { font-size: 24px; color: var(--muted-2); }
+
+/* ---------- phones ---------- */
+.phone { position: absolute; top: 50px; width: 300px; height: 620px; border-radius: 48px; background: #05080D; padding: 10px; box-shadow: 0 50px 90px -40px rgba(16,27,44,.55), inset 0 0 0 2px #2B3445; }
+#phoneA { left: 820px; }
+#phoneB { left: 170px; box-shadow: 0 50px 90px -30px rgba(0,0,0,.8), inset 0 0 0 2px #2B3445; }
+.screen { position: relative; width: 280px; height: 600px; border-radius: 38px; overflow: hidden; background: var(--white); }
+.island { position: absolute; top: 11px; left: 50%; width: 86px; height: 25px; margin-left: -43px; border-radius: 20px; background: #05080D; z-index: 5; }
+.clockbar { position: absolute; top: 15px; left: 30px; font: 700 13px var(--body); z-index: 5; }
+.scr { position: absolute; inset: 0; padding: 52px 18px 18px; display: flex; flex-direction: column; gap: 12px; }
+.a2, .a3 { visibility: hidden; }
+.muted { color: var(--muted); }
+.h4 { font-family: var(--display); font-weight: 700; font-size: 23px; letter-spacing: -0.03em; line-height: 1.05; margin: 0; }
+.small { font-size: 12px; }
+
+.search { height: 42px; border-radius: 14px; background: var(--paper); display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 15px; font-weight: 600; }
+.search svg { width: 16px; height: 16px; color: var(--muted); flex: none; }
+.typed { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; }
+.caret { width: 2px; height: 18px; background: var(--tang); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.chips { display: flex; gap: 6px; }
+.chips span { font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: var(--paper); color: var(--muted); }
+.chips .on { background: var(--ink); color: var(--white); }
+.card { display: flex; gap: 10px; align-items: center; padding: 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--white); }
+.av { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font: 800 14px var(--display); flex: none; }
+.card .nm { font-weight: 700; font-size: 14px; }
+.card .mt { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.card .nx { font: 700 10.5px var(--mono); color: var(--tang); margin-top: 4px; }
+
+.back { display: flex; align-items: center; gap: 8px; }
+.back svg { width: 18px; height: 18px; }
+.svc { font-size: 12px; color: var(--muted); margin-top: -6px; }
+.days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.day { border-radius: 12px; border: 1px solid var(--line); padding: 6px 0; text-align: center; }
+.day small { display: block; font-size: 10px; color: var(--muted); font-weight: 600; }
+.day b { font: 700 16px var(--display); }
+.day.on { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.day.on small { color: var(--muted-2); }
+.lab { font: 700 10.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.slot { height: 38px; border-radius: 12px; border: 1.5px solid var(--line); display: grid; place-items: center; font: 700 13px var(--mono); background: var(--white); color: var(--ink); }
+.slot.taken { background: var(--paper); color: #B3BDCB; text-decoration: line-through; border-color: transparent; }
+.cta { margin-top: auto; position: relative; height: 50px; border-radius: 16px; background: var(--ink); color: var(--white); overflow: hidden; font-weight: 700; font-size: 15px; }
+.cta span { position: absolute; inset: 0; display: grid; place-items: center; }
+#ctaB { visibility: hidden; }
+
+.a3 { align-items: center; text-align: center; padding-top: 80px; gap: 14px; }
+.ok { width: 96px; height: 96px; border-radius: 50%; background: var(--tang-tint); display: grid; place-items: center; }
+.ok svg { width: 48px; height: 48px; }
+#check { fill: none; stroke: var(--tang); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; }
+.ticket { width: 100%; text-align: left; border-radius: 18px; background: var(--paper); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.ticket .big { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; }
+.ticket .big b { font: 700 26px var(--mono); color: var(--tang); }
+.ticket hr { border: 0; border-top: 1.5px dashed #C8D1DD; width: 100%; margin: 4px 0; }
+.ghost { width: 100%; height: 46px; border-radius: 14px; border: 1.5px solid var(--line); display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+
+#tap { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(16,27,44,.22); border: 2px solid rgba(16,27,44,.55); z-index: 9; visibility: hidden; pointer-events: none; }
+
+/* pro screen */
+.b { background: #121E30; color: var(--paper); }
+.b .clockbar { color: var(--paper); }
+.bhead { display: flex; justify-content: space-between; align-items: flex-end; }
+.bhead .small { color: var(--muted-2); }
+.count { position: relative; height: 30px; min-width: 76px; border-radius: 999px; background: rgba(39,194,176,.16); color: var(--lagoon); font: 700 12px var(--mono); overflow: hidden; }
+.count span { position: absolute; inset: 0; display: grid; place-items: center; }
+#c6 { visibility: hidden; }
+.agenda { position: absolute; left: 14px; right: 14px; top: 124px; height: 430px; }
+.hr { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid #24344D; }
+.hr span { position: absolute; left: 0; top: -8px; font: 500 10px var(--mono); color: #6C7D96; background: #121E30; padding-right: 6px; }
+.blk { position: absolute; left: 40px; right: 0; height: 32px; border-radius: 9px; background: var(--ink-2); border-left: 3px solid #4C6384; padding: 0 10px; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: #C9D3E2; white-space: nowrap; overflow: hidden; }
+.blk b { font: 700 10.5px var(--mono); color: var(--muted-2); }
+.blk.new { background: var(--lagoon); border-left-color: var(--white); color: #06231F; visibility: hidden; }
+.blk.new b { color: #06231F; }
+#toast { position: absolute; top: 46px; left: 12px; right: 12px; z-index: 6; border-radius: 18px; background: var(--paper); color: var(--ink); padding: 10px 12px; display: flex; gap: 10px; align-items: center; box-shadow: 0 16px 30px -10px rgba(0,0,0,.6); visibility: hidden; }
+#toast i { width: 34px; height: 34px; border-radius: 10px; background: var(--lagoon); color: var(--white); display: grid; place-items: center; flex: none; }
+#toast svg { width: 18px; height: 18px; }
+#toast b { font-size: 13px; display: block; }
+#toast span { font-size: 11.5px; color: var(--muted); }
+
+@media (max-width: 560px) { .controls .time { display: none; } }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="head">
+    <h1><em>Slotime</em> &amp; <b>Slotime Pro</b></h1>
+    <p>Motion de présentation · 26 s · en boucle</p>
+  </div>
+
+  <div class="frame" id="frame">
+    <div class="stage" id="stage" role="img" aria-label="Animation : un client réserve un créneau dans Slotime, le rendez-vous apparaît dans l'agenda Slotime Pro du professionnel.">
+      <div class="layer" id="bgInk"></div>
+      <div class="layer" id="bgSplit"></div>
+
+      <!-- Scene 1 : logo -->
+      <div class="layer" id="s1">
+        <div class="wordmark">
+          <span class="ch">S</span><span class="ch">l</span>
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="clock-ring" id="ring" cx="50" cy="50" r="42"/><line class="clock-hand" id="hand" x1="50" y1="50" x2="50" y2="24"/><circle class="clock-dot" cx="50" cy="50" r="7"/></svg>
+          <span class="ch">t</span><span class="ch">i</span><span class="ch">m</span><span class="ch">e</span>
+        </div>
+        <div class="tag">Le bon créneau, au bon moment.</div>
+      </div>
+
+      <!-- Scene 2 : client text -->
+      <div id="s2t">
+        <div class="eyebrow">Slotime · l'app client</div>
+        <div class="h2">Réservez votre rendez-vous en trois gestes.</div>
+        <ol class="steps">
+          <li id="st1"><span>1</span>Trouvez un pro près de chez vous</li>
+          <li id="st2"><span>2</span>Choisissez un créneau libre</li>
+          <li id="st3"><span>3</span>C'est confirmé, rappel la veille</li>
+        </ol>
+      </div>
+
+      <!-- Scene 4 : pro text -->
+      <div id="s4t">
+        <div class="eyebrow">Slotime Pro · l'app des professionnels</div>
+        <div class="h2">Votre agenda se remplit pendant que vous travaillez.</div>
+        <ul class="feats">
+          <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></i>Réservations en temps réel, sans un appel</li>
+          <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></i>Rappels automatiques pour vos clients</li>
+          <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></i>Votre journée et votre activité d'un coup d'œil</li>
+        </ul>
+      </div>
+
+      <!-- Scene 5 : duo -->
+      <div class="layer" id="s5">
+        <h2>Deux apps. Un même créneau.</h2>
+        <div class="lbl l1"><b>Slotime</b> · pour vos clients</div>
+        <div class="lbl l2"><b>Slotime Pro</b> · pour votre activité</div>
+        <div id="fly">● 14:30</div>
+      </div>
+
+      <!-- Phone A : Slotime -->
+      <div class="phone" id="phoneA">
+        <div class="screen" id="scrA">
+          <div class="island"></div><div class="clockbar">9:41</div>
+          <div id="tap"></div>
+
+          <div class="scr a1">
+            <div class="small muted">Bonjour Léa</div>
+            <div class="h4">Qui voulez-vous voir&nbsp;?</div>
+            <div class="search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <span class="typed" id="typed">coiffeur</span><i class="caret"></i>
+            </div>
+            <div class="chips"><span class="on">Coiffure</span><span>Barbier</span><span>Ongles</span><span>Massage</span></div>
+            <div class="card" id="card1">
+              <div class="av" style="background:var(--tang-tint);color:var(--tang)">AN</div>
+              <div><div class="nm">Atelier Nova</div><div class="mt">Coiffure · 0,4 km · ★ 4,9</div><div class="nx">AUJOURD'HUI 14:30</div></div>
+            </div>
+            <div class="card">
+              <div class="av" style="background:#E0F5F2;color:#15877A">MC</div>
+              <div><div class="nm">Maison Ciseaux</div><div class="mt">Coiffure · 0,9 km · ★ 4,8</div><div class="nx">DEMAIN 10:00</div></div>
+            </div>
+            <div class="card">
+              <div class="av" style="background:#E6EAF2;color:var(--ink)">SL</div>
+              <div><div class="nm">Studio Lina</div><div class="mt">Coiffure · 1,3 km · ★ 4,7</div><div class="nx">JEU. 09:30</div></div>
+            </div>
+          </div>
+
+          <div class="scr a2">
+            <div class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m15 5-7 7 7 7"/></svg><div class="h4">Atelier Nova</div></div>
+            <div class="svc">Coupe + brushing · 45 min · 38 €</div>
+            <div class="days">
+              <div class="day"><small>LUN</small><b>13</b></div>
+              <div class="day on"><small>MAR</small><b>14</b></div>
+              <div class="day"><small>MER</small><b>15</b></div>
+              <div class="day"><small>JEU</small><b>16</b></div>
+              <div class="day"><small>VEN</small><b>17</b></div>
+            </div>
+            <div class="lab">Créneaux du mardi</div>
+            <div class="slots">
+              <div class="slot taken">09:00</div><div class="slot">09:45</div><div class="slot taken">10:30</div>
+              <div class="slot taken">11:15</div><div class="slot taken">13:45</div><div class="slot" id="slot1430">14:30</div>
+              <div class="slot taken">15:15</div><div class="slot">16:00</div><div class="slot">17:30</div>
+            </div>
+            <div class="cta" id="cta"><span id="ctaA">Choisir un créneau</span><span id="ctaB">Réserver · 14:30</span></div>
+          </div>
+
+          <div class="scr a3">
+            <div class="ok"><svg viewBox="0 0 48 48"><path id="check" d="M12 25l8 8 16-17"/></svg></div>
+            <div class="h4">C'est réservé&nbsp;!</div>
+            <div class="ticket">
+              <div class="big"><span>Mardi 14 octobre</span><b>14:30</b></div>
+              <div class="small muted">Atelier Nova · Coupe + brushing</div>
+              <hr>
+              <div class="small">Rappel envoyé la veille à 18:00</div>
+            </div>
+            <div class="ghost">Ajouter à mon agenda</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone B : Slotime Pro -->
+      <div class="phone" id="phoneB">
+        <div class="screen b">
+          <div class="island"></div><div class="clockbar">9:41</div>
+          <div id="toast">
+            <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></i>
+            <div><b>Nouvelle réservation</b><span>Léa M. · Coupe + brushing · 14:30</span></div>
+          </div>
+          <div class="scr">
+            <div class="bhead">
+              <div><div class="small">Atelier Nova</div><div class="h4">Mardi 14 oct.</div></div>
+              <div class="count"><span id="c5">5 RDV</span><span id="c6">6 RDV</span></div>
+            </div>
+          </div>
+          <div class="agenda">
+            <div class="hr" style="top:0"><span>09</span></div>
+            <div class="hr" style="top:46px"><span>10</span></div>
+            <div class="hr" style="top:92px"><span>11</span></div>
+            <div class="hr" style="top:138px"><span>12</span></div>
+            <div class="hr" style="top:184px"><span>13</span></div>
+            <div class="hr" style="top:230px"><span>14</span></div>
+            <div class="hr" style="top:276px"><span>15</span></div>
+            <div class="hr" style="top:322px"><span>16</span></div>
+            <div class="hr" style="top:368px"><span>17</span></div>
+            <div class="hr" style="top:414px"><span>18</span></div>
+            <div class="blk" style="top:1px"><b>09:00</b>Camille R. · Coupe</div>
+            <div class="blk" style="top:70px;height:67px"><b>10:30</b>Inès T. · Couleur</div>
+            <div class="blk" style="top:219px"><b>13:45</b>Marc D. · Coupe homme</div>
+            <div class="blk new" id="newBlk" style="top:254px"><b>14:30</b>Léa M. · Coupe + brushing</div>
+            <div class="blk" style="top:288px"><b>15:15</b>Sarah B. · Brushing</div>
+            <div class="blk" style="top:357px"><b>16:45</b>Nadia K. · Soin</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 6 : outro -->
+      <div class="layer" id="s6">
+        <div class="wordmark">
+          <span class="ch">S</span><span class="ch">l</span>
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="clock-ring" id="ring2" cx="50" cy="50" r="42"/><line class="clock-hand" x1="50" y1="50" x2="50" y2="24"/><circle class="clock-dot" cx="50" cy="50" r="7"/></svg>
+          <span class="ch">t</span><span class="ch">i</span><span class="ch">m</span><span class="ch">e</span>
+        </div>
+        <div class="duo">
+          <div class="pill p1"><b>Slotime</b><span>Pour réserver en quelques secondes</span></div>
+          <div class="pill p2"><b>Slotime Pro</b><span>Pour gérer son agenda sans effort</span></div>
+        </div>
+        <div class="tag">Le bon créneau, au bon moment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="play" type="button" aria-label="Pause">❚❚ <span>Pause</span></button>
+    <button id="restart" type="button">↺ Rejouer</button>
+    <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position dans l'animation">
+    <span class="time" id="time">0:00 / 0:26</span>
+  </div>
+  <p class="note">Le parcours montré : Léa trouve un salon dans Slotime, réserve 14:30, et le rendez-vous tombe aussitôt dans l'agenda Slotime Pro du salon. Les noms, horaires et prix sont des exemples.</p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function () {
+  const stage = document.getElementById('stage');
+  const frame = document.getElementById('frame');
+  const fit = () => { stage.style.transform = 'scale(' + frame.clientWidth / 1280 + ')'; };
+  fit();
+  new ResizeObserver(fit).observe(frame);
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+
+  ready.then(function () {
+    fit();
+    const scr = document.getElementById('scrA');
+    // Measure tap targets (in unscaled screen pixels) before any tween moves things.
+    const at = function (el) {
+      const r = el.getBoundingClientRect(), c = scr.getBoundingClientRect(), k = c.width / scr.offsetWidth;
+      return { x: (r.left + r.width / 2 - c.left) / k - 22, y: (r.top + r.height / 2 - c.top) / k - 22 };
+    };
+    const card1 = document.getElementById('card1'), slot = document.getElementById('slot1430'), cta = document.getElementById('cta');
+    const pCard = at(card1), pSlot = at(slot), pCta = at(cta);
+    const typed = document.getElementById('typed');
+    const typedW = typed.offsetWidth;
+
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.8, paused: true, defaults: { ease: 'power3.out', duration: 0.7 } });
+    const tap = function (el, p, t) {
+      tl.set('#tap', { left: p.x, top: p.y }, t)
+        .fromTo('#tap', { scale: 0.3, autoAlpha: 0.95 }, { scale: 1.5, autoAlpha: 0, duration: 0.55, ease: 'power2.out', immediateRender: false }, t)
+        .to(el, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
+    };
+
+    // 1 · Logo
+    tl.fromTo('#ring', { strokeDashoffset: 264 }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 0)
+      .fromTo('#hand', { rotation: -360, svgOrigin: '50 50' }, { rotation: 0, svgOrigin: '50 50', duration: 1.5, ease: 'expo.out' }, 0.2)
+      .from('#s1 .ch', { y: 50, autoAlpha: 0, stagger: 0.05, duration: 0.6 }, 0.45)
+      .from('#s1 .tag', { y: 20, autoAlpha: 0 }, 1.3)
+      .to('#s1', { y: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 3.0);
+
+    // 2 · Slotime (client)
+    tl.from('#s2t > *', { y: 30, autoAlpha: 0, stagger: 0.1 }, 3.4)
+      .from('#phoneA', { y: 760, duration: 1.1, ease: 'expo.out' }, 3.5)
+      .to('#st1', { opacity: 1, duration: 0.4 }, 4.3)
+      .fromTo('#typed', { width: 0 }, { width: typedW, duration: 0.8, ease: 'steps(8)' }, 4.5)
+      .from('.a1 .card', { y: 24, autoAlpha: 0, stagger: 0.12, duration: 0.5 }, 5.3);
+    tap(card1, pCard, 6.1);
+    tl.to('.a1', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 6.35)
+      .fromTo('.a2', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 6.35)
+      .to('#st1', { opacity: 0.3, duration: 0.4 }, 6.4)
+      .to('#st2', { opacity: 1, duration: 0.4 }, 6.4)
+      .from('.a2 .slot', { scale: 0.8, autoAlpha: 0, stagger: 0.04, duration: 0.35 }, 6.7);
+    tap(slot, pSlot, 7.7);
+    tl.to(slot, { backgroundColor: '#FF5B35', borderColor: '#FF5B35', color: '#FFFFFF', duration: 0.25 }, 7.8)
+      .to('#ctaA', { yPercent: -100, autoAlpha: 0, duration: 0.3 }, 7.95)
+      .fromTo('#ctaB', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.3 }, 7.95)
+      .to(cta, { backgroundColor: '#FF5B35', duration: 0.3 }, 7.95);
+    tap(cta, pCta, 8.6);
+    tl.to('.a2', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 8.85)
+      .fromTo('.a3', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 8.85)
+      .to('#st2', { opacity: 0.3, duration: 0.4 }, 8.9)
+      .to('#st3', { opacity: 1, duration: 0.4 }, 8.9)
+      .from('.a3 .ok', { scale: 0.4, duration: 0.6, ease: 'back.out(2)' }, 9.1)
+      .fromTo('#check', { strokeDashoffset: 60 }, { strokeDashoffset: 0, duration: 0.5 }, 9.3)
+      .from('.a3 .ticket, .a3 .ghost', { y: 20, autoAlpha: 0, stagger: 0.1 }, 9.4);
+
+    // 3 · Wipe to the Pro world
+    tl.to('#s2t', { x: -40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 10.8)
+      .to('#phoneA', { x: 420, autoAlpha: 0, duration: 0.8, ease: 'power2.in' }, 10.9)
+      .fromTo('#bgInk', { clipPath: 'circle(0px at 970px 360px)' }, { clipPath: 'circle(1500px at 970px 360px)', duration: 1.1, ease: 'power2.inOut' }, 10.9);
+
+    // 4 · Slotime Pro
+    tl.from('#phoneB', { y: 760, duration: 1.1, ease: 'expo.out' }, 11.8)
+      .from('#s4t .eyebrow, #s4t .h2', { y: 30, autoAlpha: 0, stagger: 0.1 }, 12.2)
+      .from('.b .blk:not(.new)', { x: 30, autoAlpha: 0, stagger: 0.08, duration: 0.45 }, 12.4)
+      .fromTo('#toast', { y: -90, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'back.out(1.6)' }, 13.4)
+      .fromTo('#newBlk', { scaleX: 0, autoAlpha: 0, transformOrigin: '0% 50%' }, { scaleX: 1, autoAlpha: 1, duration: 0.6 }, 13.9)
+      .fromTo('#newBlk', { boxShadow: '0 0 0 0px rgba(39,194,176,0.7)' }, { boxShadow: '0 0 0 14px rgba(39,194,176,0)', duration: 1, ease: 'power2.out', immediateRender: false }, 14.3)
+      .to('#c5', { yPercent: -100, autoAlpha: 0, duration: 0.35 }, 14.1)
+      .fromTo('#c6', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.35 }, 14.1)
+      .from('#s4t .feats li', { y: 20, autoAlpha: 0, stagger: 0.15, duration: 0.5 }, 14.3)
+      .to('#toast', { y: -90, autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, 15.8);
+
+    // 5 · Both apps, one slot
+    tl.to('#s4t', { x: 40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 16.8)
+      .set('#bgSplit', { visibility: 'visible' }, 17.2)
+      .set('#bgInk', { visibility: 'hidden' }, 17.2)
+      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 640px)', duration: 0.9, ease: 'power3.inOut' }, 17.2)
+      .to('#phoneB', { x: 640, y: 80, scale: 0.8, transformOrigin: '50% 0%', duration: 0.9, ease: 'power3.inOut' }, 17.2)
+      .fromTo('#phoneA', { x: -1000, y: 80, scale: 0.8, autoAlpha: 1, transformOrigin: '50% 0%' }, { x: -650, duration: 0.9, immediateRender: false }, 17.4)
+      .from('#s5 h2', { y: -30, autoAlpha: 0 }, 17.9)
+      .from('#s5 .lbl', { y: 20, autoAlpha: 0, stagger: 0.12 }, 18.1)
+      .fromTo('#fly', { x: 0, scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, 18.8)
+      .to('#fly', { x: 330, duration: 1.2, ease: 'power2.inOut' }, 19.1)
+      .to('#fly', { scale: 0.5, autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 20.25)
+      .fromTo('#newBlk', { scale: 1 }, { scale: 1.08, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, 20.35);
+
+    // 6 · Outro
+    tl.to('#s5', { autoAlpha: 0, duration: 0.4 }, 21.2)
+      .to('#phoneA, #phoneB', { y: '+=720', duration: 0.8, ease: 'power3.in', stagger: 0.06 }, 21.2)
+      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.8, ease: 'power3.inOut' }, 21.5)
+      .from('#s6 .wordmark .ch, #s6 .wordmark svg', { y: 50, autoAlpha: 0, stagger: 0.05, duration: 0.6 }, 22.1)
+      .fromTo('#ring2', { strokeDashoffset: 264 }, { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut' }, 22.0)
+      .from('#s6 .duo > *', { y: 20, autoAlpha: 0, stagger: 0.12 }, 22.7)
+      .from('#s6 .tag', { autoAlpha: 0, duration: 0.8 }, 23.3)
+      .to({}, { duration: 0.01 }, 26);
+
+    // Transport
+    const play = document.getElementById('play'), scrub = document.getElementById('scrub'), time = document.getElementById('time');
+    const total = tl.duration();
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    const setBtn = paused => { play.innerHTML = paused ? '▶ <span>Lecture</span>' : '❚❚ <span>Pause</span>'; play.setAttribute('aria-label', paused ? 'Lecture' : 'Pause'); };
+    const sync = () => { scrub.value = Math.round(tl.progress() * 1000); time.textContent = fmt(tl.time()) + ' / ' + fmt(total); };
+    tl.eventCallback('onUpdate', sync);
+    play.addEventListener('click', () => { tl.paused(!tl.paused()); setBtn(tl.paused()); });
+    document.getElementById('restart').addEventListener('click', () => { tl.restart(); setBtn(false); });
+    scrub.addEventListener('input', () => { tl.progress(scrub.value / 1000); sync(); });
+
+    if (reduce) { tl.pause(20.0); setBtn(true); sync(); }
+    else { tl.play(0); }
+  });
+})();
+</script>
+</body>
+</html>
