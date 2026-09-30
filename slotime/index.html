@@ -6,227 +6,288 @@
 <title>Slotime &amp; Slotime Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <style>
-/* Layout: a 1280×720 "film" stage scaled to fit, paper world (client app) wiped by an ink world (pro app); transport controls below. */
+/* Layout: a 1280×720 "film" stage scaled to fit. Slate-white world = Slotime (clients), navy world = Slotime Pro (salons). Brand taken from slotime.fr. */
 :root {
-  --night: #09111C;      /* page ground */
-  --ink: #101B2C;        /* Slotime Pro world */
-  --ink-2: #1A2940;
-  --paper: #EEF2F7;      /* Slotime client world */
+  --night: #0F172A;      /* page ground */
+  --navy: #324E80;       /* Slotime brand */
+  --navy-d: #1E2B44;
+  --navy-l: #9DB4DD;     /* highlight on navy */
+  --navy-t: #E8EEF8;     /* navy tint */
+  --slate: #1E293B;      /* text */
+  --bg: #F8FAFC;
   --white: #FFFFFF;
-  --tang: #FF5B35;       /* Slotime accent */
-  --tang-tint: #FFE6DE;
-  --lagoon: #27C2B0;     /* Slotime Pro accent */
-  --muted: #6A778B;
-  --muted-2: #8C9AB0;
-  --line: #DCE2EA;
-  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --muted: #64748B;
+  --muted-2: #94A3B8;
+  --line: #E2E8F0;
+  --ok: #16A34A;
+  --ok-t: #DCFCE7;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: dark;
 }
-html, body { background: var(--night); color: var(--paper); }
-body { font-family: var(--body); padding-inline: 16px; padding-block: 28px 40px; }
+html, body { background: var(--night); color: var(--bg); }
+body { font-family: var(--font); padding-inline: 16px; padding-block: 28px 40px; }
 main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 
-.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; }
-.head h1 { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
-.head h1 em { font-style: normal; color: var(--tang); }
-.head h1 b { font-weight: 700; color: var(--lagoon); }
-.head p { margin: 0; font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-2); }
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; }
+.head h1 { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: clamp(20px, 3vw, 28px); letter-spacing: -0.03em; margin: 0; }
+.head h1 .tile { width: 34px; height: 34px; border-radius: 9px; font-size: 20px; }
+.head h1 span.pro { color: var(--navy-l); }
+.head p { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-2); }
 
-.frame { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; background: var(--paper); box-shadow: 0 30px 80px -30px rgba(0,0,0,.7); }
-.stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; overflow: hidden; background: var(--paper); color: var(--ink); font-family: var(--body); }
+.frame { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; background: var(--bg); box-shadow: 0 30px 80px -30px rgba(0,0,0,.7); }
+.stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; overflow: hidden; background: var(--bg); color: var(--slate); font-family: var(--font); }
 .layer { position: absolute; inset: 0; }
 
 .controls { display: flex; align-items: center; gap: 12px; }
-.controls button { font: 600 14px var(--body); color: var(--paper); background: var(--ink-2); border: 1px solid #2A3B55; border-radius: 999px; height: 38px; padding: 0 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-.controls button:hover { border-color: var(--muted); }
-.controls button:focus-visible, .controls input:focus-visible { outline: 2px solid var(--tang); outline-offset: 2px; }
-.controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--tang); }
-.controls .time { font: 500 13px var(--mono); color: var(--muted-2); font-variant-numeric: tabular-nums; }
-.note { margin: 0; color: var(--muted-2); font-size: 14px; line-height: 1.6; max-width: 70ch; }
+.controls button { font: 600 14px var(--font); color: var(--bg); background: var(--navy-d); border: 1px solid #334A70; border-radius: 999px; height: 38px; padding: 0 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.controls button:hover { border-color: var(--navy-l); }
+.controls button:focus-visible, .controls input:focus-visible { outline: 2px solid var(--navy-l); outline-offset: 2px; }
+.controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--navy-l); }
+.controls .time { font-size: 13px; color: var(--muted-2); font-variant-numeric: tabular-nums; }
+.note { margin: 0; color: var(--muted-2); font-size: 14px; line-height: 1.6; max-width: 72ch; }
+.note a { color: var(--navy-l); }
 
-/* ---------- backgrounds ---------- */
-#bgInk { background: var(--ink); clip-path: circle(0px at 970px 360px); }
-#bgSplit { background: var(--ink); clip-path: inset(0px 0px 0px 0px); visibility: hidden; }
+/* ---------- brand ---------- */
+.tile { display: inline-grid; place-items: center; background: linear-gradient(135deg, var(--navy), var(--navy-d)); color: var(--white); font-weight: 700; border-radius: 16px; flex: none; }
+.navy-bg { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-d) 100%); }
+#bgInk { clip-path: circle(0px at 970px 360px); }
+#bgSplit { clip-path: inset(0px 0px 0px 0px); visibility: hidden; }
 
-/* ---------- wordmark ---------- */
-.wordmark { font-family: var(--display); font-weight: 800; font-size: 132px; letter-spacing: -0.05em; line-height: 1; display: flex; align-items: flex-end; }
-.wordmark .ch { display: inline-block; }
-.wordmark svg { width: .6em; height: .6em; margin: 0 .04em .17em; flex: none; }
-.clock-ring { fill: none; stroke: var(--tang); stroke-width: 14; stroke-dasharray: 264; stroke-linecap: round; }
-.clock-hand { stroke: currentColor; stroke-width: 9; stroke-linecap: round; }
-.clock-dot { fill: currentColor; }
-
-#s1 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
+#s1 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; }
+.brand { display: flex; align-items: center; gap: 26px; }
+.brand .tile { width: 132px; height: 132px; border-radius: 34px; font-size: 104px; box-shadow: 0 30px 60px -20px rgba(30,43,68,.45); }
+.brand .wm { font-size: 124px; font-weight: 800; letter-spacing: -0.055em; line-height: 1; }
+.brand .wm span { display: inline-block; }
 #s1 .tag { font-size: 30px; font-weight: 500; color: var(--muted); letter-spacing: -0.01em; }
 
 /* ---------- scene text ---------- */
-.eyebrow { font: 700 14px var(--mono); letter-spacing: .16em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
-.eyebrow::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
-.h2 { font-family: var(--display); font-weight: 700; font-size: 60px; line-height: 1.02; letter-spacing: -0.035em; margin: 18px 0 30px; text-wrap: balance; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; padding: 7px 14px; border-radius: 999px; }
+.h2 { font-weight: 800; font-size: 58px; line-height: 1.03; letter-spacing: -0.045em; margin: 20px 0 30px; text-wrap: balance; }
 
-#s2t { position: absolute; left: 110px; top: 150px; width: 600px; }
-#s2t .eyebrow { color: var(--tang); }
-.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
-.steps li { display: flex; align-items: center; gap: 16px; font-size: 24px; font-weight: 600; opacity: .3; }
-.steps li span { width: 40px; height: 40px; border-radius: 50%; border: 2px solid currentColor; display: grid; place-items: center; font: 700 16px var(--mono); flex: none; }
+#s2t { position: absolute; left: 110px; top: 130px; width: 620px; }
+#s2t .eyebrow { background: var(--navy-t); color: var(--navy); }
+.steps { display: flex; flex-direction: column; gap: 16px; }
+.step { display: flex; gap: 16px; align-items: flex-start; opacity: .3; }
+.step i { width: 46px; height: 46px; border-radius: 13px; background: var(--navy-t); color: var(--navy); display: grid; place-items: center; flex: none; }
+.step svg { width: 22px; height: 22px; }
+.step b { display: block; font-size: 23px; font-weight: 700; letter-spacing: -0.02em; }
+.step span { font-size: 17px; color: var(--muted); }
 
-#s4t { position: absolute; left: 560px; top: 140px; width: 620px; color: var(--paper); }
-#s4t .eyebrow { color: var(--lagoon); }
-.feats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
-.feats li { display: flex; align-items: center; gap: 16px; font-size: 22px; font-weight: 500; color: #C9D3E2; }
-.feats li i { width: 36px; height: 36px; border-radius: 10px; background: rgba(39,194,176,.14); color: var(--lagoon); display: grid; place-items: center; flex: none; }
-.feats svg { width: 20px; height: 20px; }
+#s4t { position: absolute; left: 540px; top: 90px; width: 660px; color: var(--white); }
+#s4t .eyebrow { background: rgba(255,255,255,.12); color: var(--white); }
+#s4t .h2 em { font-style: normal; color: var(--navy-l); }
+.feats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.feat { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); }
+.feat i { width: 38px; height: 38px; border-radius: 11px; background: rgba(255,255,255,.12); color: var(--white); display: grid; place-items: center; flex: none; }
+.feat svg { width: 20px; height: 20px; }
+.feat b { display: block; font-size: 17px; font-weight: 700; }
+.feat span { display: block; font-size: 13.5px; line-height: 1.35; color: #C3D0E6; margin-top: 3px; }
 
-#s5 h2 { position: absolute; left: 0; right: 0; top: 34px; margin: 0; text-align: center; font-family: var(--display); font-weight: 800; font-size: 56px; letter-spacing: -0.04em; color: var(--white); mix-blend-mode: difference; }
-#s5 .lbl { position: absolute; top: 650px; width: 640px; text-align: center; font-size: 20px; font-weight: 600; }
-#s5 .lbl b { font-family: var(--display); font-weight: 800; }
-#s5 .l1 { left: 0; color: var(--ink); } #s5 .l1 b { color: var(--tang); }
-#s5 .l2 { left: 640px; color: var(--paper); } #s5 .l2 b { color: var(--lagoon); }
-#fly { position: absolute; left: 470px; top: 356px; height: 44px; padding: 0 16px; border-radius: 14px; background: var(--tang); color: var(--white); font: 700 18px var(--mono); display: flex; align-items: center; gap: 8px; box-shadow: 0 12px 30px -8px rgba(255,91,53,.6); visibility: hidden; }
+/* tarifs */
+#s5 { color: var(--white); }
+#s5 .title { position: absolute; left: 0; right: 0; top: 62px; text-align: center; }
+#s5 .title .h2 { margin: 0 0 10px; font-size: 52px; }
+#s5 .title p { margin: 0; font-size: 20px; color: #C3D0E6; }
+.plans { position: absolute; left: 150px; right: 150px; top: 250px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: end; }
+.plan { border-radius: 22px; background: var(--white); color: var(--slate); padding: 24px 24px 22px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.6); }
+.plan .nm { font-size: 16px; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.plan .nm em { font-style: normal; font-size: 10.5px; letter-spacing: .06em; padding: 3px 8px; border-radius: 999px; background: var(--navy-t); color: var(--navy); }
+.plan .pr { font-size: 50px; font-weight: 800; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.plan .pr small { font-size: 16px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+.plan .ds { font-size: 15px; color: var(--muted); }
+.plan.top { background: linear-gradient(160deg, var(--navy), var(--navy-d)); color: var(--white); outline: 2px solid var(--navy-l); padding-block: 36px 30px; }
+.plan.top .nm, .plan.top .pr small, .plan.top .ds { color: #C3D0E6; }
+.plan.top .nm em { background: rgba(255,255,255,.15); color: var(--white); }
+.metiers { position: absolute; left: 0; right: 0; top: 560px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 0 120px; }
+.metiers span { font-size: 16px; font-weight: 600; padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.14); }
+.metiers-l { position: absolute; left: 0; right: 0; top: 522px; text-align: center; font-size: 15px; font-weight: 600; color: #C3D0E6; }
 
-#s6 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; color: var(--paper); }
-#s6 .duo { display: flex; gap: 18px; }
-#s6 .pill { display: flex; flex-direction: column; gap: 4px; padding: 16px 26px; border-radius: 18px; border: 1px solid #2A3B55; min-width: 250px; }
-#s6 .pill b { font-family: var(--display); font-size: 28px; letter-spacing: -0.03em; }
-#s6 .pill span { font-size: 17px; color: var(--muted-2); }
-#s6 .p1 b { color: var(--tang); } #s6 .p2 b { color: var(--lagoon); }
-#s6 .tag { font-size: 24px; color: var(--muted-2); }
+/* duo */
+#s6 .hl { position: absolute; left: 0; right: 0; top: 36px; margin: 0; text-align: center; font-weight: 800; font-size: 54px; letter-spacing: -0.045em; }
+#s6 .hl.dark { color: var(--slate); clip-path: inset(0 640px 0 0); }
+#s6 .hl.light { color: var(--white); clip-path: inset(0 0 0 640px); }
+#s6 .lbl { position: absolute; top: 650px; width: 640px; text-align: center; font-size: 20px; font-weight: 600; }
+#s6 .lbl b { font-weight: 800; }
+#s6 .l1 { left: 0; color: var(--muted); } #s6 .l1 b { color: var(--navy); }
+#s6 .l2 { left: 640px; color: #C3D0E6; } #s6 .l2 b { color: var(--white); }
+#fly { position: absolute; left: 474px; top: 356px; height: 46px; padding: 0 18px; border-radius: 14px; background: var(--navy); color: var(--white); font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 10px; box-shadow: 0 14px 30px -8px rgba(30,43,68,.6), 0 0 0 3px rgba(255,255,255,.9); visibility: hidden; font-variant-numeric: tabular-nums; }
+#fly svg { width: 18px; height: 18px; }
+
+/* outro */
+#s7 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; color: var(--white); }
+#s7 .brand .tile { background: var(--white); color: var(--navy-d); box-shadow: 0 30px 60px -20px rgba(0,0,0,.5); }
+#s7 .q { font-size: 40px; font-weight: 800; letter-spacing: -0.04em; }
+#s7 .duo { display: flex; gap: 16px; }
+#s7 .pill { display: flex; flex-direction: column; gap: 3px; padding: 14px 24px; border-radius: 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); min-width: 260px; }
+#s7 .pill b { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+#s7 .pill span { font-size: 15px; color: #C3D0E6; }
+#s7 .btn { display: inline-flex; align-items: center; gap: 10px; height: 54px; padding: 0 28px; border-radius: 14px; background: var(--white); color: var(--navy-d); font-size: 18px; font-weight: 700; }
+#s7 .btn svg { width: 18px; height: 18px; }
 
 /* ---------- phones ---------- */
-.phone { position: absolute; top: 50px; width: 300px; height: 620px; border-radius: 48px; background: #05080D; padding: 10px; box-shadow: 0 50px 90px -40px rgba(16,27,44,.55), inset 0 0 0 2px #2B3445; }
+.phone { position: absolute; top: 50px; width: 300px; height: 620px; border-radius: 48px; background: #05080D; padding: 10px; box-shadow: 0 50px 90px -40px rgba(30,43,68,.55), inset 0 0 0 2px #2B3445; }
 #phoneA { left: 820px; }
-#phoneB { left: 170px; box-shadow: 0 50px 90px -30px rgba(0,0,0,.8), inset 0 0 0 2px #2B3445; }
+#phoneB { left: 150px; box-shadow: 0 50px 90px -30px rgba(0,0,0,.7), inset 0 0 0 2px #2B3445; }
 .screen { position: relative; width: 280px; height: 600px; border-radius: 38px; overflow: hidden; background: var(--white); }
 .island { position: absolute; top: 11px; left: 50%; width: 86px; height: 25px; margin-left: -43px; border-radius: 20px; background: #05080D; z-index: 5; }
-.clockbar { position: absolute; top: 15px; left: 30px; font: 700 13px var(--body); z-index: 5; }
-.scr { position: absolute; inset: 0; padding: 52px 18px 18px; display: flex; flex-direction: column; gap: 12px; }
+.clockbar { position: absolute; top: 15px; left: 30px; font-size: 13px; font-weight: 700; z-index: 5; }
+.scr { position: absolute; inset: 0; padding: 50px 16px 16px; display: flex; flex-direction: column; gap: 11px; }
 .a2, .a3 { visibility: hidden; }
 .muted { color: var(--muted); }
-.h4 { font-family: var(--display); font-weight: 700; font-size: 23px; letter-spacing: -0.03em; line-height: 1.05; margin: 0; }
+.h4 { font-weight: 800; font-size: 21px; letter-spacing: -0.035em; line-height: 1.08; margin: 0; }
 .small { font-size: 12px; }
+.lab { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
 
-.search { height: 42px; border-radius: 14px; background: var(--paper); display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 15px; font-weight: 600; }
-.search svg { width: 16px; height: 16px; color: var(--muted); flex: none; }
-.typed { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; }
-.caret { width: 2px; height: 18px; background: var(--tang); animation: blink 1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+.app-top { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 800; letter-spacing: -0.02em; }
+.app-top .tile { width: 22px; height: 22px; border-radius: 6px; font-size: 13px; }
+.search { height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--white); display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 13px; color: var(--muted-2); box-shadow: 0 6px 14px -10px rgba(30,41,59,.3); }
+.search svg { width: 15px; height: 15px; flex: none; }
 .chips { display: flex; gap: 6px; }
-.chips span { font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: var(--paper); color: var(--muted); }
-.chips .on { background: var(--ink); color: var(--white); }
-.card { display: flex; gap: 10px; align-items: center; padding: 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--white); }
-.av { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font: 800 14px var(--display); flex: none; }
-.card .nm { font-weight: 700; font-size: 14px; }
-.card .mt { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.card .nx { font: 700 10.5px var(--mono); color: var(--tang); margin-top: 4px; }
+.chip { font-size: 11.5px; font-weight: 600; padding: 7px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--slate); }
+.chip.on { background: var(--slate); border-color: var(--slate); color: var(--white); }
+.cnt { position: relative; width: 60px; height: 14px; overflow: hidden; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.cnt span { position: absolute; right: 0; top: 0; }
+#n1 { visibility: hidden; }
+.sal { border-radius: 16px; border: 1px solid var(--line); overflow: hidden; background: var(--white); box-shadow: 0 10px 20px -16px rgba(30,41,59,.4); }
+.sal .cover { height: 62px; position: relative; }
+.sal .cover em { position: absolute; left: 10px; top: 10px; font-style: normal; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: rgba(15,23,42,.55); color: var(--white); }
+.sal .row { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; }
+.sal .nm { font-size: 14.5px; font-weight: 800; letter-spacing: -0.02em; }
+.sal .ct { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.sal .go { font-size: 11.5px; font-weight: 700; padding: 7px 11px; border-radius: 999px; background: var(--navy-t); color: var(--navy-d); }
 
 .back { display: flex; align-items: center; gap: 8px; }
 .back svg { width: 18px; height: 18px; }
-.svc { font-size: 12px; color: var(--muted); margin-top: -6px; }
+.sub { font-size: 12px; color: var(--muted); margin-top: -6px; }
+.opt { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--line); font-size: 13px; font-weight: 600; }
+.opt.on { border-color: var(--navy); background: var(--navy-t); }
+.opt small { color: var(--muted); font-weight: 500; }
 .days { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
 .day { border-radius: 12px; border: 1px solid var(--line); padding: 6px 0; text-align: center; }
 .day small { display: block; font-size: 10px; color: var(--muted); font-weight: 600; }
-.day b { font: 700 16px var(--display); }
-.day.on { background: var(--ink); border-color: var(--ink); color: var(--white); }
-.day.on small { color: var(--muted-2); }
-.lab { font: 700 10.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.day b { font-size: 15px; font-weight: 800; }
+.day.on { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.day.on small { color: #C3D0E6; }
 .slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.slot { height: 38px; border-radius: 12px; border: 1.5px solid var(--line); display: grid; place-items: center; font: 700 13px var(--mono); background: var(--white); color: var(--ink); }
-.slot.taken { background: var(--paper); color: #B3BDCB; text-decoration: line-through; border-color: transparent; }
-.cta { margin-top: auto; position: relative; height: 50px; border-radius: 16px; background: var(--ink); color: var(--white); overflow: hidden; font-weight: 700; font-size: 15px; }
+.slot { height: 36px; border-radius: 11px; border: 1.5px solid var(--line); display: grid; place-items: center; font-size: 13px; font-weight: 700; background: var(--white); color: var(--slate); font-variant-numeric: tabular-nums; }
+.slot.taken { background: var(--bg); color: #B8C2D0; text-decoration: line-through; border-color: transparent; }
+.cta { margin-top: auto; position: relative; height: 48px; border-radius: 14px; background: #CBD5E1; color: var(--white); overflow: hidden; font-weight: 700; font-size: 15px; }
 .cta span { position: absolute; inset: 0; display: grid; place-items: center; }
 #ctaB { visibility: hidden; }
 
-.a3 { align-items: center; text-align: center; padding-top: 80px; gap: 14px; }
-.ok { width: 96px; height: 96px; border-radius: 50%; background: var(--tang-tint); display: grid; place-items: center; }
-.ok svg { width: 48px; height: 48px; }
-#check { fill: none; stroke: var(--tang); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; }
-.ticket { width: 100%; text-align: left; border-radius: 18px; background: var(--paper); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
-.ticket .big { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; }
-.ticket .big b { font: 700 26px var(--mono); color: var(--tang); }
-.ticket hr { border: 0; border-top: 1.5px dashed #C8D1DD; width: 100%; margin: 4px 0; }
-.ghost { width: 100%; height: 46px; border-radius: 14px; border: 1.5px solid var(--line); display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.a3 { align-items: center; text-align: center; padding-top: 78px; gap: 13px; }
+.ok { width: 92px; height: 92px; border-radius: 50%; background: var(--ok-t); display: grid; place-items: center; }
+.ok svg { width: 46px; height: 46px; }
+#check { fill: none; stroke: var(--ok); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; }
+.a3 p { margin: -4px 0 4px; font-size: 13px; color: var(--muted); line-height: 1.4; }
+.ticket { width: 100%; text-align: left; border-radius: 16px; background: var(--bg); border: 1px solid var(--line); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.ticket .big { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; font-size: 14px; }
+.ticket .big b { font-size: 26px; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; }
+.ticket hr { border: 0; border-top: 1.5px dashed #CBD5E1; width: 100%; margin: 4px 0; }
+.ghost { width: 100%; height: 44px; border-radius: 13px; border: 1.5px solid var(--line); display: grid; place-items: center; font-weight: 700; font-size: 13.5px; }
 
-#tap { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(16,27,44,.22); border: 2px solid rgba(16,27,44,.55); z-index: 9; visibility: hidden; pointer-events: none; }
+#tap { position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(50,78,128,.22); border: 2px solid rgba(50,78,128,.6); z-index: 9; visibility: hidden; pointer-events: none; }
 
 /* pro screen */
-.b { background: #121E30; color: var(--paper); }
-.b .clockbar { color: var(--paper); }
-.bhead { display: flex; justify-content: space-between; align-items: flex-end; }
-.bhead .small { color: var(--muted-2); }
-.count { position: relative; height: 30px; min-width: 76px; border-radius: 999px; background: rgba(39,194,176,.16); color: var(--lagoon); font: 700 12px var(--mono); overflow: hidden; }
-.count span { position: absolute; inset: 0; display: grid; place-items: center; }
-#c6 { visibility: hidden; }
-.agenda { position: absolute; left: 14px; right: 14px; top: 124px; height: 430px; }
-.hr { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid #24344D; }
-.hr span { position: absolute; left: 0; top: -8px; font: 500 10px var(--mono); color: #6C7D96; background: #121E30; padding-right: 6px; }
-.blk { position: absolute; left: 40px; right: 0; height: 32px; border-radius: 9px; background: var(--ink-2); border-left: 3px solid #4C6384; padding: 0 10px; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: #C9D3E2; white-space: nowrap; overflow: hidden; }
-.blk b { font: 700 10.5px var(--mono); color: var(--muted-2); }
-.blk.new { background: var(--lagoon); border-left-color: var(--white); color: #06231F; visibility: hidden; }
-.blk.new b { color: #06231F; }
-#toast { position: absolute; top: 46px; left: 12px; right: 12px; z-index: 6; border-radius: 18px; background: var(--paper); color: var(--ink); padding: 10px 12px; display: flex; gap: 10px; align-items: center; box-shadow: 0 16px 30px -10px rgba(0,0,0,.6); visibility: hidden; }
-#toast i { width: 34px; height: 34px; border-radius: 10px; background: var(--lagoon); color: var(--white); display: grid; place-items: center; flex: none; }
-#toast svg { width: 18px; height: 18px; }
+.b { background: var(--bg); }
+.bhead { display: flex; justify-content: space-between; align-items: center; }
+.bhead b { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
+.dots { display: flex; }
+.dots i { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--bg); margin-left: -6px; }
+.appt { display: flex; align-items: center; gap: 10px; padding: 10px 11px; border-radius: 13px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 8px 16px -14px rgba(30,41,59,.4); }
+.appt .t { font-size: 11.5px; font-weight: 700; color: var(--muted); width: 36px; font-variant-numeric: tabular-nums; }
+.appt .bar { width: 3px; align-self: stretch; border-radius: 2px; background: var(--navy); }
+.appt .who { flex: 1; min-width: 0; }
+.appt .who b { display: block; font-size: 13px; font-weight: 700; }
+.appt .who span { display: block; font-size: 11px; color: var(--muted-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appt .bd { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 999px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.appt.new { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(50,78,128,.15); visibility: hidden; }
+.appt.new .bd { padding: 4px 7px; background: var(--navy); color: var(--white); border-color: var(--navy); }
+.gap { font-size: 11px; color: var(--muted-2); text-align: center; padding: 2px 0; border: 1.5px dashed var(--line); border-radius: 12px; height: 40px; display: grid; place-items: center; }
+.ca { margin-top: auto; border-radius: 14px; padding: 13px 14px; display: flex; justify-content: space-between; align-items: center; color: var(--white); }
+.ca span { font-size: 13px; font-weight: 600; color: #C3D0E6; }
+.ca .v { position: relative; width: 100px; height: 24px; overflow: hidden; }
+.ca .v b { position: absolute; right: 0; top: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+#ca2 { visibility: hidden; }
+#toast { position: absolute; top: 44px; left: 10px; right: 10px; z-index: 6; border-radius: 16px; background: var(--slate); color: var(--white); padding: 10px 12px; display: flex; gap: 10px; align-items: center; box-shadow: 0 16px 30px -10px rgba(0,0,0,.5); visibility: hidden; }
+#toast i { width: 34px; height: 34px; border-radius: 10px; flex: none; }
+#toast i.tile { font-size: 18px; border-radius: 10px; font-style: normal; }
 #toast b { font-size: 13px; display: block; }
-#toast span { font-size: 11.5px; color: var(--muted); }
+#toast span { font-size: 11.5px; color: var(--muted-2); }
+#gap1430 { position: relative; }
 
 @media (max-width: 560px) { .controls .time { display: none; } }
+@media (max-width: 700px) { .head p { display: none; } }
 </style>
 </head>
 <body>
 
 <main>
   <div class="head">
-    <h1><em>Slotime</em> &amp; <b>Slotime Pro</b></h1>
-    <p>Motion de présentation · 26 s · en boucle</p>
+    <h1><span class="tile">S</span>Slotime &amp; <span class="pro">Slotime Pro</span></h1>
+    <p>Motion de présentation · 33 s · en boucle</p>
   </div>
 
   <div class="frame" id="frame">
-    <div class="stage" id="stage" role="img" aria-label="Animation : un client réserve un créneau dans Slotime, le rendez-vous apparaît dans l'agenda Slotime Pro du professionnel.">
-      <div class="layer" id="bgInk"></div>
-      <div class="layer" id="bgSplit"></div>
+    <div class="stage" id="stage" role="img" aria-label="Animation : une cliente réserve le salon Névara dans Slotime, le rendez-vous arrive dans l'agenda Slotime Pro du salon, puis les trois formules et le rappel slotime.fr.">
+      <div class="layer navy-bg" id="bgInk"></div>
+      <div class="layer navy-bg" id="bgSplit"></div>
 
-      <!-- Scene 1 : logo -->
+      <!-- 1 · Logo -->
       <div class="layer" id="s1">
-        <div class="wordmark">
-          <span class="ch">S</span><span class="ch">l</span>
-          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="clock-ring" id="ring" cx="50" cy="50" r="42"/><line class="clock-hand" id="hand" x1="50" y1="50" x2="50" y2="24"/><circle class="clock-dot" cx="50" cy="50" r="7"/></svg>
-          <span class="ch">t</span><span class="ch">i</span><span class="ch">m</span><span class="ch">e</span>
+        <div class="brand">
+          <span class="tile" id="tile1">S</span>
+          <span class="wm" id="wm1"><span>S</span><span>l</span><span>o</span><span>t</span><span>i</span><span>m</span><span>e</span></span>
         </div>
-        <div class="tag">Le bon créneau, au bon moment.</div>
+        <div class="tag">Caisse &amp; réservation pour salons</div>
       </div>
 
-      <!-- Scene 2 : client text -->
+      <!-- 2 · Slotime clients -->
       <div id="s2t">
-        <div class="eyebrow">Slotime · l'app client</div>
-        <div class="h2">Réservez votre rendez-vous en trois gestes.</div>
-        <ol class="steps">
-          <li id="st1"><span>1</span>Trouvez un pro près de chez vous</li>
-          <li id="st2"><span>2</span>Choisissez un créneau libre</li>
-          <li id="st3"><span>3</span>C'est confirmé, rappel la veille</li>
-        </ol>
+        <span class="eyebrow">Slotime · pour les clients</span>
+        <div class="h2">Réservez votre salon de beauté en ligne, 24h/24.</div>
+        <div class="steps">
+          <div class="step" id="st1"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></i><div><b>Trouvez</b><span>Cherchez un salon par son nom, filtrez par ville.</span></div></div>
+          <div class="step" id="st2"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><div><b>Choisissez</b><span>Sélectionnez la prestation, le pro et le créneau.</span></div></div>
+          <div class="step" id="st3"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg></i><div><b>Réservez</b><span>Confirmez en ligne, sans appel. C'est instantané.</span></div></div>
+        </div>
       </div>
 
-      <!-- Scene 4 : pro text -->
+      <!-- 4 · Slotime Pro -->
       <div id="s4t">
-        <div class="eyebrow">Slotime Pro · l'app des professionnels</div>
-        <div class="h2">Votre agenda se remplit pendant que vous travaillez.</div>
-        <ul class="feats">
-          <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></i>Réservations en temps réel, sans un appel</li>
-          <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></i>Rappels automatiques pour vos clients</li>
-          <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></i>Votre journée et votre activité d'un coup d'œil</li>
-        </ul>
+        <span class="eyebrow">Slotime Pro · pour les salons</span>
+        <div class="h2">La caisse et l'agenda qui <em>remplissent vos créneaux.</em></div>
+        <div class="feats">
+          <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></i><div><b>Agenda intelligent</b><span>Multi-praticiens, glisser-déposer, rappels auto.</span></div></div>
+          <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></i><div><b>Réservation en ligne</b><span>Votre page 24h/24, à votre marque.</span></div></div>
+          <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg></i><div><b>Caisse &amp; stock</b><span>Tickets, clôture NF525, scanette code-barres.</span></div></div>
+          <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9Z"/></svg></i><div><b>Fidélité &amp; avis</b><span>Points et collecte d'avis clients.</span></div></div>
+          <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></i><div><b>Statistiques</b><span>CA, panier moyen, perf. par praticien.</span></div></div>
+          <div class="feat"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1ZM17 9a4 4 0 0 1 0 6"/></svg></i><div><b>Marketing</b><span>SMS/email, codes promo, relances.</span></div></div>
+        </div>
       </div>
 
-      <!-- Scene 5 : duo -->
+      <!-- 5 · Tarifs & métiers -->
       <div class="layer" id="s5">
-        <h2>Deux apps. Un même créneau.</h2>
+        <div class="title"><div class="h2">Trois formules, à votre rythme</div><p>De l'agenda seul à la caisse complète. Engagement 1 an, installation en 10 min.</p></div>
+        <div class="plans">
+          <div class="plan"><div class="nm">Réservation</div><div class="pr">65 € <small>HT / mois</small></div><div class="ds">Agenda &amp; réservation en ligne</div></div>
+          <div class="plan"><div class="nm">Standard <em>POPULAIRE</em></div><div class="pr">75 € <small>HT / mois</small></div><div class="ds">Agenda, caisse &amp; encaissements</div></div>
+          <div class="plan top"><div class="nm">Caisse <em>COMPLET</em></div><div class="pr">90 € <small>HT / mois</small></div><div class="ds">Tout Standard · 0 % de commission</div></div>
+        </div>
+        <div class="metiers-l">Pensé pour tous les métiers de la beauté</div>
+        <div class="metiers"><span>Coiffeur</span><span>Barbier</span><span>Institut</span><span>Esthétique</span><span>Massage</span><span>Onglerie</span><span>Spa</span><span>Maquillage</span></div>
+      </div>
+
+      <!-- 6 · Duo -->
+      <div class="layer" id="s6">
+        <h2 class="hl dark">Deux apps. Un même créneau.</h2>
+        <h2 class="hl light" aria-hidden="true">Deux apps. Un même créneau.</h2>
         <div class="lbl l1"><b>Slotime</b> · pour vos clients</div>
-        <div class="lbl l2"><b>Slotime Pro</b> · pour votre activité</div>
-        <div id="fly">● 14:30</div>
+        <div class="lbl l2"><b>Slotime Pro</b> · pour votre salon</div>
+        <div id="fly"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>14:30</div>
       </div>
 
       <!-- Phone A : Slotime -->
@@ -236,30 +297,28 @@ main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column;
           <div id="tap"></div>
 
           <div class="scr a1">
-            <div class="small muted">Bonjour Léa</div>
-            <div class="h4">Qui voulez-vous voir&nbsp;?</div>
-            <div class="search">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-              <span class="typed" id="typed">coiffeur</span><i class="caret"></i>
+            <div class="app-top"><span class="tile">S</span>Slotime</div>
+            <div class="h4">Réservez votre salon de beauté en ligne</div>
+            <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Rechercher un salon</div>
+            <div class="chips"><span class="chip on" id="chAll">Toutes les villes</span><span class="chip">Biguglia</span><span class="chip" id="chParis">Paris</span></div>
+            <div class="lab">Salons disponibles <span class="cnt"><span id="n2">2 salons</span><span id="n1">1 salon</span></span></div>
+            <div class="sal" id="salCoal">
+              <div class="cover" style="background:linear-gradient(120deg,#6D5DF5,#4F46E5)"><em>Coiffeur</em></div>
+              <div class="row"><div><div class="nm">Co’al coiffure</div><div class="ct">Biguglia</div></div><span class="go">Réserver ›</span></div>
             </div>
-            <div class="chips"><span class="on">Coiffure</span><span>Barbier</span><span>Ongles</span><span>Massage</span></div>
-            <div class="card" id="card1">
-              <div class="av" style="background:var(--tang-tint);color:var(--tang)">AN</div>
-              <div><div class="nm">Atelier Nova</div><div class="mt">Coiffure · 0,4 km · ★ 4,9</div><div class="nx">AUJOURD'HUI 14:30</div></div>
-            </div>
-            <div class="card">
-              <div class="av" style="background:#E0F5F2;color:#15877A">MC</div>
-              <div><div class="nm">Maison Ciseaux</div><div class="mt">Coiffure · 0,9 km · ★ 4,8</div><div class="nx">DEMAIN 10:00</div></div>
-            </div>
-            <div class="card">
-              <div class="av" style="background:#E6EAF2;color:var(--ink)">SL</div>
-              <div><div class="nm">Studio Lina</div><div class="mt">Coiffure · 1,3 km · ★ 4,7</div><div class="nx">JEU. 09:30</div></div>
+            <div class="sal" id="salNev">
+              <div class="cover" style="background:linear-gradient(120deg,#C9B49B,#7E6A55)"><em>Coiffeur</em></div>
+              <div class="row"><div><div class="nm">Névara</div><div class="ct">Paris</div></div><span class="go" id="goNev">Réserver ›</span></div>
             </div>
           </div>
 
           <div class="scr a2">
-            <div class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m15 5-7 7 7 7"/></svg><div class="h4">Atelier Nova</div></div>
-            <div class="svc">Coupe + brushing · 45 min · 38 €</div>
+            <div class="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m15 5-7 7 7 7"/></svg><div class="h4">Névara</div></div>
+            <div class="sub">Coiffeur · Paris</div>
+            <div class="lab">Prestation</div>
+            <div class="opt on">Coupe + brushing <small>45 min</small></div>
+            <div class="opt">Balayage <small>2 h</small></div>
+            <div class="lab">Mardi 14 octobre</div>
             <div class="days">
               <div class="day"><small>LUN</small><b>13</b></div>
               <div class="day on"><small>MAR</small><b>14</b></div>
@@ -267,23 +326,22 @@ main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column;
               <div class="day"><small>JEU</small><b>16</b></div>
               <div class="day"><small>VEN</small><b>17</b></div>
             </div>
-            <div class="lab">Créneaux du mardi</div>
             <div class="slots">
-              <div class="slot taken">09:00</div><div class="slot">09:45</div><div class="slot taken">10:30</div>
-              <div class="slot taken">11:15</div><div class="slot taken">13:45</div><div class="slot" id="slot1430">14:30</div>
-              <div class="slot taken">15:15</div><div class="slot">16:00</div><div class="slot">17:30</div>
+              <div class="slot taken">09:30</div><div class="slot taken">10:00</div><div class="slot taken">11:00</div>
+              <div class="slot">11:45</div><div class="slot" id="slot1430">14:30</div><div class="slot">16:00</div>
             </div>
-            <div class="cta" id="cta"><span id="ctaA">Choisir un créneau</span><span id="ctaB">Réserver · 14:30</span></div>
+            <div class="cta" id="cta"><span id="ctaA">Choisissez un créneau</span><span id="ctaB">Réserver · 14:30</span></div>
           </div>
 
           <div class="scr a3">
             <div class="ok"><svg viewBox="0 0 48 48"><path id="check" d="M12 25l8 8 16-17"/></svg></div>
-            <div class="h4">C'est réservé&nbsp;!</div>
+            <div class="h4">Réservation confirmée</div>
+            <p>Confirmée en ligne, sans appel.<br>C'est instantané.</p>
             <div class="ticket">
               <div class="big"><span>Mardi 14 octobre</span><b>14:30</b></div>
-              <div class="small muted">Atelier Nova · Coupe + brushing</div>
+              <div class="small muted">Névara · Coupe + brushing</div>
               <hr>
-              <div class="small">Rappel envoyé la veille à 18:00</div>
+              <div class="small">Rappel automatique avant le rendez-vous</div>
             </div>
             <div class="ghost">Ajouter à mon agenda</div>
           </div>
@@ -295,48 +353,36 @@ main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column;
         <div class="screen b">
           <div class="island"></div><div class="clockbar">9:41</div>
           <div id="toast">
-            <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></i>
-            <div><b>Nouvelle réservation</b><span>Léa M. · Coupe + brushing · 14:30</span></div>
+            <i class="tile">S</i>
+            <div><b>Nouvelle réservation en ligne</b><span>Léa M. · Coupe + brushing · 14:30</span></div>
           </div>
           <div class="scr">
-            <div class="bhead">
-              <div><div class="small">Atelier Nova</div><div class="h4">Mardi 14 oct.</div></div>
-              <div class="count"><span id="c5">5 RDV</span><span id="c6">6 RDV</span></div>
+            <div class="bhead"><b>Agenda · Aujourd'hui</b><span class="dots"><i style="background:#324E80"></i><i style="background:#1E2B44"></i><i style="background:#64748B"></i></span></div>
+            <div class="appt"><span class="t">09:30</span><span class="bar"></span><span class="who"><b>Camille D.</b><span>Balayage</span></span><span class="bd">En ligne</span></div>
+            <div class="appt"><span class="t">10:00</span><span class="bar"></span><span class="who"><b>Emma B.</b><span>Coupe + brushing</span></span><span class="bd">En ligne</span></div>
+            <div class="appt"><span class="t">11:00</span><span class="bar"></span><span class="who"><b>Lucas M.</b><span>Coupe homme</span></span><span class="bd">En ligne</span></div>
+            <div id="gap1430">
+              <div class="gap" id="gapTxt">14:30 · créneau libre</div>
+              <div class="appt new" id="newAppt" style="position:absolute;inset:0"><span class="t">14:30</span><span class="bar"></span><span class="who"><b>Léa M.</b><span>Coupe + brushing</span></span><span class="bd">Nouveau</span></div>
             </div>
-          </div>
-          <div class="agenda">
-            <div class="hr" style="top:0"><span>09</span></div>
-            <div class="hr" style="top:46px"><span>10</span></div>
-            <div class="hr" style="top:92px"><span>11</span></div>
-            <div class="hr" style="top:138px"><span>12</span></div>
-            <div class="hr" style="top:184px"><span>13</span></div>
-            <div class="hr" style="top:230px"><span>14</span></div>
-            <div class="hr" style="top:276px"><span>15</span></div>
-            <div class="hr" style="top:322px"><span>16</span></div>
-            <div class="hr" style="top:368px"><span>17</span></div>
-            <div class="hr" style="top:414px"><span>18</span></div>
-            <div class="blk" style="top:1px"><b>09:00</b>Camille R. · Coupe</div>
-            <div class="blk" style="top:70px;height:67px"><b>10:30</b>Inès T. · Couleur</div>
-            <div class="blk" style="top:219px"><b>13:45</b>Marc D. · Coupe homme</div>
-            <div class="blk new" id="newBlk" style="top:254px"><b>14:30</b>Léa M. · Coupe + brushing</div>
-            <div class="blk" style="top:288px"><b>15:15</b>Sarah B. · Brushing</div>
-            <div class="blk" style="top:357px"><b>16:45</b>Nadia K. · Soin</div>
+            <div class="appt"><span class="t">16:00</span><span class="bar"></span><span class="who"><b>Inès T.</b><span>Couleur</span></span><span class="bd">En ligne</span></div>
+            <div class="ca navy-bg"><span>CA du jour</span><span class="v"><b id="ca1">576,00 €</b><b id="ca2">614,00 €</b></span></div>
           </div>
         </div>
       </div>
 
-      <!-- Scene 6 : outro -->
-      <div class="layer" id="s6">
-        <div class="wordmark">
-          <span class="ch">S</span><span class="ch">l</span>
-          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="clock-ring" id="ring2" cx="50" cy="50" r="42"/><line class="clock-hand" x1="50" y1="50" x2="50" y2="24"/><circle class="clock-dot" cx="50" cy="50" r="7"/></svg>
-          <span class="ch">t</span><span class="ch">i</span><span class="ch">m</span><span class="ch">e</span>
+      <!-- 7 · Outro -->
+      <div class="layer" id="s7">
+        <div class="brand">
+          <span class="tile" id="tile2">S</span>
+          <span class="wm" id="wm2"><span>S</span><span>l</span><span>o</span><span>t</span><span>i</span><span>m</span><span>e</span></span>
         </div>
+        <div class="q">Prêt à remplir vos créneaux&nbsp;?</div>
         <div class="duo">
-          <div class="pill p1"><b>Slotime</b><span>Pour réserver en quelques secondes</span></div>
-          <div class="pill p2"><b>Slotime Pro</b><span>Pour gérer son agenda sans effort</span></div>
+          <div class="pill"><b>slotime.fr</b><span>Réservez votre salon en ligne</span></div>
+          <div class="pill"><b>slotime.fr/pro</b><span>Le logiciel tout-en-un du salon</span></div>
         </div>
-        <div class="tag">Le bon créneau, au bon moment.</div>
+        <span class="btn">Démarrer maintenant <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
       </div>
     </div>
   </div>
@@ -345,9 +391,9 @@ main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column;
     <button id="play" type="button" aria-label="Pause">❚❚ <span>Pause</span></button>
     <button id="restart" type="button">↺ Rejouer</button>
     <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position dans l'animation">
-    <span class="time" id="time">0:00 / 0:26</span>
+    <span class="time" id="time">0:00 / 0:33</span>
   </div>
-  <p class="note">Le parcours montré : Léa trouve un salon dans Slotime, réserve 14:30, et le rendez-vous tombe aussitôt dans l'agenda Slotime Pro du salon. Les noms, horaires et prix sont des exemples.</p>
+  <p class="note">Textes, salons, fonctionnalités et tarifs repris de <a href="https://www.slotime.fr" target="_blank" rel="noopener">slotime.fr</a> et <a href="https://www.slotime.fr/pro" target="_blank" rel="noopener">slotime.fr/pro</a>. La cliente, l'horaire et le montant du jour sont des exemples.</p>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -365,109 +411,123 @@ main { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column;
   ready.then(function () {
     fit();
     const scr = document.getElementById('scrA');
-    // Measure tap targets (in unscaled screen pixels) before any tween moves things.
-    const at = function (el) {
+    const box = function (el) {
       const r = el.getBoundingClientRect(), c = scr.getBoundingClientRect(), k = c.width / scr.offsetWidth;
-      return { x: (r.left + r.width / 2 - c.left) / k - 22, y: (r.top + r.height / 2 - c.top) / k - 22 };
+      return { x: (r.left + r.width / 2 - c.left) / k - 22, y: (r.top + r.height / 2 - c.top) / k - 22, top: (r.top - c.top) / k };
     };
-    const card1 = document.getElementById('card1'), slot = document.getElementById('slot1430'), cta = document.getElementById('cta');
-    const pCard = at(card1), pSlot = at(slot), pCta = at(cta);
-    const typed = document.getElementById('typed');
-    const typedW = typed.offsetWidth;
+    const $ = id => document.getElementById(id);
+    const coal = $('salCoal'), nev = $('salNev'), goNev = $('goNev'), chParis = $('chParis'), slot = $('slot1430'), cta = $('cta');
+    const pParis = box(chParis), pSlot = box(slot), pCta = box(cta);
+    const pGo = box(goNev); pGo.y -= box(nev).top - box(coal).top; // Névara slides up once Co'al is filtered out
+    const coalH = coal.offsetHeight;
 
     const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.8, paused: true, defaults: { ease: 'power3.out', duration: 0.7 } });
     const tap = function (el, p, t) {
       tl.set('#tap', { left: p.x, top: p.y }, t)
         .fromTo('#tap', { scale: 0.3, autoAlpha: 0.95 }, { scale: 1.5, autoAlpha: 0, duration: 0.55, ease: 'power2.out', immediateRender: false }, t)
-        .to(el, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
+        .to(el, { scale: 0.94, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t);
     };
 
     // 1 · Logo
-    tl.fromTo('#ring', { strokeDashoffset: 264 }, { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut' }, 0)
-      .fromTo('#hand', { rotation: -360, svgOrigin: '50 50' }, { rotation: 0, svgOrigin: '50 50', duration: 1.5, ease: 'expo.out' }, 0.2)
-      .from('#s1 .ch', { y: 50, autoAlpha: 0, stagger: 0.05, duration: 0.6 }, 0.45)
+    tl.from('#tile1', { scale: 0, rotation: -25, duration: 0.9, ease: 'back.out(1.8)' }, 0.1)
+      .from('#wm1 span', { x: -30, autoAlpha: 0, stagger: 0.05, duration: 0.55 }, 0.6)
       .from('#s1 .tag', { y: 20, autoAlpha: 0 }, 1.3)
       .to('#s1', { y: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 3.0);
 
-    // 2 · Slotime (client)
+    // 2 · Slotime (clients)
     tl.from('#s2t > *', { y: 30, autoAlpha: 0, stagger: 0.1 }, 3.4)
       .from('#phoneA', { y: 760, duration: 1.1, ease: 'expo.out' }, 3.5)
-      .to('#st1', { opacity: 1, duration: 0.4 }, 4.3)
-      .fromTo('#typed', { width: 0 }, { width: typedW, duration: 0.8, ease: 'steps(8)' }, 4.5)
-      .from('.a1 .card', { y: 24, autoAlpha: 0, stagger: 0.12, duration: 0.5 }, 5.3);
-    tap(card1, pCard, 6.1);
-    tl.to('.a1', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 6.35)
-      .fromTo('.a2', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 6.35)
-      .to('#st1', { opacity: 0.3, duration: 0.4 }, 6.4)
-      .to('#st2', { opacity: 1, duration: 0.4 }, 6.4)
-      .from('.a2 .slot', { scale: 0.8, autoAlpha: 0, stagger: 0.04, duration: 0.35 }, 6.7);
-    tap(slot, pSlot, 7.7);
-    tl.to(slot, { backgroundColor: '#FF5B35', borderColor: '#FF5B35', color: '#FFFFFF', duration: 0.25 }, 7.8)
-      .to('#ctaA', { yPercent: -100, autoAlpha: 0, duration: 0.3 }, 7.95)
-      .fromTo('#ctaB', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.3 }, 7.95)
-      .to(cta, { backgroundColor: '#FF5B35', duration: 0.3 }, 7.95);
-    tap(cta, pCta, 8.6);
-    tl.to('.a2', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 8.85)
-      .fromTo('.a3', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 8.85)
-      .to('#st2', { opacity: 0.3, duration: 0.4 }, 8.9)
-      .to('#st3', { opacity: 1, duration: 0.4 }, 8.9)
-      .from('.a3 .ok', { scale: 0.4, duration: 0.6, ease: 'back.out(2)' }, 9.1)
-      .fromTo('#check', { strokeDashoffset: 60 }, { strokeDashoffset: 0, duration: 0.5 }, 9.3)
-      .from('.a3 .ticket, .a3 .ghost', { y: 20, autoAlpha: 0, stagger: 0.1 }, 9.4);
+      .to('#st1', { opacity: 1, duration: 0.4 }, 4.4)
+      .from('.a1 .sal', { y: 24, autoAlpha: 0, stagger: 0.12, duration: 0.5 }, 4.6);
+    tap(chParis, pParis, 5.4);
+    tl.to('#chAll', { backgroundColor: '#FFFFFF', color: '#1E293B', borderColor: '#E2E8F0', duration: 0.25 }, 5.5)
+      .to(chParis, { backgroundColor: '#1E293B', color: '#FFFFFF', borderColor: '#1E293B', duration: 0.25 }, 5.5)
+      .to('#n2', { yPercent: -100, autoAlpha: 0, duration: 0.3 }, 5.6)
+      .fromTo('#n1', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.3 }, 5.6)
+      .to(coal, { autoAlpha: 0, scale: 0.9, duration: 0.3, ease: 'power2.in' }, 5.6)
+      .to(coal, { height: 0, marginBottom: -11, duration: 0.45, ease: 'power3.inOut' }, 5.85);
+    tap(goNev, pGo, 6.6);
+    tl.to('.a1', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 6.85)
+      .fromTo('.a2', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 6.85)
+      .to('#st1', { opacity: 0.3, duration: 0.4 }, 6.9)
+      .to('#st2', { opacity: 1, duration: 0.4 }, 6.9)
+      .from('.a2 .slot', { scale: 0.8, autoAlpha: 0, stagger: 0.05, duration: 0.35 }, 7.2);
+    tap(slot, pSlot, 8.1);
+    tl.to(slot, { backgroundColor: '#324E80', borderColor: '#324E80', color: '#FFFFFF', duration: 0.25 }, 8.2)
+      .to('#ctaA', { yPercent: -100, autoAlpha: 0, duration: 0.3 }, 8.35)
+      .fromTo('#ctaB', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.3 }, 8.35)
+      .to(cta, { backgroundColor: '#324E80', duration: 0.3 }, 8.35);
+    tap(cta, pCta, 9.0);
+    tl.to('.a2', { xPercent: -30, autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, 9.25)
+      .fromTo('.a3', { xPercent: 100, autoAlpha: 0 }, { xPercent: 0, autoAlpha: 1, duration: 0.55 }, 9.25)
+      .to('#st2', { opacity: 0.3, duration: 0.4 }, 9.3)
+      .to('#st3', { opacity: 1, duration: 0.4 }, 9.3)
+      .from('.a3 .ok', { scale: 0.4, duration: 0.6, ease: 'back.out(2)' }, 9.5)
+      .fromTo('#check', { strokeDashoffset: 60 }, { strokeDashoffset: 0, duration: 0.5 }, 9.7)
+      .from('.a3 p, .a3 .ticket, .a3 .ghost', { y: 20, autoAlpha: 0, stagger: 0.1 }, 9.8);
 
-    // 3 · Wipe to the Pro world
-    tl.to('#s2t', { x: -40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 10.8)
-      .to('#phoneA', { x: 420, autoAlpha: 0, duration: 0.8, ease: 'power2.in' }, 10.9)
-      .fromTo('#bgInk', { clipPath: 'circle(0px at 970px 360px)' }, { clipPath: 'circle(1500px at 970px 360px)', duration: 1.1, ease: 'power2.inOut' }, 10.9);
+    // 3 · Wipe into the navy Pro world
+    tl.to('#s2t', { x: -40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 11.2)
+      .to('#phoneA', { x: 420, autoAlpha: 0, duration: 0.8, ease: 'power2.in' }, 11.3)
+      .fromTo('#bgInk', { clipPath: 'circle(0px at 970px 360px)' }, { clipPath: 'circle(1500px at 970px 360px)', duration: 1.1, ease: 'power2.inOut' }, 11.3);
 
     // 4 · Slotime Pro
-    tl.from('#phoneB', { y: 760, duration: 1.1, ease: 'expo.out' }, 11.8)
-      .from('#s4t .eyebrow, #s4t .h2', { y: 30, autoAlpha: 0, stagger: 0.1 }, 12.2)
-      .from('.b .blk:not(.new)', { x: 30, autoAlpha: 0, stagger: 0.08, duration: 0.45 }, 12.4)
-      .fromTo('#toast', { y: -90, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'back.out(1.6)' }, 13.4)
-      .fromTo('#newBlk', { scaleX: 0, autoAlpha: 0, transformOrigin: '0% 50%' }, { scaleX: 1, autoAlpha: 1, duration: 0.6 }, 13.9)
-      .fromTo('#newBlk', { boxShadow: '0 0 0 0px rgba(39,194,176,0.7)' }, { boxShadow: '0 0 0 14px rgba(39,194,176,0)', duration: 1, ease: 'power2.out', immediateRender: false }, 14.3)
-      .to('#c5', { yPercent: -100, autoAlpha: 0, duration: 0.35 }, 14.1)
-      .fromTo('#c6', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.35 }, 14.1)
-      .from('#s4t .feats li', { y: 20, autoAlpha: 0, stagger: 0.15, duration: 0.5 }, 14.3)
-      .to('#toast', { y: -90, autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, 15.8);
+    tl.from('#phoneB', { y: 760, duration: 1.1, ease: 'expo.out' }, 12.2)
+      .from('#s4t .eyebrow, #s4t .h2', { y: 30, autoAlpha: 0, stagger: 0.1 }, 12.5)
+      .from('.b .appt:not(.new), .b .gap, .b .ca', { x: 24, autoAlpha: 0, stagger: 0.07, duration: 0.45 }, 12.7)
+      .fromTo('#toast', { y: -90, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'back.out(1.6)' }, 13.8)
+      .to('#gapTxt', { autoAlpha: 0, duration: 0.2 }, 14.3)
+      .fromTo('#newAppt', { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.55, ease: 'back.out(1.8)' }, 14.3)
+      .to('#ca1', { yPercent: -100, autoAlpha: 0, duration: 0.35 }, 14.7)
+      .fromTo('#ca2', { yPercent: 100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.35 }, 14.7)
+      .from('#s4t .feat', { y: 20, autoAlpha: 0, stagger: 0.1, duration: 0.5 }, 14.6)
+      .to('#toast', { y: -90, autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, 16.4);
 
-    // 5 · Both apps, one slot
-    tl.to('#s4t', { x: 40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 16.8)
-      .set('#bgSplit', { visibility: 'visible' }, 17.2)
-      .set('#bgInk', { visibility: 'hidden' }, 17.2)
-      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 640px)', duration: 0.9, ease: 'power3.inOut' }, 17.2)
-      .to('#phoneB', { x: 640, y: 80, scale: 0.8, transformOrigin: '50% 0%', duration: 0.9, ease: 'power3.inOut' }, 17.2)
-      .fromTo('#phoneA', { x: -1000, y: 80, scale: 0.8, autoAlpha: 1, transformOrigin: '50% 0%' }, { x: -650, duration: 0.9, immediateRender: false }, 17.4)
-      .from('#s5 h2', { y: -30, autoAlpha: 0 }, 17.9)
-      .from('#s5 .lbl', { y: 20, autoAlpha: 0, stagger: 0.12 }, 18.1)
-      .fromTo('#fly', { x: 0, scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, 18.8)
-      .to('#fly', { x: 330, duration: 1.2, ease: 'power2.inOut' }, 19.1)
-      .to('#fly', { scale: 0.5, autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 20.25)
-      .fromTo('#newBlk', { scale: 1 }, { scale: 1.08, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, 20.35);
+    // 5 · Tarifs & métiers
+    tl.to('#s4t', { x: 40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 17.6)
+      .to('#phoneB', { y: '+=760', duration: 0.7, ease: 'power3.in' }, 17.6)
+      .from('#s5 .title > *', { y: 30, autoAlpha: 0, stagger: 0.1 }, 18.2)
+      .from('#s5 .plan', { y: 70, autoAlpha: 0, stagger: 0.12, duration: 0.8, ease: 'expo.out' }, 18.5)
+      .from('#s5 .metiers-l', { autoAlpha: 0 }, 19.3)
+      .from('#s5 .metiers span', { y: 16, autoAlpha: 0, stagger: 0.05, duration: 0.4 }, 19.4)
+      .to('#s5', { autoAlpha: 0, y: -20, duration: 0.5, ease: 'power2.in' }, 22.4);
 
-    // 6 · Outro
-    tl.to('#s5', { autoAlpha: 0, duration: 0.4 }, 21.2)
-      .to('#phoneA, #phoneB', { y: '+=720', duration: 0.8, ease: 'power3.in', stagger: 0.06 }, 21.2)
-      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.8, ease: 'power3.inOut' }, 21.5)
-      .from('#s6 .wordmark .ch, #s6 .wordmark svg', { y: 50, autoAlpha: 0, stagger: 0.05, duration: 0.6 }, 22.1)
-      .fromTo('#ring2', { strokeDashoffset: 264 }, { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut' }, 22.0)
-      .from('#s6 .duo > *', { y: 20, autoAlpha: 0, stagger: 0.12 }, 22.7)
-      .from('#s6 .tag', { autoAlpha: 0, duration: 0.8 }, 23.3)
-      .to({}, { duration: 0.01 }, 26);
+    // 6 · Both apps, one slot
+    tl.set('#bgSplit', { visibility: 'visible' }, 22.8)
+      .set('#bgInk', { visibility: 'hidden' }, 22.8)
+      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 640px)', duration: 0.9, ease: 'power3.inOut' }, 22.8)
+      .fromTo('#phoneB', { x: 660, y: 840, scale: 0.8, transformOrigin: '50% 0%' }, { y: 80, duration: 1, ease: 'expo.out', immediateRender: false }, 23.2)
+      .fromTo('#phoneA', { x: -1000, y: 80, scale: 0.8, autoAlpha: 1, transformOrigin: '50% 0%' }, { x: -650, duration: 1, immediateRender: false }, 23.1)
+      .from('#s6 .hl', { y: -30, autoAlpha: 0 }, 23.6)
+      .from('#s6 .lbl', { y: 20, autoAlpha: 0, stagger: 0.12 }, 23.9)
+      .fromTo('#fly', { x: 0, scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.35, ease: 'back.out(2)' }, 24.6)
+      .to('#fly', { x: 336, duration: 1.2, ease: 'power2.inOut' }, 24.9)
+      .to('#fly', { scale: 0.5, autoAlpha: 0, duration: 0.3, ease: 'power2.in' }, 26.05)
+      .fromTo('#newAppt', { scale: 1 }, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.inOut', immediateRender: false }, 26.15);
+
+    // 7 · Outro
+    tl.to('#s6', { autoAlpha: 0, duration: 0.4 }, 27.4)
+      .to('#phoneA, #phoneB', { y: '+=720', duration: 0.8, ease: 'power3.in', stagger: 0.06 }, 27.4)
+      .to('#bgSplit', { clipPath: 'inset(0px 0px 0px 0px)', duration: 0.8, ease: 'power3.inOut' }, 27.7)
+      .from('#tile2', { scale: 0, rotation: -25, duration: 0.9, ease: 'back.out(1.8)' }, 28.2)
+      .from('#wm2 span', { x: -30, autoAlpha: 0, stagger: 0.05, duration: 0.55 }, 28.5)
+      .from('#s7 .q', { y: 20, autoAlpha: 0 }, 29.0)
+      .from('#s7 .pill', { y: 20, autoAlpha: 0, stagger: 0.12 }, 29.3)
+      .from('#s7 .btn', { scale: 0.8, autoAlpha: 0, duration: 0.6, ease: 'back.out(2)' }, 29.7)
+      .to({}, { duration: 0.01 }, 33);
 
     // Transport
-    const play = document.getElementById('play'), scrub = document.getElementById('scrub'), time = document.getElementById('time');
+    const play = $('play'), scrub = $('scrub'), time = $('time');
     const total = tl.duration();
     const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
     const setBtn = paused => { play.innerHTML = paused ? '▶ <span>Lecture</span>' : '❚❚ <span>Pause</span>'; play.setAttribute('aria-label', paused ? 'Lecture' : 'Pause'); };
     const sync = () => { scrub.value = Math.round(tl.progress() * 1000); time.textContent = fmt(tl.time()) + ' / ' + fmt(total); };
     tl.eventCallback('onUpdate', sync);
     play.addEventListener('click', () => { tl.paused(!tl.paused()); setBtn(tl.paused()); });
-    document.getElementById('restart').addEventListener('click', () => { tl.restart(); setBtn(false); });
+    $('restart').addEventListener('click', () => { tl.restart(); setBtn(false); });
     scrub.addEventListener('input', () => { tl.progress(scrub.value / 1000); sync(); });
 
-    if (reduce) { tl.pause(20.0); setBtn(true); sync(); }
+    if (reduce) { tl.pause(26.0); setBtn(true); sync(); }
     else { tl.play(0); }
   });
 })();
