@@ -1,0 +1,529 @@
+<title>TableDirect Motion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<style>
+/* Layout : une scène 16:9 de 1920×1080, mise à l'échelle dans la page, pilotée par une timeline déterministe render(t). */
+:root {
+  --ink: #0b0b0a;        /* fond de scène, le noir de la marque */
+  --panel: #161614;      /* panneaux sombres */
+  --line: #2a2a27;       /* filets */
+  --muted: #a3a39c;      /* texte secondaire */
+  --paper: #ffffff;      /* cartes, téléphone, tickets */
+  --paper-ink: #171717;  /* texte sur papier */
+  --emerald: #10b981;    /* accent : payé, libre, validé */
+  --amber: #f59e0b;      /* état : table occupée */
+  --amber-soft: #fef3c7;
+  --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --body: "Geist", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--ink); color: #fff; font-family: var(--body); padding-block: 24px; padding-inline: 16px; }
+.wrap { max-width: 1280px; margin: 0 auto; display: grid; gap: 14px; }
+.frame { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 18px; background: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; background: var(--ink); }
+.a { position: absolute; will-change: transform, opacity; }
+.scene { position: absolute; inset: 0; opacity: 0; }
+
+/* contrôles */
+.controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.btn { font: 600 14px var(--body); color: var(--paper-ink); background: var(--paper); border: 0; border-radius: 12px; padding: 10px 16px; cursor: pointer; }
+.btn.ghost { color: #fff; background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.btn:focus-visible, #scrub:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
+#scrub { flex: 1 1 240px; min-width: 0; accent-color: var(--emerald); }
+#time { font: 500 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.note a { color: #fff; }
+
+/* typo de scène */
+.disp { font-family: var(--display); font-weight: 800; letter-spacing: -0.035em; line-height: 0.95; text-wrap: balance; }
+.eyebrow { font: 500 26px var(--mono); color: var(--emerald); letter-spacing: 0.08em; text-transform: uppercase; }
+.lead { font-size: 36px; line-height: 1.35; color: var(--muted); }
+.mask { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.w { display: inline-block; }
+
+/* marque */
+.mark { width: 64px; height: 64px; border-radius: 20px; background: var(--paper); color: var(--paper-ink); display: grid; place-items: center; font: 800 38px var(--display); }
+#brand { left: 80px; top: 60px; display: flex; align-items: center; gap: 16px; }
+#brand b { font: 800 34px var(--display); letter-spacing: -0.03em; }
+#url { right: 80px; bottom: 56px; font: 500 22px var(--mono); color: var(--muted); }
+#glow { width: 1500px; height: 1500px; border-radius: 50%; background: radial-gradient(circle, rgba(16,185,129,.16), rgba(16,185,129,0) 62%); left: 0; top: 0; }
+
+/* téléphone */
+#phone { left: 1200px; top: 130px; width: 410px; height: 830px; border-radius: 62px; background: #050505; box-shadow: 0 0 0 2px #333, 0 40px 120px rgba(0,0,0,.6); padding: 14px; }
+.screen { position: relative; width: 100%; height: 100%; border-radius: 48px; overflow: hidden; background: var(--paper); color: var(--paper-ink); }
+.notch { position: absolute; top: 14px; left: 50%; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: #050505; z-index: 9; }
+#cam { inset: 0; background: radial-gradient(120% 80% at 50% 40%, #3b3a36, #121211); }
+#tent { left: 70px; top: 220px; width: 242px; padding: 22px; border-radius: 20px; background: var(--paper); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.5); }
+#tent canvas { width: 198px; height: 198px; display: block; image-rendering: pixelated; }
+#tent span { display: block; font: 800 22px var(--display); margin-top: 12px; }
+#tent small { display: block; font: 500 14px var(--body); color: #737373; }
+.corner { width: 46px; height: 46px; border: 5px solid #fff; }
+#scanline { left: 54px; width: 274px; height: 4px; background: var(--emerald); box-shadow: 0 0 24px 4px rgba(16,185,129,.7); border-radius: 4px; }
+#link { left: 50%; top: 82px; transform: translateX(-50%); white-space: nowrap; background: rgba(255,255,255,.95); color: var(--paper-ink); font: 600 17px var(--body); padding: 10px 18px; border-radius: 999px; }
+#flash { inset: 0; background: #fff; }
+
+#menu { inset: 0; background: var(--paper); padding: 70px 22px 0; }
+.mhead { display: flex; justify-content: space-between; align-items: center; }
+.mhead b { font: 800 30px var(--display); letter-spacing: -0.03em; }
+.pill { font: 600 15px var(--body); padding: 6px 12px; border-radius: 999px; background: #ecfdf5; color: #047857; }
+.cats { display: flex; gap: 8px; margin: 18px 0 8px; }
+.cats span { font: 600 15px var(--body); padding: 8px 14px; border-radius: 999px; background: #f5f5f4; color: #525252; }
+.cats span:first-child { background: var(--paper-ink); color: #fff; }
+.item { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 16px 0; border-bottom: 1px solid #ededeb; }
+.item b { display: block; font: 600 21px var(--body); }
+.item small { display: block; font: 400 15px var(--body); color: #737373; margin-top: 3px; }
+.item i { display: block; font: 600 18px var(--body); font-style: normal; margin-top: 6px; }
+.plus { width: 46px; height: 46px; border-radius: 50%; background: var(--paper-ink); color: #fff; display: grid; place-items: center; font: 500 28px var(--body); }
+#cart { left: 18px; right: 18px; bottom: 22px; height: 70px; border-radius: 22px; background: var(--paper-ink); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font: 600 19px var(--body); }
+#cartN { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--emerald); font-size: 15px; margin-right: 10px; }
+#tap { width: 64px; height: 64px; border-radius: 50%; border: 4px solid var(--emerald); margin: -32px 0 0 -32px; left: 0; top: 0; }
+
+#sheet { left: 0; right: 0; bottom: 0; height: 560px; background: var(--paper); border-radius: 34px 34px 0 0; box-shadow: 0 -20px 60px rgba(0,0,0,.25); padding: 30px 26px; }
+#sheet h4 { margin: 0 0 14px; font: 800 30px var(--display); letter-spacing: -0.03em; }
+.row { display: flex; justify-content: space-between; font: 500 19px var(--body); padding: 9px 0; font-variant-numeric: tabular-nums; }
+.row.total { font-weight: 700; font-size: 23px; border-top: 1px solid #e5e5e5; margin-top: 8px; padding-top: 16px; }
+.pay { display: flex; align-items: center; justify-content: center; gap: 6px; height: 64px; border-radius: 18px; font: 600 21px var(--body); margin-top: 14px; }
+.pay.apple { background: #000; color: #fff; }
+.pay.cash { box-shadow: inset 0 0 0 2px #d4d4d4; color: var(--paper-ink); }
+#paid { inset: 0; background: var(--emerald); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; border-radius: 34px 34px 0 0; }
+#paid b { font: 800 34px var(--display); letter-spacing: -0.03em; }
+#paid small { font: 500 18px var(--body); opacity: .9; }
+
+.chip { padding: 14px 24px; border-radius: 999px; background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); font: 600 24px var(--body); color: #fff; white-space: nowrap; }
+
+/* étapes */
+.step { left: 160px; top: 330px; width: 880px; display: grid; gap: 28px; }
+.step h2 { margin: 0; font-size: 96px; }
+
+/* scène 2 */
+.prob { left: 160px; font-size: 104px; }
+.strike { left: -10px; right: -10px; top: 52%; height: 12px; border-radius: 6px; background: var(--emerald); transform-origin: 0 50%; }
+#clockTxt { font: 500 40px var(--mono); color: var(--amber); text-align: center; width: 520px; left: 1240px; top: 770px; font-variant-numeric: tabular-nums; }
+
+/* scène 5 */
+#notif { left: 1080px; top: 150px; width: 660px; padding: 26px 30px; border-radius: 28px; background: var(--paper); color: var(--paper-ink); display: flex; gap: 22px; align-items: center; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+#notif .bell { flex: none; width: 72px; height: 72px; border-radius: 22px; background: var(--emerald); display: grid; place-items: center; }
+#notif b { display: block; font: 800 32px var(--display); letter-spacing: -0.02em; }
+#notif small { display: block; font: 500 21px var(--body); color: #525252; margin-top: 4px; font-variant-numeric: tabular-nums; }
+#notif time { margin-left: auto; font: 500 20px var(--mono); color: #737373; align-self: flex-start; }
+.ring { width: 72px; height: 72px; border-radius: 22px; border: 3px solid var(--emerald); left: 30px; top: 50%; margin-top: -36px; }
+.printer { width: 320px; height: 130px; border-radius: 26px; background: #262624; box-shadow: inset 0 2px 0 #3a3a37, 0 30px 60px rgba(0,0,0,.5); top: 830px; }
+.printer::before { content: ""; position: absolute; left: 30px; right: 30px; top: 18px; height: 10px; border-radius: 5px; background: #0b0b0a; }
+.printer::after { content: ""; position: absolute; right: 30px; bottom: 26px; width: 14px; height: 14px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 14px var(--emerald); }
+.printer span { position: absolute; left: 30px; bottom: 22px; font: 500 18px var(--mono); color: var(--muted); letter-spacing: .1em; }
+.tclip { width: 260px; overflow: hidden; bottom: 238px; }
+.ticket { background: var(--paper); color: var(--paper-ink); font: 500 21px/1.6 var(--mono); padding: 22px 24px 34px; font-variant-numeric: tabular-nums; }
+.ticket b { display: block; font: 800 30px var(--display); letter-spacing: 0; margin-bottom: 6px; }
+.ticket hr { border: 0; border-top: 2px dashed #a3a3a3; margin: 10px 0; }
+
+/* scène 6 */
+#plan { left: 160px; top: 400px; width: 1000px; height: 560px; border-radius: 34px; background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); padding: 34px 40px; }
+.planhead { display: flex; justify-content: space-between; align-items: baseline; font: 600 26px var(--body); }
+.planhead span { font: 500 20px var(--mono); color: var(--muted); }
+#tables { display: grid; grid-template-columns: repeat(5, 160px); gap: 26px; margin-top: 34px; }
+.tbl { position: relative; height: 160px; border-radius: 26px; background: #1f1f1d; box-shadow: inset 0 0 0 2px var(--line); display: grid; place-items: center; align-content: center; gap: 4px; }
+.tbl b { font: 800 46px var(--display); color: #6b6b66; }
+.tbl i { font: 500 20px var(--mono); font-style: normal; color: transparent; font-variant-numeric: tabular-nums; }
+.legend { display: flex; gap: 30px; font: 500 20px var(--body); color: var(--muted); margin-top: 30px; }
+.legend span::before { content: ""; display: inline-block; width: 16px; height: 16px; border-radius: 5px; margin-right: 10px; vertical-align: -2px; background: var(--c); }
+#feats { left: 1240px; top: 400px; width: 540px; display: grid; gap: 10px; }
+.feat { display: flex; gap: 18px; align-items: center; padding: 13px 22px; border-radius: 20px; background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); font: 600 25px var(--body); }
+.feat svg { flex: none; }
+.feat small { display: block; font: 500 18px var(--body); color: var(--muted); margin-top: 3px; }
+#popover { left: 390px; top: 640px; width: 340px; padding: 22px; border-radius: 24px; background: var(--paper); color: var(--paper-ink); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+#popover b { font: 800 26px var(--display); letter-spacing: -0.02em; }
+#popover .meth { display: flex; gap: 8px; margin: 14px 0; }
+#popover .meth span { flex: 1; text-align: center; font: 600 16px var(--body); padding: 8px 0; border-radius: 10px; background: #f5f5f4; }
+#popover .meth span:nth-child(2) { background: var(--paper-ink); color: #fff; }
+#cashBtn { height: 58px; border-radius: 16px; background: var(--emerald); color: #fff; display: grid; place-items: center; font: 700 21px var(--body); }
+
+/* scène 7 */
+.offer { top: 380px; width: 600px; height: 500px; border-radius: 36px; padding: 44px 48px; display: grid; align-content: start; gap: 10px; }
+.offer.basic { left: 300px; background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); }
+.offer.prem { left: 1020px; background: var(--paper); color: var(--paper-ink); }
+.offer h3 { margin: 0; font: 600 30px var(--body); }
+.price { font: 800 104px var(--display); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; line-height: 1; }
+.per { font: 500 22px var(--mono); color: var(--muted); }
+.offer.prem .per { color: #737373; }
+.offer ul { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; font: 500 24px var(--body); }
+.offer li::before { content: "✓"; color: var(--emerald); font-weight: 700; margin-right: 12px; }
+.badge { position: absolute; right: 40px; top: 46px; font: 700 16px var(--body); letter-spacing: .08em; padding: 8px 14px; border-radius: 999px; background: var(--amber-soft); color: #92400e; }
+
+/* scène 8 */
+#endUrl { left: 50%; top: 700px; transform: translateX(-50%); font: 500 52px var(--mono); padding: 22px 40px; border-radius: 999px; box-shadow: inset 0 0 0 2px var(--emerald); color: #fff; white-space: nowrap; }
+#caret { display: inline-block; width: 4px; height: 52px; background: var(--emerald); vertical-align: -8px; margin-left: 6px; }
+
+@media (prefers-reduced-motion: reduce) { .frame { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+  <div class="frame" id="frame" aria-label="Film de présentation de TableDirect">
+    <div id="stage">
+      <div class="a" id="glow"></div>
+
+      <!-- 1 · ouverture -->
+      <div class="scene" id="s1">
+        <div class="a mark" id="s1logo" style="left:870px;top:230px;width:180px;height:180px;border-radius:56px;font-size:110px">T</div>
+        <div class="a disp" style="left:0;right:0;top:470px;text-align:center;font-size:150px">
+          <span class="mask"><span class="w">Le</span> <span class="w">service</span> <span class="w">restaurant,</span></span>
+          <span class="mask"><span class="w" style="color:var(--emerald)">sans</span> <span class="w" style="color:var(--emerald)">attente.</span></span>
+        </div>
+        <div class="a lead" id="s1sub" style="left:0;right:0;top:830px;text-align:center">Commande QR &amp; caisse pour restaurants</div>
+      </div>
+
+      <!-- 2 · le problème -->
+      <div class="scene" id="s2">
+        <div class="a disp prob" style="top:250px"><span class="w">Le serveur est débordé.</span><span class="a strike"></span></div>
+        <div class="a disp prob" style="top:400px"><span class="w">La table 6 attend.</span><span class="a strike"></span></div>
+        <div class="a disp prob" style="top:550px"><span class="w">L'addition traîne.</span><span class="a strike"></span></div>
+        <svg class="a" id="clock" style="left:1300px;top:270px" width="400" height="400" viewBox="0 0 400 400" aria-hidden="true">
+          <circle cx="200" cy="200" r="180" fill="none" stroke="#2a2a27" stroke-width="16"/>
+          <circle id="clockArc" cx="200" cy="200" r="180" fill="none" stroke="#f59e0b" stroke-width="16" stroke-linecap="round" stroke-dasharray="1131" stroke-dashoffset="1131" transform="rotate(-90 200 200)"/>
+          <line id="handM" x1="200" y1="200" x2="200" y2="62" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+          <line id="handH" x1="200" y1="200" x2="200" y2="110" stroke="#ffffff" stroke-width="14" stroke-linecap="round"/>
+          <circle cx="200" cy="200" r="14" fill="#ffffff"/>
+        </svg>
+        <div class="a" id="clockTxt">+ 0 min</div>
+        <div class="a disp" id="s2q" style="left:0;right:0;top:380px;text-align:center;font-size:140px">Et si la table<br><span style="color:var(--emerald)">commandait elle-même ?</span></div>
+      </div>
+
+      <!-- 3-4 · étapes client -->
+      <div class="scene" id="s34">
+        <div class="a step" id="st1"><div class="eyebrow">Étape 1 / 3</div><h2 class="disp">Le client scanne le QR.</h2><div class="lead">La carte s'ouvre dans son navigateur. Aucune app, aucune inscription.</div></div>
+        <div class="a step" id="st2"><div class="eyebrow">Étape 2 / 3</div><h2 class="disp">Il commande et paie.</h2><div class="lead">Apple Pay, Google Pay, carte via Stripe. Ou il règle en caisse. Reçu par email ou SMS.</div></div>
+        <div class="a chip" id="c1" style="left:960px;top:250px">Apple Pay</div>
+        <div class="a chip" id="c2" style="left:1660px;top:380px">Google Pay</div>
+        <div class="a chip" id="c3" style="left:900px;top:760px">Carte bancaire</div>
+        <div class="a chip" id="c4" style="left:1670px;top:700px">Stripe</div>
+        <div class="a" id="phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="a" id="cam">
+              <div class="a" id="tent"><canvas id="qr" width="25" height="25"></canvas><span>Table 6</span><small>Scannez pour commander</small></div>
+              <div class="a corner" style="left:50px;top:200px;border-right:0;border-bottom:0;border-radius:18px 0 0 0"></div>
+              <div class="a corner" style="left:286px;top:200px;border-left:0;border-bottom:0;border-radius:0 18px 0 0"></div>
+              <div class="a corner" style="left:50px;top:510px;border-right:0;border-top:0;border-radius:0 0 0 18px"></div>
+              <div class="a corner" style="left:286px;top:510px;border-left:0;border-top:0;border-radius:0 0 18px 0"></div>
+              <div class="a" id="scanline"></div>
+              <div class="a" id="link">tabledirect.fr/t/6</div>
+            </div>
+            <div class="a" id="menu">
+              <div class="mhead"><b>Le Bistrot</b><span class="pill">Table 6</span></div>
+              <div class="cats"><span>Plats</span><span>Desserts</span><span>Boissons</span></div>
+              <div class="item"><div><b>Burrata crémeuse</b><small>Tomates anciennes, basilic</small><i>12,00 €</i></div><div class="plus">+</div></div>
+              <div class="item"><div><b>Carbonara</b><small>Guanciale, pecorino, jaune d'œuf</small><i>20,00 €</i></div><div class="plus" id="p1">+</div></div>
+              <div class="item"><div><b>Tiramisu maison</b><small>Mascarpone, café</small><i>6,00 €</i></div><div class="plus" id="p2">+</div></div>
+              <div class="item"><div><b>Coca-Cola 33 cl</b><small>Bien frais</small><i>3,00 €</i></div><div class="plus" id="p3">+</div></div>
+              <div class="a" id="cart"><span><span id="cartN">0</span>Voir le panier</span><span id="cartT">0,00 €</span></div>
+              <div class="a" id="sheet">
+                <h4>Votre commande</h4>
+                <div class="row"><span>1× Carbonara</span><span>20,00 €</span></div>
+                <div class="row"><span>1× Tiramisu maison</span><span>6,00 €</span></div>
+                <div class="row"><span>1× Coca-Cola 33 cl</span><span>3,00 €</span></div>
+                <div class="row total"><span>Total</span><span>29,00 €</span></div>
+                <div class="pay apple" id="applePay"><svg width="20" height="24" viewBox="0 0 20 24" aria-hidden="true"><path fill="#fff" d="M16.4 12.7c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2.1-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.7-1-2.7-4.1zM13.9 5.1c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></svg>Pay</div>
+                <div class="pay cash">Payer en caisse</div>
+                <div class="a" id="paid">
+                  <svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="#ffffff" stroke-width="7" opacity=".35"/><path id="check" d="M36 62 L53 78 L86 44" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="80" stroke-dashoffset="80"/></svg>
+                  <b>Paiement accepté</b><small>Reçu envoyé par email</small>
+                </div>
+              </div>
+              <div class="a" id="tap"></div>
+            </div>
+            <div class="a" id="flash"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 · cuisine -->
+      <div class="scene" id="s5">
+        <div class="a step" id="st3"><div class="eyebrow">Étape 3 / 3</div><h2 class="disp">Vous êtes notifié.</h2><div class="lead">La commande tombe en temps réel dans votre tableau de bord. Les tickets s'impriment en cuisine et au bar.</div></div>
+        <div class="a" id="notif">
+          <div class="a ring" id="r1"></div><div class="a ring" id="r2"></div>
+          <div class="bell"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+          <div><b>Nouvelle commande</b><small>Table 6 · 3 articles · 29,00 € payé</small></div>
+          <time>21:14</time>
+        </div>
+        <div class="a tclip" id="clipK" style="left:1110px;height:420px"><div class="ticket" id="tkK"><b>CUISINE</b>Table 6 · 21:14<hr>1× Carbonara<br>1× Tiramisu<hr>Note #0427</div></div>
+        <div class="a printer" id="prK" style="left:1080px"><span>CUISINE</span></div>
+        <div class="a tclip" id="clipB" style="left:1520px;height:300px"><div class="ticket" id="tkB"><b>BAR</b>Table 6 · 21:14<hr>1× Coca-Cola<hr>Note #0427</div></div>
+        <div class="a printer" id="prB" style="left:1490px"><span>BAR</span></div>
+      </div>
+
+      <!-- 6 · caisse -->
+      <div class="scene" id="s6">
+        <div class="a disp" id="s6t" style="left:160px;top:160px;font-size:96px">Pas juste des QR codes.<br><span style="color:var(--emerald)">Une vraie caisse certifiée.</span></div>
+        <div class="a" id="plan">
+          <div class="planhead">Plan de salle · Terrasse<span id="openNotes">0 note ouverte</span></div>
+          <div id="tables"></div>
+          <div class="legend"><span style="--c:#2a2a27">Libre</span><span style="--c:var(--amber)">Occupée</span><span style="--c:var(--emerald)">À payer</span></div>
+        </div>
+        <div class="a" id="popover"><b>Table 6 · 4 couverts</b><div class="meth"><span>Espèces</span><span>CB</span><span>QR</span><span>TR</span></div><div id="cashBtn">Encaisser 29,00 €</div></div>
+        <div class="a" id="feats"></div>
+      </div>
+
+      <!-- 7 · tarifs -->
+      <div class="scene" id="s7">
+        <div class="a disp" style="left:0;right:0;top:170px;text-align:center;font-size:110px">Deux offres simples.</div>
+        <div class="a offer basic" id="o1"><h3>Basic</h3><div class="price" id="pr1">0,00 €</div><div class="per">HT / mois</div><ul><li>QR codes illimités</li><li>Paiement Stripe / SumUp</li><li>0,20 € par note ≥ 10 € payée en ligne</li></ul></div>
+        <div class="a offer prem" id="o2"><span class="badge">POPULAIRE</span><h3>Premium</h3><div class="price" id="pr2">0,00 €</div><div class="per">HT / mois</div><ul><li>Tout le Basic</li><li>0 € de commission sur les notes</li><li>Statistiques et heures de pointe</li></ul></div>
+        <div class="a lead" id="s7n" style="left:0;right:0;top:920px;text-align:center;font-size:28px">Paiement en caisse : aucune commission TableDirect, quel que soit le forfait.</div>
+      </div>
+
+      <!-- 8 · fin -->
+      <div class="scene" id="s8">
+        <div class="a mark" id="s8logo" style="left:870px;top:170px;width:180px;height:180px;border-radius:56px;font-size:110px">T</div>
+        <div class="a disp" id="s8name" style="left:0;right:0;top:400px;text-align:center;font-size:170px">TableDirect</div>
+        <div class="a lead" id="s8sub" style="left:0;right:0;top:590px;text-align:center">Commande QR &amp; caisse pour restaurants</div>
+        <div class="a" id="endUrl"><span id="urlTxt"></span><span id="caret"></span></div>
+      </div>
+
+      <div class="a" id="brand"><div class="mark">T</div><b>TableDirect</b></div>
+      <div class="a" id="url">tabledirect.fr</div>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <button class="btn" id="play" type="button">Pause</button>
+    <button class="btn ghost" id="replay" type="button">Rejouer</button>
+    <input id="scrub" type="range" min="0" max="48" step="0.01" value="0" aria-label="Position dans le film">
+    <span id="time">00:00 / 00:48</span>
+  </div>
+  <p class="note">Film de présentation de <a href="https://www.tabledirect.fr" target="_blank" rel="noopener">tabledirect.fr</a>. Espace : lecture / pause. Flèches : ±2 s.</p>
+</div>
+
+<script>
+const DUR = 48;
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const p = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = x => { const c = 1.7; return x <= 0 ? 0 : 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, x) => a + (b - a) * x;
+const eur = v => v.toFixed(2).replace('.', ',') + ' €';
+function set(el, o = 1, x = 0, y = 0, s = 1, extra = '') {
+  el.style.opacity = o;
+  el.style.transform = `translate(${x}px,${y}px) scale(${s})${extra}`;
+}
+// fondu entrée / sortie d'une scène
+const vis = (t, a, b, f = .45) => Math.min(p(t, a, a + f), 1 - p(t, b - f, b));
+
+// QR décoratif (motif pseudo-aléatoire avec repères)
+(function drawQR() {
+  const c = $('qr').getContext('2d'); let s = 7;
+  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  c.fillStyle = '#fff'; c.fillRect(0, 0, 25, 25); c.fillStyle = '#111';
+  for (let y = 0; y < 25; y++) for (let x = 0; x < 25; x++) if (rnd() > .52) c.fillRect(x, y, 1, 1);
+  for (const [fx, fy] of [[0, 0], [18, 0], [0, 18]]) {
+    c.fillStyle = '#fff'; c.fillRect(fx - (fx ? 1 : 0), fy - (fy ? 1 : 0), 8, 8);
+    c.fillStyle = '#111'; c.fillRect(fx, fy, 7, 7); c.fillStyle = '#fff'; c.fillRect(fx + 1, fy + 1, 5, 5); c.fillStyle = '#111'; c.fillRect(fx + 2, fy + 2, 3, 3);
+  }
+})();
+
+// plan de salle
+const TABLES = [[1, 0], [2, 105], [3, 20], [4, 0], [5, 0], [6, 29], [7, 55], [8, 29], [9, 0], [10, 0]];
+const STATE = { 2: 'occ', 3: 'occ', 6: 'pay', 7: 'occ', 8: 'occ' };
+$('tables').innerHTML = TABLES.map(([n, v]) => `<div class="tbl" id="t${n}"><b>${n}</b><i>${v ? v + ' €' : '·'}</i></div>`).join('');
+const FEATS = [
+  ['Conforme NF525', 'Signature SHA-256 chaînée, rapports Z à 4 h'],
+  ['Encaissement multi-méthodes', 'Espèces, CB, QR, titres-restaurant'],
+  ['Note ouverte + split bill', 'Par personne ou par article'],
+  ['Impression cuisine et bar', 'Imprimantes thermiques réseau'],
+  ['PIN serveur', 'Ventes et pourboires par serveur'],
+  ['Carte en 9 langues', '14 allergènes UE, ruptures, photos'],
+];
+const CHECK = '<svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="17" fill="#10b981"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+$('feats').innerHTML = FEATS.map(([a, b]) => `<div class="feat">${CHECK}<div>${a}<small>${b}</small></div></div>`).join('');
+
+const words1 = [...document.querySelectorAll('#s1 .w')];
+const probs = [...document.querySelectorAll('#s2 .prob')];
+const tbls = TABLES.map(([n]) => $('t' + n));
+const feats = [...document.querySelectorAll('.feat')];
+
+function paintTable(el, n, t) {
+  const st = STATE[n];
+  const on = st && t > 33.6 + n * .12;
+  const paid = n === 6 && t > 37.7;
+  const b = el.querySelector('b'), i = el.querySelector('i');
+  let bg = '#1f1f1d', ring = 'var(--line)', fg = '#6b6b66', sub = 'transparent';
+  if (on && !paid) {
+    if (st === 'occ') { bg = 'var(--amber-soft)'; ring = 'var(--amber)'; fg = '#78350f'; sub = '#92400e'; }
+    else { bg = 'var(--emerald)'; ring = 'var(--emerald)'; fg = '#fff'; sub = '#ecfdf5'; }
+  }
+  el.style.background = bg; el.style.boxShadow = `inset 0 0 0 2px ${ring}`;
+  b.style.color = fg; i.style.color = sub;
+}
+
+function render(t) {
+  // halo d'ambiance
+  const gx = t < 12 ? lerp(210, 1000, eio(p(t, 0, 12))) : t < 32 ? 650 : t < 43 ? lerp(650, 210, eio(p(t, 32, 43))) : 210;
+  const gy = t < 12 ? lerp(-200, -100, p(t, 0, 12)) : t < 43 ? lerp(-100, -300, eio(p(t, 32, 43))) : lerp(-300, -260, p(t, 43, 48));
+  set($('glow'), 1, gx, gy);
+
+  // ---------- 1 · ouverture (0–5)
+  $('s1').style.opacity = vis(t, -1, 5.2);
+  const lg = back(p(t, .2, 1));
+  set($('s1logo'), p(t, .2, .5), 0, lerp(40, 0, eo(p(t, .2, 1))), lg, ` rotate(${lerp(-12, 0, eo(p(t, .2, 1.2)))}deg)`);
+  words1.forEach((w, k) => { const q = eo(p(t, .9 + k * .18, 1.6 + k * .18)); w.style.transform = `translateY(${(1 - q) * 110}%)`; });
+  set($('s1sub'), p(t, 2.2, 2.8), 0, lerp(20, 0, eo(p(t, 2.2, 3))));
+
+  // marque persistante
+  const bv = Math.min(p(t, 5.2, 5.8), 1 - p(t, 42.6, 43.2));
+  set($('brand'), bv, lerp(-20, 0, eo(p(t, 5.2, 6))));
+  set($('url'), bv);
+
+  // ---------- 2 · problème (5–12)
+  $('s2').style.opacity = vis(t, 5, 12.2);
+  probs.forEach((el, k) => {
+    const a = 5.5 + k * 1;
+    const out = eio(p(t, 9.3, 9.9));
+    set(el, p(t, a, a + .4) * (1 - out), lerp(-40, 0, eo(p(t, a, a + .6))), -out * 60);
+    el.querySelector('.strike').style.transform = `scaleX(${eo(p(t, 8.3 + k * .2, 8.8 + k * .2))})`;
+  });
+  const ct = eio(p(t, 5.6, 9));
+  $('handM').setAttribute('transform', `rotate(${ct * 18 * 6 * 4} 200 200)`);
+  $('handH').setAttribute('transform', `rotate(${30 + ct * 60} 200 200)`);
+  $('clockArc').style.strokeDashoffset = 1131 * (1 - ct * .3);
+  $('clockTxt').textContent = '+ ' + Math.round(ct * 18) + ' min';
+  const cOut = eio(p(t, 9.3, 9.9));
+  set($('clock'), p(t, 5.4, 5.9) * (1 - cOut), 0, cOut * -60, lerp(.9, 1, eo(p(t, 5.4, 6))));
+  set($('clockTxt'), p(t, 5.6, 6.1) * (1 - cOut), 0, cOut * -60);
+  const qv = p(t, 9.8, 10.3);
+  set($('s2q'), qv, 0, lerp(50, 0, eo(p(t, 9.8, 10.6))), lerp(.96, 1, eo(p(t, 9.8, 11.5))));
+
+  // ---------- 3-4 · scan + commande (12–26)
+  $('s34').style.opacity = Math.min(p(t, 12, 12.5), 1 - p(t, 26.2, 26.8));
+  set($('phone'), 1, 0, lerp(260, 0, eo(p(t, 12, 13.2))) + lerp(0, -30, eio(p(t, 26, 26.8))), 1, ` rotate(${lerp(6, 0, eo(p(t, 12, 13.4)))}deg)`);
+  const s1in = eo(p(t, 12.6, 13.4)), s1out = eio(p(t, 18.6, 19.2));
+  set($('st1'), s1in * (1 - s1out), lerp(-40, 0, s1in) - s1out * 40);
+  const s2in = eo(p(t, 19.2, 20));
+  set($('st2'), s2in, lerp(40, 0, s2in));
+
+  // caméra
+  const sweep = p(t, 13.4, 15.2);
+  $('scanline').style.top = (200 + 340 * (0.5 - 0.5 * Math.cos(sweep * Math.PI * 2))) + 'px';
+  $('scanline').style.opacity = sweep > 0 && sweep < 1 ? 1 : 0;
+  set($('tent'), 1, 0, Math.sin(t * 1.3) * 4, lerp(1.05, 1, eo(p(t, 12.5, 14))));
+  $('link').style.opacity = p(t, 15.3, 15.6);
+  $('link').style.transform = `translateX(-50%) translateY(${lerp(-14, 0, back(p(t, 15.3, 15.9)))}px)`;
+  $('flash').style.opacity = 0.9 * Math.max(0, 1 - Math.abs(t - 15.25) / .25) * (t > 15 ? 1 : 0);
+  // menu
+  const mIn = eio(p(t, 16.1, 16.8));
+  $('menu').style.transform = `translateY(${(1 - mIn) * 100}%)`;
+  // taps sur les +
+  const taps = [[19.7, 'p1'], [20.5, 'p2'], [21.3, 'p3']];
+  let n = 0, tot = 0; const vals = [20, 6, 3];
+  taps.forEach(([tt, id], k) => {
+    const el = $(id); const d = t - tt;
+    el.style.transform = `scale(${d > 0 && d < .3 ? 1 - Math.sin(d / .3 * Math.PI) * .18 : 1})`;
+    el.style.background = d > 0 ? 'var(--emerald)' : '';
+    el.textContent = d > 0 ? '✓' : '+';
+    if (d > .05) { n++; tot += vals[k] * eo(clamp((d - .05) / .4)); }
+  });
+  $('cartN').textContent = n; $('cartT').textContent = eur(tot);
+  set($('cart'), 1, 0, lerp(120, 0, back(p(t, 19.6, 20.1))), n && t < 22.3 ? 1 + .04 * Math.max(0, 1 - Math.abs(t - 22.05) / .15) : 1);
+  // indicateur de tap
+  const tapAt = [[19.62, 'p1'], [20.42, 'p2'], [21.22, 'p3'], [22.0, 'cart'], [23.5, 'applePay']];
+  let tv = 0, tx = 0, ty = 0, ts = 1;
+  for (const [tt, id] of tapAt) {
+    const d = t - tt;
+    if (d > -0.25 && d < .45) {
+      const el = $(id), r = el.getBoundingClientRect(), m = $('menu').getBoundingClientRect(), sc = m.width / $('menu').offsetWidth;
+      tx = (r.left - m.left + r.width / 2) / sc; ty = (r.top - m.top + r.height / 2) / sc;
+      tv = d < 0 ? p(d, -.25, 0) : 1 - p(d, .15, .45); ts = d < 0 ? lerp(1.4, 1, p(d, -.25, 0)) : lerp(1, 1.6, p(d, 0, .45));
+    }
+  }
+  $('tap').style.left = tx + 'px'; $('tap').style.top = ty + 'px';
+  $('tap').style.opacity = tv; $('tap').style.transform = `scale(${ts})`;
+  // panier
+  $('sheet').style.transform = `translateY(${(1 - eio(p(t, 22.2, 22.8))) * 110}%)`;
+  $('applePay').style.transform = `scale(${t > 23.5 && t < 23.8 ? 1 - Math.sin(p(t, 23.5, 23.8) * Math.PI) * .05 : 1})`;
+  const pd = p(t, 23.9, 24.3);
+  $('paid').style.opacity = pd; $('paid').style.transform = `scale(${lerp(.96, 1, eo(pd))})`;
+  $('check').style.strokeDashoffset = 80 * (1 - eo(p(t, 24.2, 24.8)));
+  // pastilles de paiement
+  ['c1', 'c2', 'c3', 'c4'].forEach((id, k) => {
+    const a = 20 + k * .25; const v = Math.min(p(t, a, a + .4), 1 - p(t, 25.6, 26.1));
+    set($(id), v, 0, Math.sin(t * 1.4 + k) * 8 + lerp(30, 0, back(p(t, a, a + .6))), lerp(.8, 1, back(p(t, a, a + .6))));
+  });
+
+  // ---------- 5 · cuisine (26–32)
+  $('s5').style.opacity = vis(t, 26.4, 32.3);
+  const s3in = eo(p(t, 26.6, 27.4));
+  set($('st3'), s3in, lerp(-40, 0, s3in));
+  set($('notif'), p(t, 27, 27.3), lerp(80, 0, back(p(t, 27, 27.7))), 0, 1);
+  [['r1', 27.4], ['r2', 27.8]].forEach(([id, a]) => {
+    const q = ((t - a) % 1.2 + 1.2) % 1.2 / 1.2; const on = t > a && t < 31;
+    $(id).style.opacity = on ? (1 - q) * .8 : 0; $(id).style.transform = `scale(${1 + q * .8})`;
+  });
+  ['prK', 'prB'].forEach((id, k) => set($(id), p(t, 26.8 + k * .2, 27.2 + k * .2), 0, lerp(60, 0, eo(p(t, 26.8 + k * .2, 27.6 + k * .2)))));
+  const pk = eio(p(t, 28, 30.4)), pb = eio(p(t, 28.6, 30.2));
+  $('tkK').style.transform = `translateY(${(1 - pk) * 420 + Math.sin(t * 40) * (pk > 0 && pk < 1 ? 1 : 0)}px)`;
+  $('tkB').style.transform = `translateY(${(1 - pb) * 300}px)`;
+
+  // ---------- 6 · caisse (32–39)
+  $('s6').style.opacity = vis(t, 32, 39.3);
+  set($('s6t'), p(t, 32.2, 32.6), lerp(-40, 0, eo(p(t, 32.2, 33))));
+  set($('plan'), p(t, 32.4, 32.8), 0, lerp(60, 0, eo(p(t, 32.4, 33.2))));
+  tbls.forEach((el, k) => { const a = 32.7 + k * .06; set(el, p(t, a, a + .25), 0, 0, lerp(.7, 1, back(p(t, a, a + .5)))); paintTable(el, TABLES[k][0], t); });
+  const open = Object.keys(STATE).filter(n => t > 33.6 + n * .12).length - (t > 37.7 ? 1 : 0);
+  $('openNotes').textContent = open + (open > 1 ? ' notes ouvertes' : ' note ouverte');
+  feats.forEach((el, k) => { const a = 33.4 + k * .3; set(el, p(t, a, a + .3), lerp(50, 0, eo(p(t, a, a + .6)))); });
+  // popover sur la table 6
+  const pv = Math.min(p(t, 36.2, 36.5), 1 - p(t, 37.9, 38.2));
+  set($('popover'), pv, 0, 0, lerp(.9, 1, back(p(t, 36.2, 36.7))));
+  $('cashBtn').style.transform = `scale(${t > 37.3 && t < 37.6 ? 1 - Math.sin(p(t, 37.3, 37.6) * Math.PI) * .06 : 1})`;
+  $('cashBtn').textContent = t > 37.6 ? 'Encaissé ✓' : 'Encaisser 29,00 €';
+
+  // ---------- 7 · tarifs (39–43)
+  $('s7').style.opacity = vis(t, 39, 43.3);
+  set($('o1'), p(t, 39.4, 39.8), 0, lerp(80, 0, eo(p(t, 39.4, 40.2))));
+  set($('o2'), p(t, 39.7, 40.1), 0, lerp(80, 0, eo(p(t, 39.7, 40.5))));
+  $('pr1').textContent = eur(Math.round(149.99 * eo(p(t, 39.6, 41)) * 100) / 100);
+  $('pr2').textContent = eur(Math.round(179.99 * eo(p(t, 39.9, 41.3)) * 100) / 100);
+  set($('s7n'), p(t, 41.2, 41.7));
+
+  // ---------- 8 · fin (43–48)
+  $('s8').style.opacity = p(t, 43, 43.5);
+  set($('s8logo'), p(t, 43.2, 43.5), 0, 0, back(p(t, 43.2, 44)));
+  set($('s8name'), p(t, 43.6, 44), 0, lerp(40, 0, eo(p(t, 43.6, 44.4))));
+  set($('s8sub'), p(t, 44.1, 44.5));
+  const full = 'tabledirect.fr';
+  $('urlTxt').textContent = full.slice(0, Math.round(full.length * p(t, 44.8, 46)));
+  $('endUrl').style.opacity = p(t, 44.6, 44.9);
+  $('caret').style.opacity = Math.floor(t * 2.4) % 2 || t < 46 ? 1 : 0;
+}
+
+
+// mise à l'échelle et lecture
+const frame = $('frame'), stage = $('stage');
+function fit() { stage.style.transform = `scale(${frame.clientWidth / 1920})`; }
+new ResizeObserver(fit).observe(frame); fit();
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let t = reduce ? 46.5 : 0, playing = !reduce, last = null, raf;
+function fmt(s) { s = Math.floor(s); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+function draw() { render(t); $('scrub').value = t; $('time').textContent = fmt(t) + ' / ' + fmt(DUR); $('play').textContent = playing ? 'Pause' : 'Lecture'; }
+function tick(now) {
+  if (playing) { if (last != null) t += (now - last) / 1000; if (t >= DUR) { t = DUR; playing = false; } }
+  last = now; draw(); raf = requestAnimationFrame(tick);
+}
+$('play').onclick = () => { if (t >= DUR) t = 0; playing = !playing; last = null; };
+$('replay').onclick = () => { t = 0; playing = true; last = null; };
+$('scrub').oninput = e => { t = +e.target.value; draw(); };
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.code !== 'Space') return;
+  if (e.code === 'Space') { e.preventDefault(); $('play').click(); }
+  if (e.code === 'ArrowRight') t = Math.min(DUR, t + 2);
+  if (e.code === 'ArrowLeft') t = Math.max(0, t - 2);
+});
+draw(); raf = requestAnimationFrame(tick);
+
+// export vidéo (utilisé hors ligne par le script de rendu)
+window.__seek = s => { playing = false; t = s; render(s); };
+window.__native = () => { cancelAnimationFrame(raf); document.body.style.padding = '0'; $('controls').hidden = true; document.querySelector('.note').hidden = true; frame.style.borderRadius = '0'; frame.style.boxShadow = 'none'; frame.style.width = '1920px'; frame.style.maxWidth = 'none'; document.querySelector('.wrap').style.maxWidth = 'none'; fit(); };
+</script>
