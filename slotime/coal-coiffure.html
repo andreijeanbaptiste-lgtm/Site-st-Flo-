@@ -6,9 +6,9 @@
 <title>Co'al coiffure sur Slotime</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Inter:wght@400;500;600;700;800;900&display=swap">
 <style>
-/* Layout: a 720×1280 (9:16) story stage. Opens on the salon's black logo, then a Slotime-navy world carries the rest; Didone serif from the Co'al logo, real Slotime booking flow in the phone. */
+/* Layout: a 720×1280 (9:16) story stage. Opens on the salon's black logo, then a Slotime-navy world carries the rest; heavy straight sans for headlines, real Slotime booking flow in the phone. */
 :root {
   --black: #000000;      /* Co'al ground */
   --ink: #161616;
@@ -28,7 +28,7 @@
   --uiline: #E2E8F0;
   --ok: #16A34A;
   --ok-t: #DCFCE7;
-  --serif: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --serif: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;  /* display: straight, heavy */
   --caps: "Jost", "Futura", "Avenir Next", system-ui, sans-serif;
   --ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: dark;
@@ -38,8 +38,8 @@ body { font-family: var(--caps); padding-inline: 16px; padding-block: 20px 32px;
 main { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .head, .controls, .note { width: min(100%, calc((100svh - 170px) * 0.5625)); min-width: 260px; max-width: 100%; }
 .head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-.head h1 { margin: 0; font: 500 22px var(--serif); letter-spacing: .01em; }
-.head p { margin: 0; font: 400 12px var(--caps); letter-spacing: .2em; text-transform: uppercase; color: var(--grey); white-space: nowrap; }
+.head h1 { margin: 0; font: 800 22px var(--serif); letter-spacing: -0.02em; }
+.head p { margin: 0; font: 600 12px var(--caps); letter-spacing: .2em; text-transform: uppercase; color: var(--grey); white-space: nowrap; }
 
 .frame { position: relative; width: min(100%, calc((100svh - 170px) * 0.5625)); min-width: 260px; max-width: 100%; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 22px; background: var(--black); box-shadow: 0 0 0 1px var(--line), 0 30px 80px -30px rgba(0,0,0,.9); }
 .stage { position: absolute; left: 0; top: 0; width: 720px; height: 1280px; transform-origin: 0 0; overflow: hidden; background: var(--black); color: var(--white); }
@@ -51,13 +51,13 @@ main { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; 
 .controls button:hover { border-color: var(--grey-2); }
 .controls button:focus-visible, .controls input:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
 .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--white); }
-.controls .time { font: 400 12px var(--caps); color: var(--grey); font-variant-numeric: tabular-nums; flex: none; }
-.note { margin: 0; color: var(--grey); font: 400 13px/1.55 var(--caps); }
+.controls .time { font: 600 12px var(--caps); color: var(--grey); font-variant-numeric: tabular-nums; flex: none; }
+.note { margin: 0; color: var(--grey); font: 600 13px/1.55 var(--caps); }
 .note a { color: var(--white); }
 
 /* ---------- Co'al type ---------- */
 .logo { display: block; width: 560px; height: auto; mix-blend-mode: screen; }
-.spaced { font: 400 20px var(--caps); letter-spacing: .5em; text-transform: uppercase; color: var(--grey); }
+.spaced { font: 600 20px var(--caps); letter-spacing: .5em; text-transform: uppercase; color: var(--grey); }
 .serif { font-family: var(--serif); font-weight: 400; }
 .rule { width: 64px; height: 1px; background: var(--white); opacity: .6; }
 .stile.w { background: var(--white); color: var(--navy-d); }
@@ -68,43 +68,43 @@ main { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; 
 
 #s2 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 34px; text-align: center; padding: 0 60px; }
 #s2 .pill { font: 500 18px var(--caps); letter-spacing: .4em; text-transform: uppercase; padding: 12px 22px 12px 30px; background: var(--white); color: var(--navy-d); border-radius: 999px; }
-#s2 h2 { margin: 0; font: 400 86px/1.02 var(--serif); letter-spacing: -0.01em; text-wrap: balance; }
-#s2 h2 em { font-style: italic; color: var(--navy-l); }
-#s2 p { margin: 0; font: 300 28px/1.4 var(--caps); color: var(--soft); }
-#s2 .with { display: flex; align-items: center; gap: 12px; font: 400 20px var(--caps); letter-spacing: .14em; text-transform: uppercase; color: var(--grey); margin-top: 26px; }
+#s2 h2 { margin: 0; font: 800 74px/1.04 var(--serif); letter-spacing: -0.04em; text-wrap: balance; }
+#s2 h2 em { font-style: normal; color: var(--navy-l); }
+#s2 p { margin: 0; font: 500 28px/1.4 var(--caps); color: var(--soft); }
+#s2 .with { display: flex; align-items: center; gap: 12px; font: 600 20px var(--caps); letter-spacing: .14em; text-transform: uppercase; color: var(--grey); margin-top: 26px; }
 #s2 .with b { font: 800 24px var(--ui); letter-spacing: -0.02em; text-transform: none; color: var(--white); }
 
 /* booking demo */
 #cap { position: absolute; left: 56px; right: 56px; top: 78px; height: 180px; }
 #cap .ln { position: absolute; left: 0; right: 0; top: 0; text-align: center; visibility: hidden; }
-#cap .ln small { display: block; font: 400 18px var(--caps); letter-spacing: .42em; text-transform: uppercase; color: var(--grey); margin-bottom: 18px; }
-#cap .ln span { display: block; font: 400 58px/1.05 var(--serif); }
-#cap .ln span em { font-style: italic; color: var(--navy-l); }
+#cap .ln small { display: block; font: 600 18px var(--caps); letter-spacing: .42em; text-transform: uppercase; color: var(--grey); margin-bottom: 18px; }
+#cap .ln span { display: block; font: 800 52px/1.08 var(--serif); letter-spacing: -0.035em; }
+#cap .ln span em { font-style: normal; color: var(--navy-l); }
 #sum { position: absolute; left: 40px; right: 40px; top: 1060px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-#sum span { font: 400 22px var(--caps); padding: 12px 20px; background: rgba(255,255,255,.1); border: 1px solid rgba(157,180,221,.55); border-radius: 999px; visibility: hidden; font-variant-numeric: tabular-nums; }
+#sum span { font: 600 22px var(--caps); padding: 12px 20px; background: rgba(255,255,255,.1); border: 1px solid rgba(157,180,221,.55); border-radius: 999px; visibility: hidden; font-variant-numeric: tabular-nums; }
 
 /* services & team */
 #s4 { padding: 0 70px; }
 #s4 .k { position: absolute; left: 70px; right: 70px; top: 120px; }
-#s4 .k small { display: block; font: 400 18px var(--caps); letter-spacing: .42em; text-transform: uppercase; color: var(--grey); margin-bottom: 18px; }
-#s4 .k div { font: 400 58px/1.05 var(--serif); text-wrap: balance; }
-#s4 .k div em { font-style: italic; color: var(--navy-l); }
+#s4 .k small { display: block; font: 600 18px var(--caps); letter-spacing: .42em; text-transform: uppercase; color: var(--grey); margin-bottom: 18px; }
+#s4 .k div { font: 800 52px/1.08 var(--serif); letter-spacing: -0.035em; text-wrap: balance; }
+#s4 .k div em { font-style: normal; color: var(--navy-l); }
 .svc { position: absolute; left: 70px; right: 70px; top: 370px; list-style: none; margin: 0; padding: 0; }
 .svc li { gap: 20px; display: flex; justify-content: space-between; align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--line); }
 .svc li:first-child { border-top: 1px solid var(--line); }
-.svc b { font: 400 44px var(--serif); white-space: nowrap; }
-.svc span { font: 300 19px var(--caps); text-align: right; color: var(--grey); letter-spacing: .04em; }
+.svc b { font: 800 40px var(--serif); letter-spacing: -0.03em; white-space: nowrap; }
+.svc span { font: 500 19px var(--caps); text-align: right; color: var(--grey); letter-spacing: .04em; }
 .team { position: absolute; left: 70px; right: 70px; top: 900px; }
-.team small { display: block; text-align: center; font: 400 18px var(--caps); letter-spacing: .42em; text-transform: uppercase; color: var(--grey); margin-bottom: 26px; }
+.team small { display: block; text-align: center; font: 600 18px var(--caps); letter-spacing: .42em; text-transform: uppercase; color: var(--grey); margin-bottom: 26px; }
 .team .row { display: flex; justify-content: center; gap: 22px; }
-.team .m { display: flex; flex-direction: column; align-items: center; gap: 12px; font: 400 21px var(--caps); }
-.team .m i { width: 92px; height: 92px; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); display: grid; place-items: center; font: 400 30px var(--serif); font-style: normal; background: rgba(255,255,255,.08); border-color: var(--navy-l); }
+.team .m { display: flex; flex-direction: column; align-items: center; gap: 12px; font: 600 21px var(--caps); }
+.team .m i { width: 92px; height: 92px; border-radius: 50%; border: 1px solid rgba(255,255,255,.55); display: grid; place-items: center; font: 800 30px var(--serif); font-style: normal; background: rgba(255,255,255,.08); border-color: var(--navy-l); }
 
 /* outro */
 #s5 { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; text-align: center; padding-bottom: 60px; }
 #s5 .logo { width: 430px; }
 #s5 .apps { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 8px; }
-#s5 .apps > small { font: 400 18px var(--caps); letter-spacing: .32em; text-transform: uppercase; color: var(--grey); }
+#s5 .apps > small { font: 600 18px var(--caps); letter-spacing: .32em; text-transform: uppercase; color: var(--grey); }
 #s5 .stores { display: flex; gap: 16px; }
 .store { display: flex; align-items: center; gap: 12px; height: 68px; padding: 0 22px 0 18px; border-radius: 14px; background: #000; border: 1.5px solid #A6A6A6; color: #FFF; text-align: left; font-family: var(--ui); }
 .store .ic { width: 32px; height: 34px; flex: none; }
@@ -113,9 +113,9 @@ main { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; 
 .store b { font: 600 25px var(--ui); letter-spacing: -0.02em; }
 #s5 .book { display: inline-flex; align-items: center; gap: 14px; height: 76px; padding: 0 40px; background: var(--white); color: var(--navy-d); font: 500 25px var(--caps); letter-spacing: .06em; border-radius: 999px; margin-top: 10px; }
 #s5 .book svg { width: 22px; height: 22px; }
-#s5 .info { display: flex; flex-direction: column; gap: 8px; font: 300 22px/1.4 var(--caps); color: var(--soft); }
-#s5 .info b { font: 400 30px var(--serif); color: var(--white); letter-spacing: .02em; margin-top: 6px; font-variant-numeric: lining-nums; }
-#s5 .with { position: absolute; left: 0; right: 0; bottom: 70px; display: flex; justify-content: center; align-items: center; gap: 12px; font: 400 18px var(--caps); letter-spacing: .14em; text-transform: uppercase; color: var(--grey); }
+#s5 .info { display: flex; flex-direction: column; gap: 8px; font: 500 22px/1.4 var(--caps); color: var(--soft); }
+#s5 .info b { font: 800 32px var(--serif); letter-spacing: -0.01em; color: var(--white); letter-spacing: .02em; margin-top: 6px; font-variant-numeric: lining-nums; }
+#s5 .with { position: absolute; left: 0; right: 0; bottom: 70px; display: flex; justify-content: center; align-items: center; gap: 12px; font: 600 18px var(--caps); letter-spacing: .14em; text-transform: uppercase; color: var(--grey); }
 #s5 .with b { font: 800 22px var(--ui); letter-spacing: -0.02em; text-transform: none; color: var(--white); }
 
 /* ---------- phone (Slotime UI) ---------- */
@@ -129,7 +129,7 @@ main { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; 
 .pad { padding: 0 14px; display: flex; flex-direction: column; gap: 10px; }
 
 .banner { height: 108px; background: #000; display: grid; place-items: center; padding-top: 30px; flex: none; }
-.banner span { font: 400 15px var(--caps); letter-spacing: .32em; color: var(--white); padding-left: .32em; }
+.banner span { font: 600 15px var(--caps); letter-spacing: .32em; color: var(--white); padding-left: .32em; }
 .scard { margin: -18px 12px 0; position: relative; background: var(--white); border-radius: 16px; box-shadow: 0 10px 24px -14px rgba(30,41,59,.4); border: 1px solid var(--uiline); padding: 10px 12px 12px 74px; }
 .scard .lg { position: absolute; left: 10px; top: -14px; width: 54px; height: 54px; border-radius: 10px; background: #000; border: 2px solid var(--white); overflow: hidden; display: grid; place-items: center; box-shadow: 0 6px 14px -6px rgba(0,0,0,.4); }
 .scard .lg img { width: 46px; height: auto; }
