@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Affiche Slotime Co'al</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root {
+  --top: #3a5990; --mid: #2e4672; --bottom: #1d2b45;
+  --sky: #a9bde3; --icon: #2e4a7f; --tile: #e7eef8; --ink: #1d2b45; --muted: #4b5a78;
+  --hot: #ffcf4a; --hot-ink: #1d2b45;
+}
+* { box-sizing: border-box; margin: 0; }
+body { width: 1080px; height: 1920px; overflow: hidden; color: #fff; font-family: "Inter", Arial, sans-serif;
+  background: radial-gradient(900px 600px at 50% 0%, #3d5e98, transparent 70%), linear-gradient(180deg, var(--top) 0%, var(--mid) 38%, #18223a 66%, var(--bottom) 82%, var(--bottom) 100%); }
+.wrap { position: relative; height: 100%; padding: 170px 66px 0; display: flex; flex-direction: column; align-items: center; }
+
+.brand { position: relative; left: -20px; display: flex; align-items: center; gap: 34px; }
+.logo { width: 126px; height: 126px; border-radius: 30px; background: #fff; color: var(--ink); display: grid; place-items: center; font: 800 86px "Inter Tight", sans-serif; box-shadow: 0 18px 40px rgba(0,0,0,.25); }
+.word { font: 800 118px/1 "Inter Tight", sans-serif; letter-spacing: -0.055em; }
+.tag { margin-top: 30px; font: 600 20px "Inter", sans-serif; letter-spacing: .34em; color: var(--sky); text-transform: uppercase; }
+
+/* pastille « Nouveau » */
+.sticker { position: absolute; right: -190px; top: -86px; width: 172px; height: 172px; border-radius: 50%; background: var(--hot); color: var(--hot-ink); display: grid; place-items: center; text-align: center; transform: rotate(12deg); box-shadow: 0 16px 34px rgba(0,0,0,.3); }
+.sticker::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; border: 2px dashed rgba(29,43,69,.45); }
+.sticker b { font: 900 25px/1 "Inter Tight", sans-serif; letter-spacing: .02em; }
+.sticker small { display: block; font: 700 17px "Inter", sans-serif; letter-spacing: .12em; margin-top: 4px; }
+
+.new { margin-top: 64px; display: inline-flex; align-items: center; gap: 14px; padding: 12px 26px 12px 14px; border-radius: 999px; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 2px rgba(255,255,255,.22); font: 600 26px "Jost", sans-serif; }
+.new span { background: var(--hot); color: var(--hot-ink); font: 800 22px "Inter Tight", sans-serif; letter-spacing: .12em; padding: 8px 16px; border-radius: 999px; }
+
+h1 { margin-top: 30px; text-align: center; font: 800 90px/0.98 "Inter Tight", sans-serif; letter-spacing: -0.03em; }
+h1 em { font-style: normal; color: var(--sky); }
+.sub { margin-top: 38px; font: 400 33px "Jost", sans-serif; color: #e6ecf7; }
+.sub b { font-weight: 600; color: #fff; }
+
+.card { margin-top: 56px; width: 100%; background: #fff; color: var(--ink); border-radius: 44px; padding: 44px 36px 46px; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,.28); }
+.eyebrow { font: 600 20px "Inter", sans-serif; letter-spacing: .42em; color: var(--icon); text-transform: uppercase; }
+.card h2 { margin-top: 18px; font: 800 50px "Inter Tight", sans-serif; letter-spacing: -0.045em; }
+.steps { margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.step { background: var(--tile); border-radius: 26px; padding: 24px 14px 26px; display: grid; justify-items: center; align-content: start; gap: 8px; }
+.ico { width: 70px; height: 70px; border-radius: 18px; background: var(--icon); display: grid; place-items: center; margin-bottom: 8px; }
+.step b { font: 700 26px "Inter", sans-serif; }
+.step small { font: 500 20px/1.3 "Inter", sans-serif; color: var(--muted); }
+.sep { margin: 32px 0 28px; border-top: 2px dashed #d3dae6; }
+.stores { margin-top: 20px; display: flex; justify-content: center; gap: 22px; }
+.store { display: flex; align-items: center; gap: 16px; height: 90px; padding: 0 30px 0 26px; border-radius: 18px; background: #000; color: #fff; box-shadow: inset 0 0 0 2px #a6a6a6; text-align: left; }
+.store small { display: block; font: 500 17px "Inter", sans-serif; }
+.store b { display: block; font: 600 33px/1.05 "Inter", sans-serif; letter-spacing: -0.02em; }
+.or { margin-top: 26px; font: 500 25px "Inter", sans-serif; color: var(--muted); }
+.or b { color: var(--icon); }
+
+.foot { margin-top: 30px; width: 100%; border-top: 2px solid rgba(255,255,255,.12); padding-top: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+.salon .eyebrow { color: #c8d3e8; }
+.salon img { display: block; width: 260px; margin-top: 14px; mix-blend-mode: lighten; }
+.addr { text-align: right; font: 400 22px/1.5 "Jost", sans-serif; color: #e6ecf7; }
+.addr b { display: block; font: 800 34px "Inter Tight", sans-serif; color: #fff; letter-spacing: -0.01em; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="logo">S</div><div class="word">Slotime</div>
+    <div class="sticker"><div><small style="margin:0 0 4px">C'EST</small><b>NOUVEAU</b><small>AU SALON</small></div></div>
+  </div>
+  <div class="tag">Réservation en ligne pour salons de beauté</div>
+
+  <div class="new"><span>NOUVEAU</span>La réservation en ligne arrive</div>
+  <h1>Vos rendez-vous<br>chez Co'al coiffure<br><em>arrivent sur Slotime</em></h1>
+  <p class="sub">Réservez <b>24h/24</b>, <b>sans appel</b>, en quelques secondes.</p>
+
+  <div class="card">
+    <div class="eyebrow">Avec l'appli Slotime</div>
+    <h2>Votre créneau en 3 gestes</h2>
+    <div class="steps">
+      <div class="step"><div class="ico"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg></div><b>Prestation</b><small>Coupe, barbe, couleur, ongles…</small></div>
+      <div class="step"><div class="ico"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg></div><b>Coiffeur·se</b><small>Ou sans préférence</small></div>
+      <div class="step"><div class="ico"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M9 15.5l2 2 4-4"/></svg></div><b>Créneau</b><small>Confirmé aussitôt</small></div>
+    </div>
+    <div class="sep"></div>
+    <div class="eyebrow">Téléchargez Slotime</div>
+    <div class="stores">
+      <div class="store"><svg width="40" height="48" viewBox="0 0 20 24"><path fill="#fff" d="M16.4 12.7c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2.1-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.7-1-2.7-4.1zM13.9 5.1c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></svg><div><small>Télécharger dans</small><b>l'App Store</b></div></div>
+      <div class="store"><svg width="44" height="48" viewBox="0 0 22 24"><path fill="#00d7fe" d="M1 1.2 12 12 1 22.8c-.4-.2-.6-.6-.6-1.1V2.3c0-.5.2-.9.6-1.1z"/><path fill="#00f076" d="M15.6 8.4 12 12 1 1.2c.3-.2.8-.2 1.2 0z"/><path fill="#ff3a44" d="M15.6 15.6 2.2 23c-.4.2-.9.2-1.2-.1L12 12z"/><path fill="#ffd400" d="M20 10.9c.8.5.8 1.7 0 2.2l-4.4 2.5L12 12l3.6-3.6z"/></svg><div><small>DISPONIBLE SUR</small><b>Google Play</b></div></div>
+    </div>
+    <div class="or">ou sur <b>slotime.fr</b></div>
+  </div>
+
+  <div class="foot">
+    <div class="salon"><div class="eyebrow">Votre salon</div><img src="coal-logo.png" alt="Co'al coiffure"></div>
+    <div class="addr">Résidence Santa Regina, lieu-dit Casatorra<br>20620 Biguglia<b>09 55 30 04 58</b></div>
+  </div>
+</div>
+</body>
+</html>
