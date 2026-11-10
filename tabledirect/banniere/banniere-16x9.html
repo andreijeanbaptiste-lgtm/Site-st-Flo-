@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>TableDirect bannière</title>
+<link rel="stylesheet" href="../logo/fonts/fonts.css">
+<style>
+:root { --ink: #0b0b0a; --panel: #161614; --line: #2a2a27; --muted: #a3a39c; --paper: #fff; --pink: #171717; --em: #10b981; --amber: #f59e0b; --amber-soft: #fef3c7; }
+* { box-sizing: border-box; margin: 0; }
+body { width: 2622px; height: 1475px; overflow: hidden; background: var(--ink); color: #fff; font-family: "Geist", Arial, sans-serif; position: relative; }
+.glow { position: absolute; width: 2000px; height: 2000px; right: -500px; top: -520px; border-radius: 50%; background: radial-gradient(circle, rgba(16,185,129,.22), rgba(16,185,129,0) 60%); }
+.grid { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.07) 1.5px, transparent 1.6px); background-size: 44px 44px; mask-image: linear-gradient(90deg, transparent 35%, #000 75%); }
+.disp { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; letter-spacing: -0.04em; }
+
+header { position: absolute; left: 160px; right: 160px; top: 110px; display: flex; justify-content: space-between; align-items: center; }
+.lock { display: flex; align-items: center; gap: 24px; font-size: 64px; }
+.lock svg { width: 100px; height: 100px; display: block; }
+.url { font: 500 32px "Geist Mono", monospace; color: var(--muted); }
+
+.left { position: absolute; left: 160px; top: 350px; width: 1260px; display: grid; gap: 42px; }
+.pill { justify-self: start; display: inline-flex; align-items: center; gap: 12px; padding: 14px 26px; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); font: 500 29px "Geist"; color: #e5e5e2; }
+.pill i { width: 12px; height: 12px; border-radius: 50%; background: var(--em); box-shadow: 0 0 0 6px rgba(16,185,129,.2); }
+h1 { font-size: 150px; line-height: .92; }
+h1 em { font-style: normal; color: var(--em); }
+.lead { font-size: 38px; line-height: 1.4; color: var(--muted); max-width: 1250px; }
+.lead b { color: #fff; font-weight: 600; }
+.chips { display: flex; gap: 12px; flex-wrap: nowrap; }
+.chip { display: flex; align-items: center; gap: 10px; padding: 16px 24px; border-radius: 18px; background: var(--panel); box-shadow: inset 0 0 0 1px var(--line); font: 600 27px "Geist"; white-space: nowrap; }
+.chip svg { flex: none; }
+.cta { display: flex; align-items: center; gap: 28px; margin-top: 6px; }
+.btn { padding: 26px 44px; border-radius: 20px; background: #fff; color: var(--ink); font: 700 34px "Geist"; }
+.btn2 { font: 500 34px "Geist Mono", monospace; color: #fff; }
+.btn2 span { color: var(--em); }
+
+/* caisse */
+.pos { position: absolute; left: 1170px; top: 250px; width: 640px; padding: 26px; border-radius: 40px; background: #fff; color: var(--pink); transform: rotate(2deg); box-shadow: 0 50px 120px rgba(0,0,0,.6); }
+.pos-in { border-radius: 28px; background: #fafaf9; box-shadow: inset 0 0 0 1px #e7e5e4; padding: 26px; display: grid; gap: 18px; }
+.ph { display: flex; justify-content: space-between; align-items: center; font: 700 24px "Geist"; }
+.ph span { font: 700 15px "Geist"; padding: 6px 12px; border-radius: 999px; background: #d1fae5; color: #047857; }
+.tables { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 14px; border-radius: 18px; background: #fff; box-shadow: inset 0 0 0 1px #e5e5e5; }
+.t { aspect-ratio: 1; border-radius: 10px; display: grid; place-items: center; font: 700 18px "Geist"; background: #f5f5f4; color: #a3a3a3; }
+.t.o { background: var(--amber-soft); color: #78350f; box-shadow: inset 0 0 0 2px #fcd34d; }
+.t.s { background: var(--pink); color: #fff; }
+.note { border-radius: 18px; background: #fff; box-shadow: inset 0 0 0 1px #e5e5e5; padding: 18px 20px; display: grid; gap: 8px; font: 500 20px "Geist"; font-variant-numeric: tabular-nums; }
+.note .r { display: flex; justify-content: space-between; }
+.note .h { font: 700 20px "Geist"; }
+.note .tot { font: 800 24px "Geist"; border-top: 1px solid #e5e5e5; padding-top: 12px; margin-top: 4px; }
+.meth { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.meth div { text-align: center; padding: 14px 0; border-radius: 14px; background: #fff; box-shadow: inset 0 0 0 1px #e5e5e5; font: 600 19px "Geist"; }
+.enc { text-align: center; padding: 20px 0; border-radius: 16px; background: var(--em); color: #fff; font: 700 23px "Geist"; }
+
+/* téléphone */
+.phone { position: absolute; left: 1010px; top: 530px; width: 340px; height: 690px; border-radius: 54px; background: #050505; padding: 12px; box-shadow: 0 0 0 2px #333, 0 50px 120px rgba(0,0,0,.7); transform: rotate(-5deg); }
+.scr { position: relative; height: 100%; border-radius: 42px; overflow: hidden; background: #fff; color: var(--pink); padding: 62px 18px 0; }
+.notch { position: absolute; top: 12px; left: 50%; width: 104px; height: 30px; margin-left: -52px; border-radius: 18px; background: #050505; }
+.mh { display: flex; justify-content: space-between; align-items: center; }
+.mh b { font: 800 26px "Bricolage Grotesque"; letter-spacing: -0.03em; }
+.mh span { font: 600 13px "Geist"; padding: 5px 10px; border-radius: 999px; background: #ecfdf5; color: #047857; }
+.cats { display: flex; gap: 6px; margin: 14px 0 4px; }
+.cats span { font: 600 13px "Geist"; padding: 6px 11px; border-radius: 999px; background: #f5f5f4; color: #525252; }
+.cats span:first-child { background: var(--pink); color: #fff; }
+.it { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 13px 0; border-bottom: 1px solid #efefed; }
+.it b { display: block; font: 600 18px "Geist"; }
+.it small { display: block; font: 400 13px "Geist"; color: #737373; margin-top: 2px; }
+.it i { display: block; font: 600 15px "Geist"; font-style: normal; margin-top: 4px; }
+.pl { width: 38px; height: 38px; border-radius: 50%; background: var(--pink); color: #fff; display: grid; place-items: center; font: 500 22px "Geist"; }
+.pl.ok { background: var(--em); font-size: 18px; }
+.cart { position: absolute; left: 14px; right: 14px; bottom: 18px; height: 60px; border-radius: 18px; background: var(--pink); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; font: 600 16px "Geist"; }
+.cart em { font-style: normal; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--em); margin-right: 8px; font-size: 13px; }
+
+.toast { position: absolute; left: 1430px; top: 1030px; display: flex; align-items: center; gap: 18px; padding: 20px 26px; border-radius: 24px; background: #fff; color: var(--pink); box-shadow: 0 30px 80px rgba(0,0,0,.55); transform: rotate(-1deg); }
+.toast .bell { width: 58px; height: 58px; border-radius: 18px; background: var(--em); display: grid; place-items: center; }
+.toast b { display: block; font: 800 24px "Bricolage Grotesque"; letter-spacing: -0.02em; }
+.toast small { display: block; font: 500 18px "Geist"; color: #525252; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.right { position: absolute; left: 0; top: 0; width: 1920px; height: 1280px; transform-origin: 0 0; transform: translate(338px, -66px) scale(1.15); }
+</style></head><body>
+<div class="glow"></div><div class="grid"></div>
+
+<header>
+  <div class="lock disp"><svg viewBox="0 0 100 100"><rect width="100" height="100" rx="26" fill="#ffffff"/><rect x="17" y="26" width="66" height="15" rx="7.5" fill="#0b0b0a"/><rect x="43.5" y="26" width="13" height="50" rx="6.5" fill="#0b0b0a"/><rect x="35" y="72" width="30" height="7" rx="3.5" fill="#0b0b0a"/><circle cx="79" cy="20" r="9.5" fill="#10b981" stroke="#ffffff" stroke-width="5"/></svg>TableDirect</div>
+  <div class="url">tabledirect.fr</div>
+</header>
+
+<div class="left">
+  <div class="pill"><i></i>Commande QR &amp; caisse pour restaurants</div>
+  <h1 class="disp">Le service<br>restaurant,<br><em>sans attente.</em></h1>
+  <p class="lead">Vos clients <b>scannent le QR</b> de leur table, <b>commandent et payent</b> depuis leur téléphone. Les tickets partent en cuisine et au bar.</p>
+  <div class="chips">
+    <div class="chip"><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#10b981"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Aucune app à installer</div>
+    <div class="chip"><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#10b981"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Caisse conforme NF525</div>
+  </div>
+  <div class="cta"><div class="btn">Voir la démo →</div><div class="btn2">dès <span>149,99 €</span> HT / mois</div></div>
+</div>
+
+<div class="right">
+<div class="pos"><div class="pos-in">
+  <div class="ph">Caisse · Plan de salle<span>8 notes ouvertes</span></div>
+  <div class="tables">
+    <div class="t">1</div><div class="t o">2</div><div class="t o">3</div><div class="t">4</div><div class="t">5</div><div class="t s">6</div>
+    <div class="t o">7</div><div class="t o">8</div><div class="t">9</div><div class="t">10</div><div class="t o">11</div><div class="t">12</div>
+  </div>
+  <div class="note">
+    <div class="r h"><span>Table 6 · 4 couverts</span><span style="color:#047857">Note ouverte</span></div>
+    <div class="r"><span>Carbonara × 1</span><span>20,00 €</span></div>
+    <div class="r"><span>Tiramisu × 1</span><span>6,00 €</span></div>
+    <div class="r"><span>Coca × 1</span><span>3,00 €</span></div>
+    <div class="r tot"><span>Total</span><span>29,00 €</span></div>
+  </div>
+  <div class="meth"><div>Espèces</div><div>CB</div><div>QR</div></div>
+  <div class="enc">Encaisser 29,00 €</div>
+</div></div>
+
+<div class="phone"><div class="scr">
+  <div class="notch"></div>
+  <div class="mh"><b>Le Bistrot</b><span>Table 6</span></div>
+  <div class="cats"><span>Plats</span><span>Desserts</span><span>Boissons</span></div>
+  <div class="it"><div><b>Burrata crémeuse</b><small>Tomates anciennes, basilic</small><i>12,00 €</i></div><div class="pl">+</div></div>
+  <div class="it"><div><b>Carbonara</b><small>Guanciale, pecorino</small><i>20,00 €</i></div><div class="pl ok">✓</div></div>
+  <div class="it"><div><b>Tiramisu maison</b><small>Mascarpone, café</small><i>6,00 €</i></div><div class="pl ok">✓</div></div>
+  <div class="it"><div><b>Coca-Cola 33 cl</b><small>Bien frais</small><i>3,00 €</i></div><div class="pl ok">✓</div></div>
+  <div class="cart"><span><em>3</em>Voir le panier</span><span>29,00 €</span></div>
+</div></div>
+
+<div class="toast">
+  <div class="bell"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>
+  <div><b>Nouvelle commande</b><small>Table 6 · 29,00 € payé</small></div>
+</div>
+</div>
+</body></html>
