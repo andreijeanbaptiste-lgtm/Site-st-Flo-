@@ -1,0 +1,606 @@
+<title>TableDirect App Tour</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../logo/fonts/fonts.css">
+<style>
+/* Layout : scène 16:9 de 1920×1080. Légende à gauche, iPad à droite qui garde la même app pendant tout le film. */
+:root {
+  --ink: #0b0b0a; --panel: #161614; --line: #2a2a27; --muted: #a3a39c;
+  --app: #fafaf9; --card: #ffffff; --border: #e7e5e4; --text: #171717; --sub: #737373;
+  --em: #10b981; --em-soft: #d1fae5; --em-deep: #047857; --amber: #f59e0b; --amber-soft: #fef3c7; --amber-deep: #92400e;
+  --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --body: "Geist", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--ink); color: #fff; font-family: var(--body); padding-block: 24px; padding-inline: 16px; }
+.wrap { max-width: 1280px; margin: 0 auto; display: grid; gap: 14px; }
+.frame { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 18px; background: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+#stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; background: var(--ink); }
+.a { position: absolute; will-change: transform, opacity; }
+.controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.btn { font: 600 14px var(--body); color: var(--text); background: #fff; border: 0; border-radius: 12px; padding: 10px 16px; cursor: pointer; }
+.btn.ghost { color: #fff; background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.btn:focus-visible, #scrub:focus-visible { outline: 2px solid var(--em); outline-offset: 2px; }
+#scrub { flex: 1 1 240px; min-width: 0; accent-color: var(--em); }
+#time { font: 500 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.note { font-size: 13px; color: var(--muted); }
+
+.disp { font-family: var(--display); font-weight: 800; letter-spacing: -0.04em; line-height: .95; text-wrap: balance; }
+#glow { width: 1500px; height: 1500px; border-radius: 50%; background: radial-gradient(circle, rgba(16,185,129,.16), rgba(16,185,129,0) 62%); }
+#dots { inset: 0; background-image: radial-gradient(rgba(255,255,255,.06) 1.5px, transparent 1.6px); background-size: 44px 44px; -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000 80%); mask-image: linear-gradient(90deg, transparent 30%, #000 80%); }
+.icon svg { display: block; width: 100%; height: 100%; }
+#brand { left: 80px; top: 56px; display: flex; align-items: center; gap: 16px; font: 800 34px var(--display); letter-spacing: -0.04em; }
+#brand .icon { width: 60px; height: 60px; }
+#url { right: 80px; bottom: 44px; font: 500 22px var(--mono); color: var(--muted); }
+
+/* légendes */
+.cap { left: 120px; top: 380px; width: 520px; display: grid; gap: 22px; }
+.cap .eb { font: 500 22px var(--mono); color: var(--em); letter-spacing: .08em; text-transform: uppercase; }
+.cap h2 { font-size: 72px; }
+.cap p { font-size: 28px; line-height: 1.4; color: var(--muted); }
+
+/* iPad */
+#ipad { left: 690px; top: 150px; width: 1130px; height: 790px; border-radius: 52px; background: #1b1b1a; padding: 20px; box-shadow: 0 0 0 2px #3a3a37, 0 60px 140px rgba(0,0,0,.65); }
+#screen { position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: var(--app); color: var(--text); display: flex; }
+#side { width: 84px; background: var(--ink); display: flex; flex-direction: column; align-items: center; padding-top: 22px; gap: 10px; position: relative; }
+#side .icon { width: 46px; height: 46px; margin-bottom: 18px; }
+.nav { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; position: relative; z-index: 1; }
+.nav svg { width: 26px; height: 26px; }
+#navHi { left: 14px; top: 0; width: 56px; height: 56px; border-radius: 16px; background: #262624; }
+#main { position: relative; flex: 1; }
+.top { height: 64px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; padding: 0 26px; background: #fff; font: 700 20px var(--body); }
+.top small { font: 500 16px var(--body); color: var(--sub); }
+.live { margin-left: auto; display: flex; align-items: center; gap: 8px; font: 600 15px var(--body); color: var(--em-deep); background: #ecfdf5; padding: 6px 12px; border-radius: 999px; }
+.live i { width: 9px; height: 9px; border-radius: 50%; background: var(--em); }
+.clock { font: 500 16px var(--mono); color: var(--sub); }
+.scr { position: absolute; left: 0; right: 0; top: 64px; bottom: 0; padding: 22px 24px; opacity: 0; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; }
+.h { font: 700 17px var(--body); }
+.h small { font: 500 14px var(--body); color: var(--sub); margin-left: 6px; }
+.num { font-variant-numeric: tabular-nums; }
+#tap { width: 60px; height: 60px; border-radius: 50%; border: 4px solid var(--em); margin: -30px 0 0 -30px; left: 0; top: 0; opacity: 0; z-index: 20; pointer-events: none; }
+
+/* tableau de bord */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.kpi { padding: 16px 18px; display: grid; gap: 6px; }
+.kpi span { font: 500 14px var(--body); color: var(--sub); }
+.kpi b { font: 800 34px var(--display); letter-spacing: -0.03em; }
+.kpi i { font: 600 13px var(--body); font-style: normal; color: var(--em-deep); }
+.dgrid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14px; margin-top: 14px; }
+.chart { padding: 18px 20px; height: 470px; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; }
+.bars { display: flex; align-items: flex-end; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
+.bar { flex: 1; border-radius: 8px 8px 3px 3px; background: #e7e5e4; transform-origin: 50% 100%; }
+.bar.hot { background: var(--em); }
+.hours { display: flex; gap: 10px; font: 500 12px var(--mono); color: var(--sub); }
+.hours span { flex: 1; text-align: center; }
+.orders { padding: 18px 20px; height: 470px; overflow: hidden; display: grid; align-content: start; gap: 10px; }
+.ord { display: grid; grid-template-columns: 54px 1fr auto; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: #f5f5f4; }
+.ord .tn { width: 54px; height: 54px; border-radius: 14px; background: #fff; border: 1px solid var(--border); display: grid; place-items: center; font: 800 22px var(--display); }
+.ord b { display: block; font: 600 17px var(--body); }
+.ord small { display: block; font: 500 14px var(--body); color: var(--sub); }
+.st { font: 700 13px var(--body); padding: 6px 10px; border-radius: 999px; }
+.st.cook { background: var(--amber-soft); color: var(--amber-deep); }
+.st.paid { background: var(--em-soft); color: var(--em-deep); }
+.st.new { background: var(--text); color: #fff; }
+#ordNew { background: #ecfdf5; box-shadow: inset 0 0 0 2px var(--em); }
+
+/* plan de salle */
+.tabs { display: flex; gap: 8px; }
+.tabs span { font: 600 16px var(--body); padding: 9px 16px; border-radius: 999px; background: #f0efed; color: #525252; }
+.tabs span.on { background: var(--text); color: #fff; }
+.counts { margin-left: auto; display: flex; gap: 16px; font: 500 15px var(--body); color: var(--sub); }
+.counts b { color: var(--text); }
+#floor { position: relative; margin-top: 16px; height: 560px; border-radius: 20px; background-color: #fff; background-image: radial-gradient(#e7e5e4 1.4px, transparent 1.5px); background-size: 26px 26px; border: 1px solid var(--border); overflow: hidden; }
+.tb { display: grid; place-items: center; align-content: center; gap: 2px; background: #f5f5f4; box-shadow: inset 0 0 0 2px #e7e5e4; }
+.tb b { font: 800 24px var(--display); color: #8a8a83; }
+.tb i { font: 600 13px var(--body); font-style: normal; color: transparent; white-space: nowrap; }
+.chair { width: 26px; height: 10px; border-radius: 5px; background: #e7e5e4; }
+.zone { font: 600 13px var(--mono); color: #a8a29e; letter-spacing: .1em; }
+#panel { right: 18px; top: 18px; bottom: 18px; width: 270px; border-radius: 18px; background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,.15), inset 0 0 0 1px var(--border); padding: 20px; display: grid; align-content: start; gap: 12px; }
+#panel h4 { font: 800 26px var(--display); letter-spacing: -0.03em; }
+.pr { display: flex; justify-content: space-between; font: 500 16px var(--body); }
+.go { margin-top: 6px; text-align: center; padding: 15px; border-radius: 14px; background: var(--em); color: #fff; font: 700 18px var(--body); }
+
+/* caisse */
+.pos { display: grid; grid-template-columns: 1fr 350px; gap: 16px; height: 100%; }
+.cats { display: flex; gap: 8px; margin-bottom: 14px; }
+.cats span { font: 600 15px var(--body); padding: 8px 14px; border-radius: 999px; background: #f0efed; color: #525252; }
+.cats span:first-child { background: var(--text); color: #fff; }
+.prods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.prod { height: 128px; border-radius: 16px; padding: 14px; display: grid; align-content: space-between; background: #fff; border: 1px solid var(--border); }
+.prod b { font: 600 18px var(--body); }
+.prod span { font: 600 16px var(--body); color: var(--sub); }
+.prod::before { content: ""; width: 34px; height: 6px; border-radius: 3px; background: var(--c, #e7e5e4); }
+.bill { padding: 18px; display: grid; grid-template-rows: auto 1fr auto; gap: 10px; }
+.lines { display: grid; align-content: start; gap: 8px; }
+.ln { display: flex; justify-content: space-between; font: 500 17px var(--body); }
+.tot { display: flex; justify-content: space-between; font: 800 26px var(--display); letter-spacing: -0.02em; border-top: 1px solid var(--border); padding-top: 12px; }
+.meths { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.meths span { text-align: center; padding: 12px 0; border-radius: 12px; border: 1px solid var(--border); font: 600 15px var(--body); background: #fff; }
+.split { display: grid; gap: 8px; }
+.person { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 14px; background: #f5f5f4; font: 600 17px var(--body); }
+.person em { font-style: normal; font: 600 13px var(--body); padding: 5px 9px; border-radius: 999px; background: #fff; border: 1px solid var(--border); }
+.chg { padding: 12px 14px; border-radius: 14px; background: #ecfdf5; color: var(--em-deep); font: 600 15px var(--body); display: flex; justify-content: space-between; }
+#drawer { left: 24px; bottom: 22px; display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px; background: var(--text); color: #fff; font: 600 15px var(--body); }
+#solde { inset: 0; display: grid; place-items: center; background: rgba(250,250,249,.92); }
+#solde div { display: grid; justify-items: center; gap: 12px; font: 800 34px var(--display); letter-spacing: -0.03em; }
+
+/* carte */
+.menu { display: grid; grid-template-columns: 300px 1fr; gap: 16px; height: 100%; }
+.dlist { padding: 14px; display: grid; align-content: start; gap: 6px; }
+.sec { font: 600 13px var(--mono); color: var(--sub); letter-spacing: .08em; text-transform: uppercase; padding: 6px 8px 2px; }
+.dish { display: flex; justify-content: space-between; align-items: center; padding: 11px 12px; border-radius: 12px; font: 600 16px var(--body); }
+.dish.sel { background: #f5f5f4; box-shadow: inset 0 0 0 2px var(--text); }
+.dish small { font: 500 14px var(--body); color: var(--sub); }
+.rup { font: 700 12px var(--body); padding: 4px 8px; border-radius: 999px; background: #fee2e2; color: #b91c1c; }
+.editor { padding: 20px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-content: start; }
+.photo { height: 200px; border-radius: 16px; background: radial-gradient(circle at 40% 40%, #fde68a, #f59e0b 45%, #b45309 75%, #78350f); position: relative; overflow: hidden; }
+.photo::after { content: ""; position: absolute; inset: 30px; border-radius: 50%; border: 10px solid rgba(255,255,255,.85); }
+.fields { display: grid; gap: 10px; align-content: start; }
+.fl { font: 500 13px var(--body); color: var(--sub); }
+.fv { padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border); font: 600 18px var(--body); background: #fff; }
+.langs { display: flex; gap: 6px; flex-wrap: wrap; }
+.langs span { font: 600 13px var(--mono); padding: 6px 9px; border-radius: 8px; background: #f0efed; color: #525252; }
+.langs span.on { background: var(--text); color: #fff; }
+.alls { grid-column: 1 / -1; display: grid; gap: 10px; }
+.agrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.al { text-align: center; padding: 10px 4px; border-radius: 10px; border: 1px solid var(--border); font: 600 13px var(--body); background: #fff; white-space: nowrap; }
+.al.on { background: var(--amber-soft); border-color: var(--amber); color: var(--amber-deep); }
+.sw { display: flex; align-items: center; gap: 10px; font: 600 15px var(--body); }
+.sw i { width: 48px; height: 28px; border-radius: 14px; background: var(--em); position: relative; }
+.sw i::after { content: ""; position: absolute; top: 3px; left: 23px; width: 22px; height: 22px; border-radius: 50%; background: #fff; }
+
+/* équipe */
+.team { display: grid; grid-template-columns: 330px 1fr; gap: 16px; height: 100%; }
+.pin { padding: 22px; display: grid; justify-items: center; align-content: start; gap: 16px; }
+.pdots { display: flex; gap: 14px; }
+.pdots i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--text); }
+.keys { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
+.key { height: 64px; border-radius: 16px; background: #f5f5f4; display: grid; place-items: center; font: 600 24px var(--body); }
+#hello { font: 800 24px var(--display); letter-spacing: -0.02em; color: var(--em-deep); }
+.staff { padding: 20px; display: grid; align-content: start; gap: 12px; }
+.srow { display: grid; grid-template-columns: 48px 1fr 120px 110px; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid #f0efed; font: 600 17px var(--body); }
+.srow.hd { font: 600 13px var(--mono); color: var(--sub); letter-spacing: .06em; text-transform: uppercase; border: 0; padding: 0; }
+.av { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 700 18px var(--body); }
+.sbar { height: 8px; border-radius: 4px; background: var(--em); transform-origin: 0 50%; margin-top: 8px; }
+.srow small { display: block; font: 500 14px var(--body); color: var(--sub); }
+#ticket { left: 1540px; top: 690px; width: 270px; background: #fff; color: var(--text); font: 500 19px/1.6 var(--mono); padding: 20px 22px 26px; box-shadow: 0 30px 80px rgba(0,0,0,.5); clip-path: inset(0 0 0 0); }
+#ticket b { display: block; font: 800 26px var(--display); margin-bottom: 4px; }
+#ticket hr { border: 0; border-top: 2px dashed #a3a3a3; margin: 8px 0; }
+
+/* rapports */
+.rep { display: grid; grid-template-columns: 1fr 360px; gap: 16px; height: 100%; }
+.chain { padding: 20px; display: grid; align-content: start; gap: 0; }
+.tk { display: grid; grid-template-columns: 90px 1fr auto; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; background: #f5f5f4; font: 600 16px var(--body); }
+.tk code { font: 500 14px var(--mono); color: var(--sub); }
+.link { height: 26px; width: 2px; margin-left: 60px; background: var(--em); transform-origin: 50% 0; }
+.zc { padding: 22px; display: grid; align-content: start; gap: 10px; }
+.zc h4 { font: 800 28px var(--display); letter-spacing: -0.03em; }
+.zr { display: flex; justify-content: space-between; font: 500 16px var(--body); padding: 6px 0; border-bottom: 1px solid #f0efed; }
+.zr.t { font: 800 20px var(--body); border: 0; }
+.ok { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #ecfdf5; color: var(--em-deep); font: 700 15px var(--body); }
+.pdf { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--border); font: 600 15px var(--body); }
+.pdf i { width: 34px; height: 42px; border-radius: 6px; background: #ef4444; color: #fff; font: 700 10px var(--body); font-style: normal; display: grid; place-items: end center; padding-bottom: 5px; }
+
+/* fin */
+.store { display: inline-flex; align-items: center; gap: 18px; height: 104px; padding: 0 36px 0 30px; border-radius: 22px; background: #000; color: #fff; box-shadow: inset 0 0 0 2px #a6a6a6; }
+.store small { display: block; font: 500 20px var(--body); }
+.store b { display: block; font: 600 40px/1.05 var(--body); letter-spacing: -0.02em; }
+</style>
+
+<div class="wrap">
+<div class="frame" id="frame" aria-label="Film de présentation de l'app TableDirect">
+<div id="stage">
+  <div class="a" id="glow"></div>
+  <div class="a" id="dots"></div>
+
+  <!-- intro -->
+  <div class="a" id="s1" style="inset:0">
+    <div class="a icon" id="i1" style="left:850px;top:250px;width:220px;height:220px"></div>
+    <div class="a disp" id="i1n" style="left:0;right:0;top:520px;text-align:center;font-size:150px">TableDirect</div>
+    <div class="a" id="i1s" style="left:0;right:0;top:700px;text-align:center;font-size:40px;color:var(--muted)">Votre restaurant, <span style="color:#fff">vu de l'intérieur.</span></div>
+  </div>
+
+  <!-- légendes -->
+  <div class="a cap" id="c1"><div class="eb">Tableau de bord</div><h2 class="disp">Tout votre service en direct.</h2><p>Chiffre d'affaires, ticket moyen, commandes en cours. Les nouvelles commandes arrivent en temps réel.</p></div>
+  <div class="a cap" id="c2"><div class="eb">Plan de salle</div><h2 class="disp">Votre salle, table par table.</h2><p>Dessinez vos salles, placez vos tables. Libre, occupée, à payer : vous voyez tout d'un coup d'œil.</p></div>
+  <div class="a cap" id="c3"><div class="eb">Caisse certifiée</div><h2 class="disp">Encaissez comme vous voulez.</h2><p>Note ouverte, addition partagée, espèces, CB, QR ou titres-restaurant. Le rendu de monnaie est calculé pour vous.</p></div>
+  <div class="a cap" id="c4"><div class="eb">Gestion de carte</div><h2 class="disp">Votre carte, à jour en un geste.</h2><p>Photos, prix, ruptures, 14 allergènes et traductions en 9 langues.</p></div>
+  <div class="a cap" id="c5"><div class="eb">Équipe et cuisine</div><h2 class="disp">Chacun son PIN, chaque ticket au bon poste.</h2><p>Ventes et pourboires par serveur. Les tickets s'impriment en cuisine et au bar.</p></div>
+  <div class="a cap" id="c6"><div class="eb">Conforme NF525</div><h2 class="disp">En règle dès le premier service.</h2><p>Tickets signés et chaînés en SHA-256, rapport Z automatique à 4 h, PDF mensuel pour le comptable.</p></div>
+
+  <!-- iPad -->
+  <div class="a" id="ipad">
+    <div id="screen">
+      <div id="side">
+        <div class="icon" id="sideIcon"></div>
+        <div class="a" id="navHi"></div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg></div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="3"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><circle cx="17" cy="17" r="3"/><rect x="4" y="14" width="6" height="6" rx="1.5"/></svg></div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M7 20h10M12 16v4"/></svg></div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg></div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></div>
+        <div class="nav"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7M9 8h3"/></svg></div>
+      </div>
+      <div id="main">
+        <div class="top">Le Bistrot <small id="topSub">Service du soir</small><span class="live"><i></i>En direct</span><span class="clock">21:14</span></div>
+
+        <!-- 1 tableau de bord -->
+        <div class="scr" id="sc1">
+          <div class="kpis">
+            <div class="card kpi"><span>CA du jour</span><b class="num" id="k1">0 €</b><i>+12 % vs mardi dernier</i></div>
+            <div class="card kpi"><span>Ticket moyen</span><b class="num" id="k2">0,00 €</b><i>+1,80 €</i></div>
+            <div class="card kpi"><span>Commandes</span><b class="num" id="k3">0</b><i>dont 54 par QR</i></div>
+            <div class="card kpi"><span>Tables occupées</span><b class="num" id="k4">0 / 12</b><i>Terrasse pleine</i></div>
+          </div>
+          <div class="dgrid">
+            <div class="card chart"><div class="h">Heures de pointe<small>aujourd'hui</small></div><div class="bars" id="bars"></div><div class="hours" id="hours"></div></div>
+            <div class="card orders" id="orders">
+              <div class="h">Commandes en cours</div>
+              <div class="ord" id="ordNew"><div class="tn">6</div><div><b>3 articles · 29,00 €</b><small>À l'instant · payé par QR</small></div><span class="st new">Nouvelle</span></div>
+              <div class="ord"><div class="tn">2</div><div><b>5 articles · 105,00 €</b><small>Il y a 4 min</small></div><span class="st cook">En cuisine</span></div>
+              <div class="ord"><div class="tn">7</div><div><b>3 articles · 55,00 €</b><small>Il y a 9 min</small></div><span class="st cook">En cuisine</span></div>
+              <div class="ord"><div class="tn">3</div><div><b>2 articles · 20,00 €</b><small>Il y a 14 min</small></div><span class="st paid">Servie</span></div>
+              <div class="ord"><div class="tn">11</div><div><b>4 articles · 68,50 €</b><small>Il y a 21 min</small></div><span class="st paid">Servie</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 plan de salle -->
+        <div class="scr" id="sc2">
+          <div style="display:flex;align-items:center;gap:16px"><div class="tabs"><span>Intérieur</span><span class="on">Terrasse</span><span>Bar</span></div><div class="counts"><span>Libre <b id="cF">10</b></span><span>Occupée <b id="cO">0</b></span><span>À payer <b id="cP">0</b></span></div></div>
+          <div id="floor"><div class="a zone" style="left:22px;top:18px">TERRASSE · 10 TABLES</div></div>
+          <div class="a" id="panel"><h4>Table 6</h4><div class="pr"><span style="color:var(--sub)">4 couverts · 52 min</span></div><div class="pr"><span>Carbonara</span><span>20,00 €</span></div><div class="pr"><span>Tiramisu</span><span>6,00 €</span></div><div class="pr"><span>Coca</span><span>3,00 €</span></div><div class="pr" style="font-weight:800;font-size:20px;border-top:1px solid var(--border);padding-top:10px"><span>Total</span><span>29,00 €</span></div><div class="go">Encaisser</div></div>
+        </div>
+
+        <!-- 3 caisse -->
+        <div class="scr" id="sc3">
+          <div class="pos">
+            <div>
+              <div class="cats"><span>Plats</span><span>Desserts</span><span>Boissons</span><span>Vins</span></div>
+              <div class="prods">
+                <div class="prod" style="--c:#fcd34d"><b>Burrata</b><span>12,00 €</span></div>
+                <div class="prod" id="pA" style="--c:#fcd34d"><b>Carbonara</b><span>20,00 €</span></div>
+                <div class="prod" style="--c:#fcd34d"><b>Risotto</b><span>18,00 €</span></div>
+                <div class="prod" style="--c:#f9a8d4"><b>Panna cotta</b><span>7,00 €</span></div>
+                <div class="prod" id="pB" style="--c:#f9a8d4"><b>Tiramisu</b><span>6,00 €</span></div>
+                <div class="prod" style="--c:#f9a8d4"><b>Café gourmand</b><span>8,50 €</span></div>
+                <div class="prod" id="pC" style="--c:#93c5fd"><b>Coca</b><span>3,00 €</span></div>
+                <div class="prod" style="--c:#93c5fd"><b>Spritz</b><span>9,00 €</span></div>
+                <div class="prod" style="--c:#93c5fd"><b>Eau pétillante</b><span>4,50 €</span></div>
+              </div>
+            </div>
+            <div class="card bill">
+              <div class="h">Table 6 · Note ouverte</div>
+              <div class="lines">
+                <div class="ln" id="l1"><span>Carbonara × 1</span><span>20,00 €</span></div>
+                <div class="ln" id="l2"><span>Tiramisu × 1</span><span>6,00 €</span></div>
+                <div class="ln" id="l3"><span>Coca × 1</span><span>3,00 €</span></div>
+                <div class="split" id="split" style="margin-top:10px">
+                  <div class="person" id="ps1"><span>Pers. 1 · 14,50 €</span><em id="ps1m">Espèces</em></div>
+                  <div class="chg" id="chg"><span>Reçu 20,00 €</span><span>Rendu 5,50 €</span></div>
+                  <div class="person" id="ps2"><span>Pers. 2 · 14,50 €</span><em id="ps2m">CB</em></div>
+                </div>
+              </div>
+              <div style="display:grid;gap:10px">
+                <div class="tot"><span>Total</span><span class="num" id="tot">0,00 €</span></div>
+                <div class="meths"><span id="mE">Espèces</span><span id="mC">CB</span><span>QR</span><span>TR</span></div>
+                <div class="go" id="splitBtn" style="margin:0;background:var(--text)">Diviser l'addition</div>
+              </div>
+            </div>
+          </div>
+          <div class="a" id="drawer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="10" width="18" height="10" rx="2"/><path d="M3 14h18M10 17h4"/></svg>Tiroir-caisse ouvert</div>
+          <div class="a" id="solde"><div><svg width="96" height="96" viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#10b981"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Note soldée</div></div>
+        </div>
+
+        <!-- 4 carte -->
+        <div class="scr" id="sc4">
+          <div class="menu">
+            <div class="card dlist">
+              <div class="sec">Plats</div>
+              <div class="dish"><span>Burrata crémeuse</span><small>12,00 €</small></div>
+              <div class="dish sel"><span>Carbonara</span><small>20,00 €</small></div>
+              <div class="dish" id="risotto"><span>Risotto aux cèpes</span><small id="risoP">18,00 €</small></div>
+              <div class="dish"><span>Linguine vongole</span><small>22,00 €</small></div>
+              <div class="sec">Desserts</div>
+              <div class="dish"><span>Tiramisu maison</span><small>6,00 €</small></div>
+              <div class="dish"><span>Panna cotta</span><small>7,00 €</small></div>
+              <div class="sec">Boissons</div>
+              <div class="dish"><span>Spritz</span><small>9,00 €</small></div>
+            </div>
+            <div class="card editor">
+              <div class="photo"></div>
+              <div class="fields">
+                <div class="fl">Nom</div><div class="fv">Carbonara</div>
+                <div class="fl" style="display:flex;justify-content:space-between"><span>Description</span><span id="langLbl" style="font-family:var(--mono)">FR</span></div>
+                <div class="fv" id="desc" style="font-weight:500;font-size:16px">Guanciale, pecorino, jaune d'œuf</div>
+                <div style="display:flex;gap:14px;align-items:center"><div class="fv" style="flex:1">20,00 €</div><div class="sw"><i></i>Disponible</div></div>
+                <div class="langs" id="langs"></div>
+              </div>
+              <div class="alls"><div class="h">Allergènes<small>14 allergènes UE</small></div><div class="agrid" id="agrid"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 équipe -->
+        <div class="scr" id="sc5">
+          <div class="team">
+            <div class="card pin">
+              <div class="h">Connexion serveur</div>
+              <div class="pdots" id="pdots"><i></i><i></i><i></i><i></i></div>
+              <div class="keys" id="keys"></div>
+              <div id="hello">Bonjour Léa</div>
+            </div>
+            <div class="card staff">
+              <div class="h">Équipe du soir</div>
+              <div class="srow hd"><span></span><span>Serveur</span><span>Ventes</span><span>Pourboires</span></div>
+              <div class="srow sr"><div class="av" style="background:#10b981">L</div><div>Léa<div class="sbar" style="width:100%"></div></div><span class="num">1 240 €</span><span class="num">86 €</span></div>
+              <div class="srow sr"><div class="av" style="background:#f59e0b">H</div><div>Hugo<div class="sbar" style="width:79%"></div></div><span class="num">980 €</span><span class="num">54 €</span></div>
+              <div class="srow sr"><div class="av" style="background:#6366f1">I</div><div>Inès<div class="sbar" style="width:51%"></div></div><span class="num">627 €</span><span class="num">41 €</span></div>
+              <div class="srow" style="border:0;font-weight:800"><span></span><span>Total</span><span class="num">2 847 €</span><span class="num">181 €</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 rapports -->
+        <div class="scr" id="sc6">
+          <div class="rep">
+            <div class="card chain" id="chain">
+              <div class="h" style="margin-bottom:14px">Journal des tickets<small>signature chaînée</small></div>
+            </div>
+            <div class="card zc">
+              <div class="fl" style="font-family:var(--mono)">CLÔTURE AUTOMATIQUE · 04:00</div>
+              <h4>Rapport Z n° 312</h4>
+              <div class="zr"><span>Tickets</span><span class="num">91</span></div>
+              <div class="zr"><span>Espèces</span><span class="num">612,00 €</span></div>
+              <div class="zr"><span>Carte bancaire</span><span class="num">1 478,00 €</span></div>
+              <div class="zr"><span>QR (en ligne)</span><span class="num">757,00 €</span></div>
+              <div class="zr t"><span>CA TTC</span><span class="num">2 847,00 €</span></div>
+              <div class="ok" id="zok"><svg width="22" height="22" viewBox="0 0 34 34"><circle cx="17" cy="17" r="17" fill="#10b981"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Signature SHA-256 vérifiée</div>
+              <div class="pdf" id="zpdf"><i>PDF</i>Export comptable · octobre</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="a" id="tap"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="a" id="ticket"><b>CUISINE</b>Table 6 · Léa<br>21:14<hr>1× Carbonara<br>1× Tiramisu<hr>Note #0427</div>
+
+  <!-- fin -->
+  <div class="a" id="s8" style="inset:0">
+    <div class="a icon" id="e1" style="left:860px;top:170px;width:200px;height:200px"></div>
+    <div class="a disp" id="e2" style="left:0;right:0;top:410px;text-align:center;font-size:130px">L'app TableDirect</div>
+    <div class="a" id="e3" style="left:0;right:0;top:570px;text-align:center;font-size:38px;color:var(--muted)">Commande QR, caisse et salle. <span style="color:#fff">Tout votre restaurant dans une app.</span></div>
+    <div class="a" id="e4" style="left:0;right:0;top:690px;display:flex;justify-content:center">
+      <div class="store"><svg width="52" height="62" viewBox="0 0 20 24"><path fill="#fff" d="M16.4 12.7c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2.1-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9-.1 0-2.7-1-2.7-4.1zM13.9 5.1c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></svg><div><small>Disponible sur</small><b>l'App Store</b></div></div>
+    </div>
+    <div class="a" id="e5" style="left:0;right:0;top:860px;text-align:center;font:500 40px var(--mono);color:var(--em)">tabledirect.fr</div>
+  </div>
+
+  <div class="a" id="brand"><div class="icon" id="brandIcon"></div>TableDirect</div>
+  <div class="a" id="url">tabledirect.fr</div>
+</div>
+</div>
+<div class="controls" id="controls">
+  <button class="btn" id="play" type="button">Pause</button>
+  <button class="btn ghost" id="replay" type="button">Rejouer</button>
+  <input id="scrub" type="range" min="0" max="52" step="0.01" value="0" aria-label="Position dans le film">
+  <span id="time">00:00 / 00:52</span>
+</div>
+<p class="note">Visite de l'app TableDirect côté restaurateur. Espace : lecture / pause. Flèches : ±2 s. Chiffres de démonstration.</p>
+</div>
+
+<script>
+const DUR = 52;
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const p = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eio = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const back = x => { const c = 1.7; return x <= 0 ? 0 : 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, x) => a + (b - a) * x;
+const eur = v => v.toFixed(2).replace('.', ',') + ' €';
+const sep = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const vis = (t, a, b, f = .45) => Math.min(p(t, a, a + f), 1 - p(t, b - f, b));
+function set(el, o = 1, x = 0, y = 0, s = 1, extra = '') { el.style.opacity = o; el.style.transform = `translate(${x}px,${y}px) scale(${s})${extra}`; }
+
+// logo « guéridon »
+const ICON = (bg, fg) => `<svg viewBox="0 0 100 100"><rect width="100" height="100" rx="26" fill="${bg}"/><rect x="17" y="26" width="66" height="15" rx="7.5" fill="${fg}"/><rect x="43.5" y="26" width="13" height="50" rx="6.5" fill="${fg}"/><rect x="35" y="72" width="30" height="7" rx="3.5" fill="${fg}"/><circle cx="79" cy="20" r="9.5" fill="#10b981" stroke="${bg}" stroke-width="5"/></svg>`;
+['i1', 'e1', 'brandIcon'].forEach(id => $(id).innerHTML = ICON('#ffffff', '#0b0b0a'));
+$('sideIcon').innerHTML = ICON('#ffffff', '#0b0b0a');
+
+// données des écrans
+const HOURS = [12, 13, 14, 15, 18, 19, 20, 21, 22, 23];
+const VALS = [.42, .7, .38, .12, .2, .55, .92, 1, .6, .25];
+$('bars').innerHTML = VALS.map((v, k) => `<div class="bar${k === 7 ? ' hot' : ''}" style="height:${v * 100}%"></div>`).join('');
+$('hours').innerHTML = HOURS.map(h => `<span>${h}h</span>`).join('');
+const bars = [...document.querySelectorAll('.bar')];
+
+// tables de la terrasse : [n, x, y, forme, taille, état]
+const FLOOR = [[1, 40, 70, 'r', 96, ''], [2, 190, 70, 's', 110, 'o'], [3, 350, 70, 'r', 96, 'o'], [4, 500, 70, 's', 110, ''],
+  [5, 40, 260, 's', 110, ''], [6, 200, 250, 's', 130, 'p'], [7, 380, 260, 'r', 110, 'o'],
+  [8, 40, 420, 'r', 96, 'o'], [9, 200, 430, 's', 96, ''], [10, 350, 420, 's', 110, 'p']];
+const INFO = { 2: '4 pers.', 3: '2 pers.', 7: '3 pers.', 8: '2 pers.', 6: '29 €', 10: '68,50 €' };
+$('floor').insertAdjacentHTML('beforeend', FLOOR.map(([n, x, y, f, s]) =>
+  `<div class="a tb" id="tb${n}" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px;border-radius:${f === 'r' ? '50%' : '22px'}"><b>${n}</b><i>${INFO[n] || ''}</i></div>`).join(''));
+const ftables = FLOOR.map(([n]) => $('tb' + n));
+
+const ALL = ['Gluten', 'Crustacés', 'Œufs', 'Poissons', 'Arachides', 'Soja', 'Lait', 'Fruits à coque', 'Céleri', 'Moutarde', 'Sésame', 'Sulfites', 'Lupin', 'Mollusques'];
+$('agrid').innerHTML = ALL.map((a, k) => `<div class="al" id="al${k}">${a}</div>`).join('');
+const LANGS = [['FR', "Guanciale, pecorino, jaune d'œuf"], ['EN', 'Guanciale, pecorino, egg yolk'], ['IT', "Guanciale, pecorino, tuorlo d'uovo"], ['ES', 'Guanciale, pecorino, yema de huevo'], ['DE', 'Guanciale, Pecorino, Eigelb'], ['NL', 'Guanciale, pecorino, eidooier'], ['PT', 'Guanciale, pecorino, gema de ovo']];
+$('langs').innerHTML = LANGS.map(([c], k) => `<span id="lg${k}">${c}</span>`).join('') + '<span>+2</span>';
+$('keys').innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, '⌫'].map((k, i) => `<div class="key" id="key${k}" style="${k === '' ? 'background:transparent' : ''}">${k}</div>`).join('');
+const pdots = [...document.querySelectorAll('#pdots i')];
+const srows = [...document.querySelectorAll('.sr')];
+const TK = [['N° 0425', 'a3f9…c21e', '20,00 €'], ['N° 0426', '7b02…e98a', '68,50 €'], ['N° 0427', 'd41c…09f3', '29,00 €'], ['N° 0428', '5e7a…b6d1', '14,50 €']];
+$('chain').insertAdjacentHTML('beforeend', TK.map(([n, h, v], k) => (k ? `<div class="link" id="lk${k}"></div>` : '') + `<div class="tk" id="tk${k}"><span>${n}</span><code>SHA-256 ${h}</code><span class="num">${v}</span></div>`).join(''));
+
+const caps = ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'].map($);
+const scrs = ['sc1', 'sc2', 'sc3', 'sc4', 'sc5', 'sc6'].map($);
+// fenêtres de chaque fonctionnalité
+const WIN = [[5, 12], [12, 19], [19, 27], [27, 33.5], [33.5, 40], [40, 45.5]];
+const SUBS = ['Service du soir', 'Plan de salle', 'Caisse', 'Carte', 'Équipe', 'Rapports'];
+
+function tapAt(t, list) {
+  let v = 0, x = 0, y = 0, s = 1;
+  const m = $('main'), mr = m.getBoundingClientRect(), sc = mr.width / m.offsetWidth;
+  for (const [tt, id] of list) {
+    const d = t - tt;
+    if (d > -.25 && d < .45) {
+      const r = $(id).getBoundingClientRect();
+      x = (r.left - mr.left + r.width / 2) / sc; y = (r.top - mr.top + r.height / 2) / sc;
+      v = d < 0 ? p(d, -.25, 0) : 1 - p(d, .15, .45); s = d < 0 ? lerp(1.4, 1, p(d, -.25, 0)) : lerp(1, 1.6, p(d, 0, .45));
+    }
+  }
+  const el = $('tap'); el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.opacity = v; el.style.transform = `scale(${s})`;
+}
+const press = (t, a) => t > a && t < a + .3 ? 1 - Math.sin(p(t, a, a + .3) * Math.PI) * .05 : 1;
+
+function render(t) {
+  set($('glow'), 1, lerp(0, 700, eio(p(t, 0, 8))) - (t > 45 ? eio(p(t, 45, 47)) * 490 : 0), lerp(-300, -200, p(t, 0, 52)));
+
+  // intro
+  $('s1').style.opacity = 1 - p(t, 4.4, 5);
+  set($('i1'), p(t, .2, .5), 0, lerp(-20, 0, eo(p(t, .2, 1))), back(p(t, .2, 1)), ` rotate(${lerp(-10, 0, eo(p(t, .2, 1.2)))}deg)`);
+  set($('i1n'), p(t, .9, 1.3), 0, lerp(40, 0, eo(p(t, .9, 1.7))));
+  set($('i1s'), p(t, 1.8, 2.3), 0, lerp(20, 0, eo(p(t, 1.8, 2.6))));
+
+  const bv = Math.min(p(t, 5, 5.6), 1 - p(t, 45, 45.6));
+  set($('brand'), bv, lerp(-20, 0, eo(p(t, 5, 5.8)))); set($('url'), bv);
+  $('dots').style.opacity = bv;
+
+  // iPad
+  const iin = eo(p(t, 4.6, 5.8)), iout = eio(p(t, 45, 45.8));
+  set($('ipad'), p(t, 4.6, 5) * (1 - iout), lerp(160, 0, iin) + iout * 200, lerp(60, 0, iin), lerp(.94, 1, iin) - iout * .06);
+
+  // légendes et écrans
+  let act = 0;
+  WIN.forEach(([a, b], k) => {
+    const vin = eo(p(t, a + .3, a + 1)), vout = eio(p(t, b - .5, b));
+    set(caps[k], vin * (1 - vout), lerp(-40, 0, vin) - vout * 30);
+    const so = Math.min(p(t, a, a + .4), k === 5 ? 1 : 1 - p(t, b - .2, b + .2));
+    set(scrs[k], so, 0, lerp(24, 0, eo(p(t, a, a + .6))));
+    if (t >= a - .2) act = k;
+  });
+  $('navHi').style.transform = `translateY(${86 + act * 66}px)`;
+  $('topSub').textContent = SUBS[act];
+  const taps = [];
+
+  // 1 · tableau de bord
+  const kc = eo(p(t, 5.8, 7.6));
+  $('k1').textContent = sep(2847 * kc) + ' €'; $('k2').textContent = eur(31.4 * kc); $('k3').textContent = Math.round(91 * kc); $('k4').textContent = Math.round(8 * kc) + ' / 12';
+  bars.forEach((b, k) => b.style.transform = `scaleY(${eo(p(t, 6 + k * .08, 6.8 + k * .08))})`);
+  const nw = eo(p(t, 8.6, 9.2));
+  $('ordNew').style.marginTop = lerp(-86, 0, nw) + 'px';
+  $('ordNew').style.opacity = nw;
+  $('ordNew').style.boxShadow = `inset 0 0 0 2px #10b981, 0 0 0 ${Math.max(0, Math.sin(p(t, 9.2, 10.4) * Math.PI)) * 10}px rgba(16,185,129,.25)`;
+
+  // 2 · plan de salle
+  let cO = 0, cP = 0;
+  FLOOR.forEach(([n, , , , , st], k) => {
+    const el = ftables[k], a = 12.5 + k * .09;
+    set(el, p(t, a, a + .2), 0, lerp(-30, 0, eo(p(t, a, a + .5))), lerp(.6, 1, back(p(t, a, a + .5))));
+    const on = st && t > 14 + k * .18;
+    const paid = n === 6 && t > 18.1;
+    let bg = '#f5f5f4', ring = '#e7e5e4', fg = '#8a8a83', sub = 'transparent';
+    if (on && !paid) {
+      if (st === 'o') { bg = '#fef3c7'; ring = '#f59e0b'; fg = '#78350f'; sub = '#92400e'; cO++; }
+      else { bg = '#10b981'; ring = '#10b981'; fg = '#fff'; sub = '#ecfdf5'; cP++; }
+    }
+    if (n === 6 && t > 16.6 && t < 18.1) ring = '#171717';
+    el.style.background = bg; el.style.boxShadow = `inset 0 0 0 ${n === 6 && t > 16.6 && t < 18.1 ? 4 : 2}px ${ring}`;
+    el.querySelector('b').style.color = fg; el.querySelector('i').style.color = sub;
+  });
+  $('cO').textContent = cO; $('cP').textContent = cP; $('cF').textContent = 10 - cO - cP;
+  taps.push([16.5, 'tb6']);
+  const pin = eo(p(t, 16.7, 17.2)), pout = eio(p(t, 18.2, 18.6));
+  set($('panel'), pin * (1 - pout), lerp(300, 0, pin) + pout * 300);
+  taps.push([17.75, 'panel']);
+
+  // 3 · caisse
+  const addA = 19.8, addB = 20.4, addC = 21;
+  taps.push([addA, 'pA'], [addB, 'pB'], [addC, 'pC']);
+  [['pA', addA], ['pB', addB], ['pC', addC]].forEach(([id, a]) => { $(id).style.transform = `scale(${press(t, a)})`; $(id).style.background = t > a && t < a + .5 ? '#ecfdf5' : '#fff'; });
+  [['l1', addA], ['l2', addB], ['l3', addC]].forEach(([id, a]) => set($(id), p(t, a + .05, a + .3), lerp(20, 0, eo(p(t, a + .05, a + .4)))));
+  const tv = 20 * eo(p(t, addA + .05, addA + .4)) + 6 * eo(p(t, addB + .05, addB + .4)) + 3 * eo(p(t, addC + .05, addC + .4));
+  $('tot').textContent = eur(tv);
+  taps.push([21.9, 'splitBtn']);
+  $('splitBtn').style.transform = `scale(${press(t, 21.9)})`;
+  const spl = eo(p(t, 22.2, 22.6));
+  $('split').style.opacity = spl;
+  set($('ps1'), p(t, 22.2, 22.5), 0, lerp(16, 0, spl));
+  set($('ps2'), p(t, 22.35, 22.65), 0, lerp(16, 0, eo(p(t, 22.35, 22.75))));
+  taps.push([23.1, 'mE']);
+  $('mE').style.background = t > 23.1 && t < 24.6 ? '#171717' : '#fff'; $('mE').style.color = t > 23.1 && t < 24.6 ? '#fff' : '';
+  $('ps1m').textContent = t > 23.3 ? 'Payé ✓' : 'Espèces';
+  $('ps1m').style.background = t > 23.3 ? '#d1fae5' : '#fff';
+  set($('chg'), p(t, 23.4, 23.7), 0, lerp(-10, 0, eo(p(t, 23.4, 23.8))));
+  $('chg').style.display = t > 23.35 ? 'flex' : 'none';
+  set($('drawer'), Math.min(p(t, 23.7, 24), 1 - p(t, 25, 25.3)), 0, lerp(40, 0, back(p(t, 23.7, 24.2))));
+  taps.push([24.8, 'mC']);
+  $('mC').style.background = t > 24.8 && t < 25.7 ? '#171717' : '#fff'; $('mC').style.color = t > 24.8 && t < 25.7 ? '#fff' : '';
+  $('ps2m').textContent = t > 25.1 ? 'Payé ✓' : 'CB';
+  $('ps2m').style.background = t > 25.1 ? '#d1fae5' : '#fff';
+  set($('solde'), p(t, 25.6, 25.9), 0, 0, 1);
+  $('solde').firstElementChild.style.transform = `scale(${lerp(.7, 1, back(p(t, 25.6, 26.1)))})`;
+
+  // 4 · carte
+  ['al0', 'al2', 'al6'].forEach((id, k) => { const a = 28.2 + k * .35; $(id).classList.toggle('on', t > a); $(id).style.transform = `scale(${press(t, a)})`; taps.push([a, id]); });
+  const li = t < 29.6 ? 0 : Math.min(LANGS.length - 1, Math.floor((t - 29.6) / .42));
+  $('desc').textContent = LANGS[li][1]; $('langLbl').textContent = LANGS[li][0];
+  LANGS.forEach((_, k) => $('lg' + k).classList.toggle('on', k === li));
+  taps.push([32.6, 'risotto']);
+  const rup = t > 32.75;
+  $('risoP').className = rup ? 'rup' : ''; $('risoP').textContent = rup ? 'Rupture' : '18,00 €';
+  $('risotto').style.opacity = rup ? .6 : 1;
+
+  // 5 · équipe
+  const PIN = [[34.2, 'key4'], [34.55, 'key8'], [34.9, 'key1'], [35.25, 'key7']];
+  PIN.forEach(([a, id], k) => { taps.push([a, id]); $(id).style.background = t > a && t < a + .25 ? '#d1fae5' : ''; pdots[k].style.background = t > a + .05 ? '#171717' : 'transparent'; });
+  set($('hello'), p(t, 35.5, 35.8), 0, lerp(10, 0, eo(p(t, 35.5, 35.9))));
+  srows.forEach((r, k) => { const a = 35.8 + k * .25; set(r, p(t, a, a + .3), lerp(30, 0, eo(p(t, a, a + .5)))); r.querySelector('.sbar').style.transform = `scaleX(${eo(p(t, a + .2, a + 1))})`; });
+  const tk = eio(p(t, 36.8, 38.6));
+  set($('ticket'), Math.min(p(t, 36.7, 36.9), 1 - p(t, 39.5, 39.9)), 0, 0, 1, ' rotate(3deg)');
+  $('ticket').style.clipPath = `inset(0 0 ${(1 - tk) * 100}% 0)`;
+
+  // 6 · NF525
+  TK.forEach((_, k) => { const a = 40.4 + k * .4; set($('tk' + k), p(t, a, a + .3), lerp(-20, 0, eo(p(t, a, a + .5)))); if (k) $('lk' + k).style.transform = `scaleY(${eo(p(t, a - .2, a + .1))})`; });
+  set($('zok'), p(t, 42.4, 42.7), 0, 0, lerp(.9, 1, back(p(t, 42.4, 42.9))));
+  set($('zpdf'), p(t, 43, 43.3), 0, lerp(16, 0, eo(p(t, 43, 43.5))));
+
+  tapAt(t, taps);
+
+  // fin
+  $('s8').style.opacity = p(t, 45.6, 46);
+  set($('e1'), p(t, 45.8, 46.1), 0, 0, back(p(t, 45.8, 46.6)));
+  set($('e2'), p(t, 46.2, 46.6), 0, lerp(40, 0, eo(p(t, 46.2, 47))));
+  set($('e3'), p(t, 46.8, 47.2), 0, lerp(20, 0, eo(p(t, 46.8, 47.5))));
+  set($('e4'), p(t, 47.5, 47.8), 0, lerp(30, 0, back(p(t, 47.5, 48.2))), lerp(.85, 1, back(p(t, 47.5, 48.2))));
+  set($('e5'), p(t, 48.3, 48.7));
+}
+
+const frame = $('frame'), stage = $('stage');
+function fit() { stage.style.transform = `scale(${frame.clientWidth / 1920})`; }
+new ResizeObserver(fit).observe(frame); fit();
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let t = reduce ? 50 : 0, playing = !reduce, last = null, raf;
+const fmt = s => { s = Math.floor(s); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+function draw() { render(t); $('scrub').value = t; $('time').textContent = fmt(t) + ' / ' + fmt(DUR); $('play').textContent = playing ? 'Pause' : 'Lecture'; }
+function tick(now) { if (playing) { if (last != null) t += (now - last) / 1000; if (t >= DUR) { t = DUR; playing = false; } } last = now; draw(); raf = requestAnimationFrame(tick); }
+$('play').onclick = () => { if (t >= DUR) t = 0; playing = !playing; last = null; };
+$('replay').onclick = () => { t = 0; playing = true; last = null; };
+$('scrub').oninput = e => { t = +e.target.value; draw(); };
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.code !== 'Space') return;
+  if (e.code === 'Space') { e.preventDefault(); $('play').click(); }
+  if (e.code === 'ArrowRight') t = Math.min(DUR, t + 2);
+  if (e.code === 'ArrowLeft') t = Math.max(0, t - 2);
+});
+draw(); raf = requestAnimationFrame(tick);
+window.__seek = s => { playing = false; t = s; render(s); };
+window.__native = () => { cancelAnimationFrame(raf); document.body.style.padding = '0'; $('controls').hidden = true; document.querySelector('.note').hidden = true; frame.style.borderRadius = '0'; frame.style.boxShadow = 'none'; frame.style.width = '1920px'; frame.style.maxWidth = 'none'; document.querySelector('.wrap').style.maxWidth = 'none'; fit(); };
+</script>
